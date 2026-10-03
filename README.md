@@ -7,7 +7,7 @@
 
 ![SSAFY](https://img.shields.io/badge/SSAFY-16기-3396F4?style=flat-square)
 ![Kaggle](https://img.shields.io/badge/AI%20Challenge%202차-2위%2F217팀-FFB000?style=flat-square&logo=kaggle&logoColor=white)
-![Kaggle](https://img.shields.io/badge/AI%20Challenge%201차-Top%201.3%25-20BEFF?style=flat-square&logo=kaggle&logoColor=white)
+![Kaggle](https://img.shields.io/badge/AI%20Challenge%201차-18위%2F954명-20BEFF?style=flat-square&logo=kaggle&logoColor=white)
 ![Skills](https://img.shields.io/badge/전국기능경기대회-장려상-d4a017?style=flat-square)
 
 </div>
@@ -19,7 +19,7 @@
 | | 내용 | 결과 |
 |---|---|---|
 | 🥈 | **SSAFY 16기 2차 AI 챌린지** — 사진 속 글자 읽기 VQA (5인 팀) | **217팀 중 최종 2위** (Private 0.98093) · 데이터 촬영·출제부터 재라벨링까지 직접 |
-| 🤖 | **SSAFY 16기 1차 AI 챌린지** — 한국어 4지선다 VLM-VQA (개인전) | Public LB **955명 중 12위 (상위 1.3%)**, 0.92116 → **0.94324** |
+| 🤖 | **SSAFY 16기 1차 AI 챌린지** — 한국어 4지선다 VLM-VQA (개인전) | **954명 중 최종 18위 (상위 1.9%)** (Private 0.93851) · Public 12위, 0.92116 → 0.94324 |
 | ⛪ | **사랑의교회 수련회 관리 시스템** | 실서비스 백엔드 담당 (Node.js · PostgreSQL · REST API) |
 | 🔌 | **전국기능경기대회 공업전자기기** | 2019 전국 **장려상** · 2019 서울 **금상** · 2018 서울 우수상 (공식 검증 가능) |
 
