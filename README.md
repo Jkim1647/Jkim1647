@@ -6,7 +6,8 @@
 현장에서 시스템을 "돌려본" 경험을 바탕으로, 느린 곳을 측정하고 숫자로 개선하는 개발을 합니다.
 
 ![SSAFY](https://img.shields.io/badge/SSAFY-16기-3396F4?style=flat-square)
-![Kaggle](https://img.shields.io/badge/AI%20Challenge-Top%201.3%25-20BEFF?style=flat-square&logo=kaggle&logoColor=white)
+![Kaggle](https://img.shields.io/badge/AI%20Challenge%202차-2위%2F217팀-FFB000?style=flat-square&logo=kaggle&logoColor=white)
+![Kaggle](https://img.shields.io/badge/AI%20Challenge%201차-Top%201.3%25-20BEFF?style=flat-square&logo=kaggle&logoColor=white)
 ![Skills](https://img.shields.io/badge/전국기능경기대회-장려상-d4a017?style=flat-square)
 
 </div>
@@ -17,14 +18,21 @@
 
 | | 내용 | 결과 |
 |---|---|---|
-| 🤖 | **SSAFY 16기 AI 챌린지** — 한국어 4지선다 VLM-VQA | Public LB **955명 중 12위 (상위 1.3%)**, 0.92116 → **0.94324** |
+| 🥈 | **SSAFY 16기 2차 AI 챌린지** — 사진 속 글자 읽기 VQA (5인 팀) | **217팀 중 최종 2위** (Private 0.98093) · 데이터 촬영·출제부터 재라벨링까지 직접 |
+| 🤖 | **SSAFY 16기 1차 AI 챌린지** — 한국어 4지선다 VLM-VQA (개인전) | Public LB **955명 중 12위 (상위 1.3%)**, 0.92116 → **0.94324** |
 | ⛪ | **사랑의교회 수련회 관리 시스템** | 실서비스 백엔드 담당 (Node.js · PostgreSQL · REST API) |
 | 🔌 | **전국기능경기대회 공업전자기기** | 2019 전국 **장려상** · 2019 서울 **금상** · 2018 서울 우수상 (공식 검증 가능) |
 
 ## 📌 Projects
 
+### [ssafy16-ai-challenge-2](https://github.com/Jkim1647/ssafy16-ai-challenge-2) &nbsp;`Python` `Qwen3.5/3.6` `Gemma 4` `vLLM` `LoRA`
+사진 속 작은 글자를 읽고 4지선다에 답하는 Scene Text VQA — **217팀 중 최종 2위**.
+- 교육생이 직접 찍고 출제한 데이터를 팀원 5명이 다시 라벨링(dev 350문제 검수, 179문제 재작성) → 자체 채점표 401문제
+- 모델을 9B→122B로 키우는 대신 **4분할 2배 확대 + 받아 적기** 입력으로 0.9445 → 0.9655 (추가 학습 없음)
+- 9B~397B 8종의 a~d 확률을 저장해 **확률 평균 앙상블**, 제출 54회 실험을 GPU 없이 재계산
+
 ### [ssafy-vlm-vqa-pipeline](https://github.com/Jkim1647/ssafy-vlm-vqa-pipeline) &nbsp;`Python` `Qwen3-VL` `QLoRA` `RunPod A100`
-재활용품 이미지 + 한국어 질문 → a~d 정답을 고르는 VQA 파이프라인.
+1차 AI 챌린지 — 재활용품 이미지 + 한국어 질문 → a~d 정답을 고르는 VQA 파이프라인.
 - 로컬 RTX 5060 Ti의 **Qwen3-VL-4B QLoRA**에서 시작해 A100의 **Qwen3.5-35B-A3B**까지 확장
 - **선택지 회전 TTA**로 위치 편향 제거, 모델별 확률 **soft ensemble**
 - 이미지 SHA-256 기준 **grouped validation**으로 train/dev 누수 차단
