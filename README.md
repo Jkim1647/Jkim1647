@@ -56,9 +56,9 @@
 **[LocalHub — 광주·전라 맛집 커뮤니티](https://github.com/sc-teamproject/Frontend)** · 2026.07 · 3일 · 3인 **팀장** &nbsp;`Vue 3` `Pinia` `Tailwind` `Leaflet` `FastAPI` `Netlify/Render`
 - 맛집 416곳 지도 탐색 · 익명 게시판 · AI 추천 챗봇을 3일 만에 기획부터 배포까지. 프론트 커밋 20건 중 16건, 배포 설정 · 환경 차이 버그 해결
 
-**SSAFY 1학기 관통 프로젝트** · 2026.07–10 · 2~3인 팀 &nbsp;`Java 17` `Spring Boot 3.5` `Maven` `FastAPI` `LangChain` `ChromaDB`
+**[SSAFY 1학기 관통 프로젝트](https://github.com/Jkim1647/SSAFY-16th-Semester-1-Comprehensive-Project)** · 2026.07–10 · 2~3인 팀 &nbsp;`Java 17` `Spring Boot 3.5` `Maven` `FastAPI` `LangChain` `ChromaDB`
 - 같은 여행 도메인을 4차에 걸쳐 확장 — Java Swing(1차) → RAG 챗봇(2차, RAGAS Context Recall 0.36 → 1.00) → 공공 API 5종 웹 플래너(3차) → **알고리즘 9종 + Spring Boot 백엔드**(4차)
-- 4차: Held-Karp DP로 방문 순서 1,400km → 570km, 배터리 제약 Dijkstra, 자모 단위 편집 거리 오타 검색 — 모두 완전탐색 · JDK · RFC 벡터와 비교 검증 (저장소 공개 준비 중)
+- 4차: Held-Karp DP로 방문 순서 1,400km → 570km, 배터리 제약 Dijkstra, 자모 단위 편집 거리 오타 검색 — 모두 완전탐색 · JDK · RFC 벡터와 비교 검증
 
 ### 🤖 AI
 
