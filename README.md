@@ -49,7 +49,7 @@
 - 행사 일주일 전 운영 서버(EC2)에서만 실패하던 이미지 생성 장애 해결 · 관리자 웹 스냅샷: [sarang-univ-admin](https://github.com/Jkim1647/sarang-univ-admin)
 
 **[수양회 시스템 2026 리팩토링 기록](https://github.com/Jkim1647/sarang-retreat-refactor-notes)** · 2026.10 · 1인 (Claude Code 페어 프로그래밍) &nbsp;`Express` `Knex` `Next.js 14` `SWR` `React Query` `Playwright` `Jest/Vitest`
-- 서버 · 관리자 웹 · 참가자 웹 세 저장소, 커밋 64건 · 테스트 Jest 79 · Vitest 95 · E2E 176
+- 서버 · 관리자 웹 · 참가자 웹 세 저장소, 커밋 64건 · 테스트 Jest 78(서버 44 · 관리자 34) · Vitest 95 · E2E 176
 - 고치기 전에 **특성화 테스트로 동작을 고정**하고 벤치 · 렌더 카운터 · 번들 크기로 측정 → 라벨 생성 29.9s → 9.9s · 폼 리렌더 882 → 14 · First Load JS −65%
 - mock 테스트가 모두 통과한 뒤 **로컬 DB에 붙여 38개 화면을 직접 순회**해 버그 12건을 더 발견 (커밋 뒤 문자 실패가 요청 전체를 500으로 만들던 문제 등)
 
@@ -63,13 +63,13 @@
 ### 🤖 AI
 
 **[ssafy16-ai-challenge-2](https://github.com/Jkim1647/ssafy16-ai-challenge-2)** · 사진 속 글자 읽기 VQA · **217팀 중 최종 2위** &nbsp;`Python` `vLLM` `Qwen3.5` `Gemma 4` `LoRA`
-- 교육생이 직접 찍고 출제한 데이터를 팀원 5명이 다시 라벨링(dev 350문제 검수, 179문제 재작성) → 자체 채점표 401문제로 모든 채택을 판단
+- 교육생이 직접 찍고 출제한 데이터를 팀원 5명이 다시 라벨링(dev 350문제 검수, 179문제 재작성) → 자체 채점표 401문제를 채택 기준으로 삼음(train 제로샷 상승 AND 채점표 비하락, 최종 제출 2개는 Public 점수 참고)
 - 모델을 9B → 122B로 키우는 대신 **4분할 2배 확대 + 받아 적기** 입력으로 0.9445 → 0.9655 (추가 학습 없음)
 - 9B~397B 8종의 a~d 확률을 저장해 **확률 평균 앙상블**, 제출 54회의 조합을 GPU 없이 재계산 · Public 11위 → Private 2위
 
 **[ssafy16-ai-challenge-1](https://github.com/Jkim1647/ssafy16-ai-challenge-1)** · 재활용품 VQA · **954명 중 18위** &nbsp;`Python` `Qwen3-VL` `QLoRA` `RunPod A100`
 - 로컬 RTX 5060 Ti의 Qwen3-VL-4B QLoRA에서 시작해 A100의 Qwen3.5-35B-A3B까지 확장
-- **선택지 회전 TTA**로 위치 편향 제거 · 모델별 확률 soft ensemble · 이미지 해시 기준 grouped validation으로 누수 차단
+- **선택지 회전 TTA**로 위치 편향 완화 · 모델별 확률 soft ensemble · SHA-256 이미지 해시 grouped validation으로 누수 차단
 - Public 12위 → Private 18위의 리더보드 과적합을 2차의 채택 규칙(자체 채점표 비하락)으로 바꿈
 
 **사출성형 공정데이터 기반 품질불량 사전예측** · 2026 K-인공지능 제조데이터 분석 경진대회 · 1인 제출 &nbsp;`Python` `LightGBM` `이상탐지`
@@ -77,7 +77,7 @@
 
 ### 🧱 Foundation
 
-- **[industrial-electronics-skills-competition](https://github.com/Jkim1647/industrial-electronics-skills-competition)** &nbsp;`C` `ATmega128` `OrCAD` — 전국기능경기대회 준비 기록. PCB 설계 Gerber, 엘리베이터 2대 제어(UART), PWM 모터 제어, 회로설계 연습 39세션. 입상은 마이스터넷에서 공식 확인 가능
+- **[industrial-electronics-skills-competition](https://github.com/Jkim1647/industrial-electronics-skills-competition)** &nbsp;`C` `ATmega128` `OrCAD` — 전국기능경기대회 준비 기록. PCB 설계 Gerber, 엘리베이터 2대 제어(UART), PWM 모터 제어, 회로설계 연습 기록 36회분(2019.08~10). 입상은 마이스터넷에서 공식 확인 가능
 - **[Algorithm](https://github.com/Jkim1647/Algorithm)** &nbsp;`Java` — SWEA · 프로그래머스 96문제, BaekjoonHub 자동 커밋
 
 ## 🛠 Tech Stack
