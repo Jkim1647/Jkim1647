@@ -55,6 +55,6 @@ jobs:
           if [ -n "$SHAPE" ]; then
             MSG="🔧 빌드 완료! 코드 조각들이 **${SHAPE}** 모양으로 조립됐어요. 1~2분 뒤 프로필에서 확인해 주세요 → https://github.com/${GITHUB_REPOSITORY_OWNER}"
           else
-            MSG="제목을 \`build: robot\`, \`car\`, \`drone\`, \`rocket\`, \`earth\` 중 하나로 남겨주시면 빌드할 수 있어요 🙂"
+            MSG="제목을 \`build: robot\`, \`car\`, \`radar\`, \`rocket\`, \`scale\`, \`korea\` 중 하나로 남겨주시면 빌드할 수 있어요 🙂"
           fi
           gh issue close "$NUMBER" --repo "$GITHUB_REPOSITORY" --comment "$MSG"

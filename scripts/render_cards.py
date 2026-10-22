@@ -55,6 +55,11 @@ CARDS = [
          sub="2~3인 팀 · Java 17 · Spring Boot 3.5 · FastAPI",
          before="1,400km", metric="570km", ratio=570 / 1400,
          caption="Held-Karp DP로 방문 순서 최적화 · 4차에 걸쳐 확장"),
+    dict(slug="safelaw", tag="RAG · 2026",
+         title="SafeLaw 생활법률 RAG",
+         sub="개인 · LangGraph · Chroma · 로컬 개인정보 마스킹",
+         before="31.8~64.0초", metric="8.3~16.7초", ratio=16.7 / 64.0,
+         caption="질문당 응답 시간 · 법령 Recall@5 1.000 · 인용 원문 검증"),
     dict(slug="ai2", tag="AI · VQA · TEAM",
          title="AI 챌린지 2차 · 사진 속 글자 읽기",
          sub="5인 팀 · vLLM · Qwen3.5 · Gemma 4 · LoRA",
@@ -122,24 +127,60 @@ def _in_rect(x, y, x0, y0, x1, y1):
 
 CAR_BODY = [(16, 148), (26, 120), (118, 106), (165, 78), (238, 78), (290, 110), (342, 118), (350, 148)]
 WHEELS = [(92, 168), (282, 168)]
-ROTORS = [(72, 64), (288, 64)]
-GLOBE = (180, 100, 92)      # 지구: 중심 x, y, 반지름
-SEOUL = (212, 72)           # 지구 위 서울 핀 자리(그림용)
+SCOPE = (180, 100, 92)      # 레이더 스코프: 중심 x, y, 반지름
 
 
-def _on_globe(x, y):
-    """선으로 그린 지구: 테두리 · 가운데 경선 · 경선 두 쌍 · 위선 셋."""
-    cx, cy, r = GLOBE
+def _near_seg(x, y, a, b, w):
+    """점이 선분 a-b에서 w 이내인가."""
+    (ax, ay), (bx, by) = a, b
+    dx, dy = bx - ax, by - ay
+    k = max(0, min(1, ((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy)))
+    return (x - ax - k * dx) ** 2 + (y - ay - k * dy) ** 2 <= w * w
+
+
+def _on_radar(x, y):
+    """레이더 스코프: 바깥 테두리 · 거리 링 둘 · 십자선."""
+    cx, cy, r = SCOPE
     d = ((x - cx) ** 2 + (y - cy) ** 2) ** .5
-    if d > r + 3:
+    if d > r + 3.5:
         return False
-    if abs(d - r) <= 3 or abs(x - cx) <= 2.5:
-        return True
-    for k in (.45, .82):
-        rx = r * k
-        if abs((((x - cx) / rx) ** 2 + ((y - cy) / r) ** 2) ** .5 - 1) * rx <= 2.8:
-            return True
-    return any(abs(y - (cy + r * s)) <= 2.5 for s in (-.55, 0, .55))
+    return (abs(d - r) <= 3.5 or abs(d - r * .66) <= 2.5 or abs(d - r * .33) <= 2.5
+            or abs(x - cx) <= 2 or abs(y - cy) <= 2)
+
+
+# 대한민국: 경위도 윤곽을 등장방형 투영(위도 36° 보정)으로 옮긴 그림용 근사. 작은 섬은 보이게 키운다.
+KOREA_LONLAT = [(126.15, 37.75), (126.7, 37.95), (127.1, 38.25), (127.6, 38.3), (128.1, 38.33), (128.35, 38.6),
+                (128.6, 38.15), (128.95, 37.75), (129.2, 37.45), (129.35, 37.0), (129.45, 36.6), (129.57, 36.08),
+                (129.45, 35.55), (129.25, 35.15), (128.9, 35.05), (128.7, 34.85), (128.2, 34.85), (127.7, 34.72),
+                (127.4, 34.5), (126.9, 34.4), (126.53, 34.3), (126.25, 34.5), (126.35, 34.95), (126.45, 35.4),
+                (126.6, 35.9), (126.45, 36.35), (126.15, 36.75), (126.5, 36.95), (126.65, 37.35), (126.5, 37.5)]
+JEJU = (126.55, 33.38, .40, .19)            # 중심 경도 · 위도, 반경(경도 · 위도)
+ULLEUNG, DOKDO = (130.87, 37.50), (131.87, 37.24)
+_K, _LON0, _LAT0 = 34.5, 125.95, 38.62
+
+
+def _proj(lon, lat):
+    return 96 + (lon - _LON0) * .81 * _K, 6 + (_LAT0 - lat) * _K
+
+
+KOREA = [_proj(*p) for p in KOREA_LONLAT]
+SEOUL = _proj(126.98, 37.57)
+ISLANDS = [_proj(*ULLEUNG), _proj(*DOKDO)]
+
+
+def _on_korea(x, y):
+    jx, jy = _proj(JEJU[0], JEJU[1])
+    return (_in_poly(x, y, KOREA) or _in_ellipse(x, y, jx, jy, JEJU[2] * .81 * _K, JEJU[3] * _K)
+            or any(_in_circle(x, y, ix, iy, 4.5) for ix, iy in ISLANDS))
+
+
+def _on_scale(x, y):
+    """정의의 저울: 기둥 · 받침 · 가로대 · 꼭대기 장식 · 양쪽 줄과 접시."""
+    return (_in_rect(x, y, 176, 36, 184, 182) or _in_rect(x, y, 136, 180, 224, 192)
+            or _in_rect(x, y, 78, 36, 282, 44) or _in_circle(x, y, 180, 28, 8)
+            or any(_near_seg(x, y, (px, 44), (px + dx, 118), 2.6) for px in (90, 270) for dx in (-34, 34))
+            or any(_in_ellipse(x, y, px, 120, 44, 16) and y >= 118 for px in (90, 270)))
+
 
 SHAPES = {
     "robot": lambda x, y: (_in_rect(x, y, 152, 8, 208, 54) or _in_rect(x, y, 132, 62, 228, 134)
@@ -150,27 +191,24 @@ SHAPES = {
                           and not any(_in_circle(x, y, cx, cy, 30) for cx, cy in WHEELS))
                          or any(_in_circle(x, y, cx, cy, 25) and not _in_circle(x, y, cx, cy, 11)
                                 for cx, cy in WHEELS)),
-    # 쿼드콥터 정면: 몸통 · 팔 · 로터 · 카메라 · 착륙 스키드
-    "drone": lambda x, y: (_in_rect(x, y, 138, 82, 222, 122) or _in_rect(x, y, 62, 94, 298, 104)
-                           or any(_in_rect(x, y, cx - 6, cy, cx + 6, 96) for cx, cy in ROTORS)
-                           or any(_in_ellipse(x, y, cx, cy, 52, 7) for cx, cy in ROTORS)
-                           or _in_circle(x, y, 180, 134, 13)
-                           or _in_rect(x, y, 148, 122, 156, 158) or _in_rect(x, y, 204, 122, 212, 158)
-                           or _in_rect(x, y, 124, 156, 236, 164)),
+    "radar": _on_radar,
     "rocket": lambda x, y: (_in_rect(x, y, 160, 40, 200, 150)
                             or _in_poly(x, y, [(160, 41), (180, 0), (200, 41)])
                             or _in_poly(x, y, [(161, 104), (132, 156), (161, 148)])
                             or _in_poly(x, y, [(199, 104), (228, 156), (199, 148)])),  # 불꽃은 입자가 아니라 효과로 그린다
-    "earth": _on_globe,
+    "scale": _on_scale,
+    "korea": _on_korea,
 }
+MUST = {"korea": ISLANDS}   # 격자 샘플링에서 빠지기 쉬운 작은 섬은 입자를 꼭 하나씩 둔다
 
 # 커리어 단계: (모양, 히어로 하단 트랙에서 밝힐 노드, 캡션). 첫 단계는 기여 달력 그 자체.
 CHAPTERS = [
     ("robot", [0], "2017–2019 · 서울로봇고 공업전자기기 — 전국기능경기대회 장려상"),
     ("car", [1], "2021–2024 · 현대자동차그룹 통합사원증 운영 — 임직원 약 12.8만 명"),
-    ("drone", [2], "2024–2025 · 공군 방공관제 — 24시간 관제 체계 운용 지원"),
+    ("radar", [2], "2024–2025 · 공군 방공관제 — 24시간 관제 체계 운용 지원"),
     ("rocket", [3, 4], "2025–2026 · 백엔드 3~5분 → 22.8초 · AI 챌린지 2위/217팀"),
-    ("earth", [5], "NEXT · 백엔드 · IT 운영 · AI 서비스 — 함께할 팀을 찾습니다"),
+    ("scale", [4], "2026 · SafeLaw 생활법률 RAG — 개인정보는 가리고 근거로만 답한다"),
+    ("korea", [5], "NEXT · 백엔드 · IT 운영 · AI 서비스 — 함께할 팀을 찾습니다"),
 ]
 
 RAMP = {  # 기여 단계 0~4 색. 단계가 높을수록 진하다(다크는 밝다)
@@ -193,7 +231,11 @@ def _sample(shape, n, rng, g=8):
         return pts + [rng.choice(pts) for _ in range(k - len(pts))]
 
     k_edge = min(len(edge), int(n * 0.7))
+    if not fill:  # 선으로만 된 모양(레이더 · 저울)은 안쪽 칸이 거의 없다
+        k_edge = n
     picked = [(*p, True) for p in pick(edge, k_edge)] + [(*p, False) for p in pick(fill, n - k_edge)]
+    for i, (mx, my) in enumerate(MUST.get(shape, [])):
+        picked[i] = (mx, my, True)
     rng.shuffle(picked)  # 입자마다 목적지를 섞어야 "모여드는" 움직임이 된다
     return picked
 
@@ -295,53 +337,62 @@ def calendar_swarm(c, ramp, contrib) -> tuple[str, str]:
            f".cap,.hl,.fx,.cv,.day{{opacity:0;animation:{cycle}s linear infinite}}",
            "@keyframes cam{" + "".join(cam) + "}"]
 
-    # 머무는 동안의 움직임: 로봇은 춤, 자동차는 주행, 드론은 호버링, 로켓은 떨림, 지구는 천천히 떠 있기
-    def seg(k, f0=.2, f1=.58):
+    # 머무는 동안의 움직임: 로봇은 춤, 자동차는 주행, 로켓은 떨림, 저울은 기울었다 수평, 지도는 천천히 떠 있기
+    idx = {name: k for k, (name, _, _) in enumerate(CHAPTERS, start=1)}
+
+    def seg(name, f0=.2, f1=.58):
+        k = idx[name]
         return k * SPAN + SPAN * f0, k * SPAN + SPAN * f1
+
+    def frames(name, values):  # 구간을 고르게 나눠 transform 값을 차례로
+        a0, a1 = seg(name)
+        return [f"{a0 + (a1 - a0) * i / (len(values) - 1):.2f}%{{transform:{v}}}" for i, v in enumerate(values)]
+
     mo = ["0%{transform:none}"]
-    r0, r1 = seg(1)
-    mo += [f"{r0 + (r1 - r0) * i / 6:.2f}%{{transform:rotate({(-6, 6)[i % 2] if 0 < i < 6 else 0}deg)}}"
-           for i in range(7)]
-    c0, c1 = seg(2)
-    mo += [f"{c0:.2f}%{{transform:none}}", f"{(c0 + c1) / 2:.2f}%{{transform:translateX(16px)}}",
-           f"{c1:.2f}%{{transform:none}}"]
-    d0, d1 = seg(3)
-    mo += [f"{d0 + (d1 - d0) * i / 4:.2f}%{{transform:translateY({(0, -8, 0, -8, 0)[i]}px)}}" for i in range(5)]
-    k0, k1 = seg(4)
-    mo += [f"{k0 + (k1 - k0) * i / 8:.2f}%{{transform:translate({(0, -2, 2, -2, 2, -2, 2, -1, 0)[i]}px,"
-           f"{(0, -2, -3, -4, -5, -6, -7, -4, 0)[i]}px)}}" for i in range(9)]
-    u0, u1 = seg(5)
-    mo += [f"{u0:.2f}%{{transform:none}}", f"{(u0 + u1) / 2:.2f}%{{transform:translateY(-5px)}}",
-           f"{u1:.2f}%,100%{{transform:none}}"]
+    mo += frames("robot", ["none"] + [f"rotate({(-6, 6)[i % 2]}deg)" for i in range(5)] + ["none"])
+    mo += frames("car", ["none", "translateX(16px)", "none"])
+    mo += frames("rocket", ["none"] + [f"translate({x}px,{y}px)" for x, y in
+                                       ((-2, -2), (2, -3), (-2, -4), (2, -5), (-2, -6), (2, -7), (-1, -4))] + ["none"])
+    mo += frames("scale", ["none", "rotate(-4deg)", "rotate(3deg)", "rotate(-1.5deg)", "none"])
+    mo += frames("korea", ["none", "translateY(-5px)", "none"])
+    mo.append("100%{transform:none}")
     css.append("@keyframes mo{" + "".join(mo) + "}")
 
-    # 효과: 드론 로터 회전, 지구의 도는 경선과 서울 핀 — 줌이 시작되기 전, 머무는 동안만
-    for name, k in {"drone": 3, "rocket": 4, "earth": 5}.items():
+    # 효과: 레이더 스윕 · 로켓 불꽃 · 서울 핀 — 줌이 시작되기 전, 머무는 동안만
+    for name in ("radar", "rocket", "korea"):
+        k = idx[name]
         css.append(f"@keyframes fx_{name}{{{_vis(k * SPAN + SPAN * ZOOM_OUT_END, k * SPAN + SPAN * (ZOOM_IN_START - .02))}}}")
-    css.append("@keyframes spin{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.25)}}"
-               ".spin{animation:spin .16s linear infinite;transform-box:fill-box;transform-origin:50% 50%}"
-               "@keyframes flick{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.3)}}"
+    sweep_s = 2.4
+    css.append("@keyframes flick{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.3)}}"
                ".flick{animation:flick .18s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 0}"
-               # 오른쪽 반원 경선을 왼쪽 끝까지 뒤집어 지구가 도는 것처럼 보인다
-               "@keyframes sweep{0%{transform:scaleX(1)}100%{transform:scaleX(-1)}}"
-               ".sweep{animation:sweep 3s linear infinite;transform-box:fill-box;transform-origin:0 50%}"
                "@keyframes pulse{0%{transform:scale(.6);opacity:.8}100%{transform:scale(2.8);opacity:0}}"
-               ".pulse{animation:pulse 1.4s ease-out infinite;transform-box:fill-box;transform-origin:50% 50%}")
+               ".pulse{animation:pulse 1.4s ease-out infinite;transform-box:fill-box;transform-origin:50% 50%}"
+               # 스윕 묶음에 투명한 원을 넣어 묶음 상자의 가운데 = 스코프 중심이 되게 한다
+               f"@keyframes rot{{to{{transform:rotate(360deg)}}}}"
+               f".rot{{animation:rot {sweep_s}s linear infinite;transform-box:fill-box;transform-origin:50% 50%}}"
+               f"@keyframes blip{{0%,100%{{opacity:0}}6%{{opacity:1}}55%{{opacity:.15}}}}"
+               f".blip{{animation:blip {sweep_s}s linear infinite;opacity:0}}")
     S = SCALE
-    fx_top = [f'<g class="fx" style="animation-name:fx_drone" stroke="{c["accent"]}" stroke-opacity=".7" stroke-width="2" fill="none">'
-              + "".join(f'<ellipse class="spin" cx="{x * S:.0f}" cy="{y * S:.0f}" rx="{58 * S:.0f}" ry="{6 * S:.0f}"/>'
-                        for x, y in ROTORS) + "</g>"]
-    gx, gy, gr = (v * S for v in GLOBE)
+    from math import cos, radians, sin
+    rx, ry, rr = (v * S for v in SCOPE)
+    wedge = 38
+    ex, ey = rx + rr * cos(radians(-wedge)), ry + rr * sin(radians(-wedge))
+    blips = [(40, .55), (150, .8), (255, .4)]  # (각도 · 중심에서 거리 비율) — 그림용 접촉점
+    fx_top = [f'<g class="fx" style="animation-name:fx_radar">'
+              f'<g class="rot"><circle cx="{rx:.0f}" cy="{ry:.0f}" r="{rr:.0f}" fill="none"/>'
+              f'<path d="M{rx:.0f} {ry:.0f} L{rx + rr:.0f} {ry:.0f} A{rr:.0f} {rr:.0f} 0 0 0 {ex:.0f} {ey:.0f} Z" fill="{c["accent"]}" opacity=".22"/>'
+              f'<line x1="{rx:.0f}" y1="{ry:.0f}" x2="{rx + rr:.0f}" y2="{ry:.0f}" stroke="{c["accent"]}" stroke-width="3" stroke-linecap="round"/></g>'
+              + "".join(f'<circle class="blip" cx="{rx + rr * d * cos(radians(a)):.0f}" cy="{ry + rr * d * sin(radians(a)):.0f}" r="6" '
+                        f'fill="#3FB950" style="animation-delay:{a / 360 * sweep_s:.2f}s"/>' for a, d in blips)
+              + "</g>"]
     px, py = SEOUL[0] * S, SEOUL[1] * S
     pin = "#F0883E"
-    fx_top.append(f'<g class="fx" style="animation-name:fx_earth">'
-                  f'<path class="sweep" d="M{gx:.0f} {gy - gr:.0f} A{gr:.0f} {gr:.0f} 0 0 1 {gx:.0f} {gy + gr:.0f}" '
-                  f'fill="none" stroke="{c["accent"]}" stroke-opacity=".6" stroke-width="2.5"/>'
+    fx_top.append(f'<g class="fx" style="animation-name:fx_korea">'
                   f'<circle class="pulse" cx="{px:.0f}" cy="{py:.0f}" r="8" fill="{pin}"/>'
                   f'<circle cx="{px:.0f}" cy="{py:.0f}" r="7" fill="{pin}" stroke="{c["panel"]}" stroke-width="2.5"/>'
-                  f'<line x1="{px + 8:.0f}" y1="{py - 6:.0f}" x2="{px + 34:.0f}" y2="{py - 26:.0f}" stroke="{pin}" stroke-width="2"/>'
+                  f'<line x1="{px - 8:.0f}" y1="{py - 6:.0f}" x2="{px - 34:.0f}" y2="{py - 26:.0f}" stroke="{pin}" stroke-width="2"/>'
                   # 글자 둘레를 배경색으로 감싸 아래 칸 위에서도 읽히게
-                  + t(px + 38, py - 24, "SEOUL", 15, pin, 90, 700, MONO,
+                  + t(px - 38, py - 24, "SEOUL", 15, pin, 90, 700, MONO, anchor="end",
                       extra=f' stroke="{c["panel"]}" stroke-width="5" paint-order="stroke" stroke-linejoin="round"') + "</g>")
     # 로켓 불꽃: 기여 칸(파랑)과 섞이지 않게 노즐 아래에 따로 그린다
     fl = lambda w, depth: (f"M{(180 - w) * S:.0f} {152 * S:.0f} Q{180 * S:.0f} {(152 + depth) * S:.0f} "
@@ -406,7 +457,7 @@ def calendar_swarm(c, ramp, contrib) -> tuple[str, str]:
                          c["ink"] if k else c["muted"], STAGE_W, 600 if k else 500, anchor="middle",
                          extra=f' class="cap{" c0" if k == 0 else ""}" style="animation-name:cap{k}"'))
     # 모션 줄이기에서는 정지된 달력과 그 캡션만 보인다
-    css.append("@media (prefers-reduced-motion:reduce){.cam,.mo,.p,.cap,.hl,.fx,.cv,.day,.spin,.sweep,.pulse,.flick{animation:none}"
+    css.append("@media (prefers-reduced-motion:reduce){.cam,.mo,.p,.cap,.hl,.fx,.cv,.day,.pulse,.flick,.rot,.blip{animation:none}"
                ".c0{opacity:1}}")
 
     cx0, cy0, cx1, cy1 = clip
