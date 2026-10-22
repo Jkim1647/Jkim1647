@@ -3,7 +3,7 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/hero_dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="./assets/hero_light.svg">
-  <img src="./assets/hero_light.svg" width="100%" alt="김진영 · Jinyoung Kim — 운영을 아는 백엔드 개발자. 느린 곳은 먼저 재고, 숫자로 고치고, 결과는 직접 만든 기준으로 검증합니다. 2019 기능경기대회 → 2021 HDS 시스템 운영 → 2024 공군 관제 체계 → 2025 수양회 백엔드 → 2026 SSAFY 16기 · AI" />
+  <img src="./assets/hero_light.svg" width="100%" alt="김진영 · Jinyoung Kim — 운영을 아는 백엔드 개발자. 지난 1년 기여 달력의 칸들이 커리어 단계의 모양으로 바뀝니다: 로봇(2017–2019 서울로봇고, 전국기능경기대회 장려상) → 자동차(2021–2024 현대자동차그룹 통합사원증 운영) → 드론(2024–2025 공군 방공관제) → 로켓(2025–2026 백엔드 22.8초, AI 챌린지 2위) → UFO(NEXT: 백엔드 · IT 운영 · AI 서비스)" />
 </picture>
 
 <br/><br/>
@@ -215,9 +215,11 @@
 방문하신 김에 하나 조립하고 가세요. 버튼을 누르고 이슈를 그대로 제출하면, GitHub Actions가 코드 조각을 그 모양으로 조립해 아래 로그에 **여러분의 아이디**와 함께 남깁니다.
 
 <p align="center">
-  <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20car&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%9A%97_car-0969DA?style=for-the-badge" alt="build car" /></a>
   <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20robot&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%A4%96_robot-8250DF?style=for-the-badge" alt="build robot" /></a>
+  <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20car&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%9A%97_car-0969DA?style=for-the-badge" alt="build car" /></a>
+  <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20drone&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%9B%B8_drone-1F883D?style=for-the-badge" alt="build drone" /></a>
   <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20rocket&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%9A%80_rocket-F0883E?style=for-the-badge" alt="build rocket" /></a>
+  <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20ufo&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%91%BD_ufo-BF3989?style=for-the-badge" alt="build ufo" /></a>
 </p>
 
 <p align="center">
@@ -227,4 +229,4 @@
   </picture>
 </p>
 
-<sub>이슈 제목이 <code>build: car</code> · <code>build: robot</code> · <code>build: rocket</code>일 때만 동작하고, 처리 후 이슈는 자동으로 닫힙니다. 배너 · 카드 · 로그는 <code>scripts/render_cards.py</code>로 생성합니다 (라이트/다크 테마 자동 전환).</sub>
+<sub>이슈 제목이 <code>build: robot</code> · <code>car</code> · <code>drone</code> · <code>rocket</code> · <code>ufo</code>일 때만 동작하고, 처리 후 이슈는 자동으로 닫힙니다. 배너의 입자는 지난 1년 기여 달력의 하루하루이며 매일 자동 갱신됩니다 (<code>scripts/</code>, 라이트/다크 자동 전환).</sub>

@@ -1,8 +1,9 @@
-"""프로필 README용 SVG(히어로 배너 · 프로젝트 카드)를 라이트/다크 두 벌로 생성한다.
+"""프로필 README용 SVG(히어로 배너 · 프로젝트 카드 · 빌드 로그)를 라이트/다크 두 벌로 생성한다.
 
+    python scripts/fetch_contributions.py   # 기여 달력 갱신(히어로 입자의 원본)
     python scripts/render_cards.py
 
-수치를 바꿀 때는 아래 CARDS만 고치고 다시 실행하면 assets/ 가 갱신된다.
+수치를 바꿀 때는 아래 CARDS · CHAPTERS만 고치고 다시 실행하면 assets/ 가 갱신된다.
 SVG는 <img>로 렌더링되어 웹폰트를 못 불러오므로, 보는 사람 OS 글꼴 폭이 달라도
 넘치지 않도록 fit()으로 예상 폭을 검사한다.
 """
@@ -26,10 +27,10 @@ HERO = dict(
     name="김진영",
     name_en="Jinyoung Kim",
     role="운영을 아는 백엔드 개발자",
-    motto="느린 곳은 먼저 재고, 숫자로 고치고, 결과는 직접 만든 기준으로 검증합니다.",
+    motto=["느린 곳은 먼저 재고, 숫자로 고치고,", "결과는 직접 만든 기준으로 검증합니다."],
     target="백엔드 개발 · IT 시스템 운영 · AI 서비스",
     track=[("2019", "기능경기대회"), ("2021", "HDS 시스템 운영"), ("2024", "공군 관제 체계"),
-           ("2025", "수양회 백엔드"), ("2026", "SSAFY 16기 · AI")],
+           ("2025", "수양회 백엔드"), ("2026", "SSAFY 16기 · AI"), ("NEXT", "?")],
 )
 
 # before/after가 있으면 막대로 비율을 보여준다. ratio는 과장하지 않도록 보수적인 쪽(3~5분 → 3분 기준)으로 잡는다.
@@ -83,13 +84,18 @@ def t(x, y, text, size, fill, room, weight=400, family=SANS, anchor="start", ext
             f'{fit(text, size, room)}</text>')
 
 
-# ── 코드 스웜: 코드 조각이 모여 자동차 → 로봇 → 로켓이 되는 히어로 애니메이션 ──────────────
-# 스테이지 로컬 좌표 360×200. 각 모양은 "점이 이 안에 있나"로 정의하고 격자로 샘플링한다.
+# ── 히어로: 지난 1년 기여 달력의 칸들이 줌아웃 → 변신 → 줌인을 반복하며 커리어 단계의 모양이 된다 ──
+# 모양은 360×200 기준 좌표에서 "점이 이 안에 있나"로 정의하고, 히어로에서는 SCALE배로 키워 쓴다.
 
-STAGE_X, STAGE_Y, STAGE_W, STAGE_H = 790, 22, 360, 200
-CYCLE = 18  # 초
+BASE_W, BASE_H = 360, 200
+SCALE = 1.45
+STAGE_X, STAGE_Y = 608, 18
+STAGE_W, STAGE_H = BASE_W * SCALE, BASE_H * SCALE
+PHASE_SEC = 4.5
 TOKENS = ["{", "}", "<>", "=>", "fn", "0", "1", ";", "//", "[]", "()", "if", "&&", "λ", "#", "::", "$", "*"]
-N_PARTICLES = 120
+N_PARTICLES = 120  # 빌드 로그 카드용(코드 토큰)
+
+CONTRIB = ROOT / "data" / "contributions.json"
 
 
 def _in_poly(x, y, poly):
@@ -106,149 +112,258 @@ def _in_circle(x, y, cx, cy, r):
     return (x - cx) ** 2 + (y - cy) ** 2 <= r * r
 
 
+def _in_ellipse(x, y, cx, cy, rx, ry):
+    return ((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2 <= 1
+
+
 def _in_rect(x, y, x0, y0, x1, y1):
     return x0 <= x <= x1 and y0 <= y <= y1
 
 
 CAR_BODY = [(16, 148), (26, 120), (118, 106), (165, 78), (238, 78), (290, 110), (342, 118), (350, 148)]
 WHEELS = [(92, 168), (282, 168)]
+ROTORS = [(72, 64), (288, 64)]
 
 SHAPES = {
+    "robot": lambda x, y: (_in_rect(x, y, 152, 8, 208, 54) or _in_rect(x, y, 132, 62, 228, 134)
+                           or _in_rect(x, y, 102, 66, 122, 128) or _in_rect(x, y, 238, 66, 258, 128)
+                           or _in_rect(x, y, 146, 142, 172, 194) or _in_rect(x, y, 188, 142, 214, 194)),
     # 로드스터 옆모습: 바퀴 자리(휠하우스)를 비운 차체 + 링 모양 바퀴 둘
     "car": lambda x, y: ((_in_poly(x, y, CAR_BODY)
                           and not any(_in_circle(x, y, cx, cy, 30) for cx, cy in WHEELS))
                          or any(_in_circle(x, y, cx, cy, 25) and not _in_circle(x, y, cx, cy, 11)
                                 for cx, cy in WHEELS)),
-    "robot": lambda x, y: (_in_rect(x, y, 152, 8, 208, 54) or _in_rect(x, y, 132, 62, 228, 134)
-                           or _in_rect(x, y, 102, 66, 122, 128) or _in_rect(x, y, 238, 66, 258, 128)
-                           or _in_rect(x, y, 146, 142, 172, 194) or _in_rect(x, y, 188, 142, 214, 194)),
+    # 쿼드콥터 정면: 몸통 · 팔 · 로터 · 카메라 · 착륙 스키드
+    "drone": lambda x, y: (_in_rect(x, y, 138, 82, 222, 122) or _in_rect(x, y, 62, 94, 298, 104)
+                           or any(_in_rect(x, y, cx - 6, cy, cx + 6, 96) for cx, cy in ROTORS)
+                           or any(_in_ellipse(x, y, cx, cy, 52, 7) for cx, cy in ROTORS)
+                           or _in_circle(x, y, 180, 134, 13)
+                           or _in_rect(x, y, 148, 122, 156, 158) or _in_rect(x, y, 204, 122, 212, 158)
+                           or _in_rect(x, y, 124, 156, 236, 164)),
     "rocket": lambda x, y: (_in_rect(x, y, 160, 40, 200, 150)
                             or _in_poly(x, y, [(160, 41), (180, 0), (200, 41)])
                             or _in_poly(x, y, [(161, 104), (132, 156), (161, 148)])
                             or _in_poly(x, y, [(199, 104), (228, 156), (199, 148)])
                             or _in_poly(x, y, [(166, 156), (194, 156), (180, 198)])),
+    # 비행접시: 원반 + 돔 + 아래 링
+    "ufo": lambda x, y: (_in_ellipse(x, y, 180, 112, 140, 24)
+                         or (_in_circle(x, y, 180, 100, 48) and y <= 100)
+                         or _in_ellipse(x, y, 180, 136, 62, 9)),
+}
+
+# 커리어 단계: (모양, 히어로 하단 트랙에서 밝힐 노드, 캡션). 첫 단계는 기여 달력 그 자체.
+CHAPTERS = [
+    ("robot", [0], "2017–2019 · 서울로봇고 공업전자기기 — 전국기능경기대회 장려상"),
+    ("car", [1], "2021–2024 · 현대자동차그룹 통합사원증 운영 — 임직원 약 12.8만 명"),
+    ("drone", [2], "2024–2025 · 공군 방공관제 — 24시간 관제 체계 운용 지원"),
+    ("rocket", [3, 4], "2025–2026 · 백엔드 3~5분 → 22.8초 · AI 챌린지 2위/217팀"),
+    ("ufo", [5], "NEXT · 백엔드 · IT 운영 · AI 서비스 — 함께할 팀을 찾습니다"),
+]
+
+RAMP = {  # 기여 단계 0~4 색. 단계가 높을수록 진하다(다크는 밝다)
+    "light": ["#E3E8EE", "#B4D2FF", "#6EA8FE", "#2F7FF0", "#0550AE"],
+    "dark": ["#21262D", "#0D3A73", "#1663C7", "#3B8BF5", "#79B8FF"],
 }
 
 
-def _sample(shape, n, rng):
-    """(x, y, 외곽선 여부) n개. 외곽선을 먼저 채워 실루엣을 또렷하게, 남는 입자로 안쪽을 채운다."""
-    fn, g = SHAPES[shape], 8
-    inside = [(x, y) for y in range(-4, STAGE_H + 5, g) for x in range(-4, STAGE_W + 5, g) if fn(x, y)]
+def _sample(shape, n, rng, g=8):
+    """기준 좌표의 (x, y, 외곽선 여부) n개. 외곽선을 먼저 채워 실루엣을 또렷하게, 남는 입자로 안쪽을 채운다."""
+    fn = SHAPES[shape]
+    inside = [(x, y) for y in range(-4, BASE_H + 5, g) for x in range(-4, BASE_W + 5, g) if fn(x, y)]
     edge = [(x, y) for x, y in inside
             if not all(fn(x + dx, y + dy) for dx, dy in ((g, 0), (-g, 0), (0, g), (0, -g)))]
     fill = [p for p in inside if p not in edge]
 
-    def even(pts, k):  # 무작위로 솎아낸다 — 래스터 순서로 일정 간격을 뽑으면 세로 줄무늬가 생긴다
+    def pick(pts, k):  # 무작위로 솎아낸다 — 래스터 순서로 일정 간격을 뽑으면 세로 줄무늬가 생긴다
         if k <= len(pts):
             return rng.sample(pts, k)
         return pts + [rng.choice(pts) for _ in range(k - len(pts))]
 
-    k_edge = min(len(edge), int(n * 0.78))
-    picked = [(*p, True) for p in even(edge, k_edge)] + [(*p, False) for p in even(fill, n - k_edge)]
+    k_edge = min(len(edge), int(n * 0.7))
+    picked = [(*p, True) for p in pick(edge, k_edge)] + [(*p, False) for p in pick(fill, n - k_edge)]
     rng.shuffle(picked)  # 입자마다 목적지를 섞어야 "모여드는" 움직임이 된다
     return picked
 
 
 def _scatter(n, rng):
-    return [(rng.uniform(-10, STAGE_W + 10), rng.uniform(-6, STAGE_H + 6)) for _ in range(n)]
+    return [(rng.uniform(-10, BASE_W + 10), rng.uniform(-6, BASE_H + 6)) for _ in range(n)]
 
 
-def code_swarm(c) -> str:
+def load_contrib() -> dict:
+    import json
+    return json.loads(CONTRIB.read_text(encoding="utf-8"))
+
+
+def _calendar_xy(days):
+    """GitHub 달력과 같은 배치(열 = 주, 행 = 요일, 일요일 위)를 스테이지 가운데에 놓는다."""
+    from datetime import date, timedelta
+    first = date.fromisoformat(days[0]["date"])
+    sunday = first - timedelta(days=(first.weekday() + 1) % 7)
+    cols = (date.fromisoformat(days[-1]["date"]) - sunday).days // 7 + 1
+    pitch = STAGE_W / cols
+    top = (STAGE_H - pitch * 7) / 2
+    xy = []
+    for d in days:
+        dd = date.fromisoformat(d["date"])
+        xy.append((((dd - sunday).days // 7 + 0.5) * pitch, top + ((dd.weekday() + 1) % 7 + 0.5) * pitch))
+    return xy, pitch
+
+
+def calendar_swarm(c, ramp, contrib) -> tuple[str, str]:
+    """(스테이지 SVG, 캡션 SVG). 입자 하나 = 지난 1년의 하루."""
     import random
     rng = random.Random(1647)
-    car, robot, rocket = (_sample(s, N_PARTICLES, rng) for s in ("car", "robot", "rocket"))
-    s0, s1, s2 = (_scatter(N_PARTICLES, rng) for _ in range(3))
+    days = contrib["days"]
+    n = len(days)
+    grid, pitch = _calendar_xy(days)
+    size = max(4.0, pitch * 0.78)
+    shapes = [[(x * SCALE, y * SCALE, e) for x, y, e in _sample(s, n, rng, g=5)] for s, _, _ in CHAPTERS]
 
-    css = [f".p{{font:600 11px {MONO};fill:{c['accent']};"
-           f"animation:{CYCLE}s cubic-bezier(.55,0,.25,1) infinite both}}",
-           f".stage{{animation:stage {CYCLE}s ease-in-out infinite;transform-origin:180px 120px}}",
-           f".lbl{{font:500 12px {MONO};fill:{c['muted']};opacity:0;animation:{CYCLE}s linear infinite}}",
-           # 단계: 흩어짐 → 자동차(주행) → 흩어짐 → 로봇(춤) → 흩어짐 → 로켓(발사, 위로 빠져나감) → 반복
-           "@keyframes stage{0%,14%{transform:none}20%{transform:translateX(16px)}26%{transform:translateX(-10px)}"
-           "30%,42%{transform:none}45%{transform:rotate(-7deg) translateY(-6px)}48%{transform:rotate(7deg)}"
-           "51%{transform:rotate(-7deg) translateY(-6px)}54%{transform:rotate(7deg)}"
-           "57%{transform:rotate(-4deg) translateY(-4px)}60%,76%{transform:none}"
-           "78%{transform:translateX(-2px)}79%{transform:translateX(2px)}80%{transform:translateX(-1px)}"
-           "90%{transform:translateY(-300px)}93%{transform:translateY(-300px)}94%,100%{transform:none}}",
-           "@keyframes l0{0%,9%{opacity:0}13%,28%{opacity:1}31%,100%{opacity:0}}",
-           "@keyframes l1{0%,37%{opacity:0}41%,60%{opacity:1}63%,100%{opacity:0}}",
-           "@keyframes l2{0%,69%{opacity:0}73%,90%{opacity:1}92%,100%{opacity:0}}",
-           "@media (prefers-reduced-motion:reduce){.p,.stage,.lbl{animation:none}.lbl0{opacity:1}}"]
+    phases = len(CHAPTERS) + 1  # 달력 + 모양들
+    cycle = PHASE_SEC * phases
+    span = 100 / phases
+    cx, cy = STAGE_W / 2, STAGE_H / 2
 
-    css.append("@keyframes sp{0%,14%{opacity:0;transform:none}18%{opacity:.9}24%{opacity:.9;transform:translateX(-24px)}"
-               "28%,100%{opacity:0;transform:translateX(-40px)}}"
-               "@keyframes ex{0%,75%{opacity:0}77%,89%{opacity:1}90%,100%{opacity:0}}"
-               "@keyframes fl{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.35)}}"
-               ".sp{animation:sp 18s linear infinite;opacity:0}"
-               ".ex{animation:ex 18s linear infinite;opacity:0}"
-               ".fl{animation:fl .18s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 0}")
+    # 줌: 단계마다 아주 작게(줌아웃) 회전하며 들어와 → 커지고(줌인) → 머물다 → 다시 작아진다
+    zoom = []
+    for k in range(phases):
+        s = k * span
+        zoom += [f"{s:.2f}%{{transform:scale(.06) rotate(-80deg)}}",
+                 f"{s + span * .16:.2f}%{{transform:scale(1) rotate(0)}}",
+                 f"{s + span * .80:.2f}%{{transform:scale(1) rotate(0)}}",
+                 f"{s + span:.2f}%{{transform:scale(.06) rotate(80deg)}}"]
 
-    # 배경 → 앞: 속도선(자동차), 불꽃(로켓), 코드 입자
-    sp = c["faint"]
-    body = [f'<g class="sp" stroke="{sp}" stroke-width="2" stroke-linecap="round">'
-            f'<line x1="-30" y1="100" x2="0" y2="100"/><line x1="-50" y1="124" x2="-4" y2="124"/>'
-            f'<line x1="-24" y1="146" x2="2" y2="146"/></g>',
-            '<g class="ex"><path class="fl" d="M168 198 Q180 236 192 198 Z" fill="#F0883E" opacity=".55"/>'
-            '<path class="fl" d="M173 198 Q180 222 187 198 Z" fill="#FFD33D" opacity=".8"/></g>']
-    for i in range(N_PARTICLES):
-        bx, by, _ = car[i]  # 애니메이션이 꺼지면 자동차 모양으로 서 있도록 기준점을 자동차에 둔다
-        j = rng.uniform(0, 3)  # 입자마다 도착 시각을 살짝 어긋나게
-        flame = rocket[i][1] > 152  # 로켓 아래 삼각형(불꽃) 자리는 주황색
+    def window(k, inner):  # k번째 단계 동안만 켜지는 키프레임
+        s, e = k * span, (k + 1) * span
+        return (f"0%,{s + span * .14:.2f}%{{{inner[0]}}}{s + span * .2:.2f}%,{s + span * .76:.2f}%{{{inner[1]}}}"
+                f"{s + span * .8:.2f}%,100%{{{inner[0]}}}")
 
-        def at(p, pt, op=None, fill=None):
-            dx, dy = pt[0] - bx, pt[1] - by
-            if op is None:  # 외곽선 입자는 진하게, 안쪽 입자는 흐리게 — 입체감
-                op = 1 if len(pt) < 3 or pt[2] else 0.4
-            # 불꽃 입자는 모든 키프레임에 색을 박아야 한다 — 일부에만 있으면 타임라인 전체에서 보간된다
-            f = f";fill:{fill or c['accent']}" if flame else ""
-            return f"{p:.1f}%{{transform:translate({dx:.0f}px,{dy:.0f}px);opacity:{op}{f}}}"
+    css = [f".z{{animation:z {cycle}s cubic-bezier(.65,0,.35,1) infinite;transform-origin:{cx:.0f}px {cy:.0f}px}}",
+           f".mo{{animation:mo {cycle}s ease-in-out infinite;transform-origin:{cx:.0f}px {cy:.0f}px}}",
+           f".p{{animation:{cycle}s cubic-bezier(.5,0,.2,1) infinite}}",
+           f".cap{{opacity:0;animation:{cycle}s linear infinite}}",
+           f".hl{{opacity:0;animation:{cycle}s linear infinite}}",
+           f".fx{{opacity:0;animation:{cycle}s linear infinite}}",
+           "@keyframes z{" + "".join(zoom) + "}"]
 
-        orange = "#F0883E" if flame else None
-        frames = [at(0, s0[i], .55), at(4 + j, s0[i], .55),
-                  at(11 + j, car[i]), at(30, car[i]),
-                  at(34 + j / 2, s1[i], .55), at(38 + j, robot[i]), at(61, robot[i]),
-                  at(64 + j / 2, s2[i], .55), at(70 + j, rocket[i], fill=orange), at(88, rocket[i], fill=orange),
-                  at(90, rocket[i], 0, orange), at(94, s0[i], 0), at(100, s0[i], .55)]
+    # 모양별 움직임: 로봇은 춤, 자동차는 주행, 드론은 호버링, 로켓은 상승, UFO는 기울며 떠 있기
+    def seg(k, a, b):
+        return k * span + span * a, k * span + span * b
+    mo = ["0%{transform:none}"]
+    r0, r1 = seg(1, .2, .76)
+    mo += [f"{r0 + (r1 - r0) * i / 6:.2f}%{{transform:rotate({(-6, 6)[i % 2] if 0 < i < 6 else 0}deg)}}"
+           for i in range(7)]
+    c0, c1 = seg(2, .2, .76)
+    mo += [f"{c0:.2f}%{{transform:none}}", f"{(c0 + c1) / 2:.2f}%{{transform:translateX(18px)}}",
+           f"{c1:.2f}%{{transform:none}}"]
+    d0, d1 = seg(3, .2, .76)
+    mo += [f"{d0 + (d1 - d0) * i / 4:.2f}%{{transform:translateY({(0, -9, 0, -9, 0)[i]}px)}}" for i in range(5)]
+    k0, k1 = seg(4, .2, .76)
+    mo += [f"{k0:.2f}%{{transform:none}}", f"{k0 + 1:.2f}%{{transform:translateX(-2px)}}",
+           f"{k0 + 2:.2f}%{{transform:translateX(2px)}}", f"{k1:.2f}%{{transform:translateY(-22px)}}"]
+    u0, u1 = seg(5, .2, .76)
+    mo += [f"{u0:.2f}%{{transform:none}}", f"{(u0 * 2 + u1) / 3:.2f}%{{transform:translateY(-8px) rotate(-4deg)}}",
+           f"{(u0 + u1 * 2) / 3:.2f}%{{transform:translateY(-4px) rotate(4deg)}}", f"{u1:.2f}%,100%{{transform:none}}"]
+    css.append("@keyframes mo{" + "".join(mo) + "}")
+
+    # 효과: 드론 로터 회전, 로켓 불꽃, UFO 광선 — 해당 단계에서만 보인다
+    fx_on = {"drone": 3, "ufo": 5}
+    for name, k in fx_on.items():
+        css.append(f"@keyframes fx_{name}{{{window(k, ('opacity:0', 'opacity:1'))}}}")
+    css.append("@keyframes spin{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.25)}}"
+               ".spin{animation:spin .16s linear infinite;transform-box:fill-box;transform-origin:50% 50%}")
+    S = SCALE
+    fx_top = [f'<g class="fx" style="animation-name:fx_drone" stroke="{c["accent"]}" stroke-opacity=".7" stroke-width="2" fill="none">'
+          + "".join(f'<ellipse class="spin" cx="{x * S:.0f}" cy="{y * S:.0f}" rx="{58 * S:.0f}" ry="{6 * S:.0f}"/>'
+                    for x, y in ROTORS) + "</g>"]
+    fx = [f'<g class="fx" style="animation-name:fx_ufo"><path d="M{150 * S:.0f} {146 * S:.0f} L{210 * S:.0f} {146 * S:.0f} '
+          f'L{250 * S:.0f} {204 * S:.0f} L{110 * S:.0f} {204 * S:.0f} Z" fill="{c["accent"]}" opacity=".14"/></g>']
+
+    # 입자: 달력 칸 → 모양들 → 달력. 활동한 날(단계 1 이상)은 모양 안에서도 진한 색으로 반짝인다
+    parts = []
+    for i, d in enumerate(days):
+        lv = d["level"]
+        bx, by = grid[i]
+        j = rng.uniform(0, span * .08)
+
+        def at(p, pt, fill):
+            return f"{p:.2f}%{{transform:translate({pt[0] - bx:.0f}px,{pt[1] - by:.0f}px);fill:{fill}}}"
+
+        frames = [at(0, (bx, by), ramp[lv]), at(span * .8, (bx, by), ramp[lv])]
+        for k, pts in enumerate(shapes, start=1):
+            x, y, edge = pts[i]
+            fill = ramp[max(lv, 3 if edge else 1)]
+            if CHAPTERS[k - 1][0] == "rocket" and y > 154 * SCALE:  # 로켓 아래 삼각형 = 불꽃
+                fill = "#F0883E" if edge else "#FFB454"
+            frames += [at(k * span + span * .05 + j, (x, y), fill), at(k * span + span * .8, (x, y), fill)]
+        frames.append(at(100, (bx, by), ramp[lv]))  # 마지막 줌아웃 동안 달력으로 돌아가 반복
         css.append(f"@keyframes k{i}{{{''.join(frames)}}}")
-        body.append(f'<text class="p" x="{bx}" y="{by}" text-anchor="middle" dominant-baseline="central" '
-                    f'style="animation-name:k{i}">{escape(TOKENS[i % len(TOKENS)])}</text>')
+        parts.append(f'<rect class="p" x="{bx - size / 2:.1f}" y="{by - size / 2:.1f}" width="{size:.1f}" '
+                     f'height="{size:.1f}" rx="1.5" fill="{ramp[lv]}" style="animation-name:k{i}"/>')
 
-    labels = "".join(
-        f'<text class="lbl lbl{k}" x="{STAGE_W / 2}" y="{STAGE_H + 30}" text-anchor="middle" '
-        f'style="animation-name:l{k}">{escape(s)}</text>'
-        for k, s in enumerate(["$ build car    // 달리고", "$ build robot  // 춤추고", "$ build rocket // 날아간다"]))
+    # 캡션: 단계마다 하나씩, 스테이지 아래 가운데
+    caps = [f"지난 1년 {contrib['total']} contributions · 활동 {contrib['active_days']}일 · "
+            f"최장 연속 {contrib['longest_streak']}일"] + [cap for _, _, cap in CHAPTERS]
+    cap_svg = []
+    for k, cap in enumerate(caps):
+        css.append(f"@keyframes cap{k}{{{window(k, ('opacity:0', 'opacity:1'))}}}")
+        cap_svg.append(t(STAGE_X + STAGE_W / 2, STAGE_Y + STAGE_H + 26, cap, 15,
+                         c["ink"] if k else c["muted"], STAGE_W, 600 if k else 500, anchor="middle",
+                         extra=f' class="cap{" c0" if k == 0 else ""}" style="animation-name:cap{k}"'))
+    # 모션 줄이기에서는 정지된 달력과 그 캡션만 보인다
+    css.append("@media (prefers-reduced-motion:reduce){.z,.mo,.p,.cap,.hl,.fx,.spin{animation:none}"
+               ".c0{opacity:1}}")
 
-    return (f'<style>{"".join(css)}</style>'
-            f'<clipPath id="stageclip"><rect x="{STAGE_X - 40}" y="1" width="{STAGE_W + 80}" height="300"/></clipPath>'
-            f'<g clip-path="url(#stageclip)"><g transform="translate({STAGE_X},{STAGE_Y})">'
-            f'<g class="stage">{"".join(body)}</g>{labels}</g></g>')
+    stage = (f'<g transform="translate({STAGE_X},{STAGE_Y})"><g class="z"><g class="mo">'
+             f'{"".join(fx)}{"".join(parts)}{"".join(fx_top)}</g></g></g>')
+    return f'<style>{"".join(css)}</style>' + stage, "".join(cap_svg)
 
 
-def hero(c) -> str:
-    W, H = 1200, 330
+def hero(c, mode) -> str:
+    contrib = load_contrib()
+    W, H = 1200, 418
+    stage, captions = calendar_swarm(c, RAMP[mode], contrib)
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
            f'role="img" aria-label="{escape(HERO["name"])} · {escape(HERO["role"])}">',
            f'<rect width="{W}" height="{H}" rx="16" fill="{c["panel"]}" stroke="{c["line"]}"/>',
-           code_swarm(c),
-           # 왼쪽 글은 스테이지(x≥750)를 넘지 않게 폭을 제한한다
-           t(56, 72, "TARGET  ·  " + HERO["target"], 15, c["accent"], 680, 600, MONO),
-           t(56, 140, HERO["name"], 56, c["ink"], 300, 700),
-           t(56 + width(HERO["name"], 56) + 20, 140, HERO["name_en"], 22, c["muted"], 300),
-           t(56, 186, HERO["role"], 26, c["ink"], 680, 600),
-           t(56, 220, HERO["motto"], 17, c["muted"], 680)]
+           f'<clipPath id="stageclip"><rect x="{STAGE_X - 30}" y="2" width="{STAGE_W + 50}" height="{STAGE_H + 6}"/></clipPath>',
+           f'<g clip-path="url(#stageclip)">{stage}</g>',
+           captions,
+           # 왼쪽 글은 스테이지(x≥578)를 넘지 않게 폭을 제한한다
+           t(56, 78, "TARGET  ·  " + HERO["target"], 15, c["accent"], 510, 600, MONO),
+           t(56, 156, HERO["name"], 56, c["ink"], 300, 700),
+           t(56 + width(HERO["name"], 56) + 20, 156, HERO["name_en"], 22, c["muted"], 300),
+           t(56, 204, HERO["role"], 26, c["ink"], 510, 600)]
+    for k, line in enumerate(HERO["motto"]):
+        out.append(t(56, 244 + k * 26, line, 17, c["muted"], 510))
 
-    # 걸어온 길: 하단 가로 트랙, 마지막(현재) 지점만 강조색
-    y, x0, x1 = 268, 72, W - 120
-    step = (x1 - x0) / (len(HERO["track"]) - 1)
+    # 걸어온 길: 하단 트랙. 정적으로는 현재(2026)만 강조하고, 애니메이션 중에는 지금 보이는 단계의 노드가 켜진다
+    y, x0, x1 = 362, 80, W - 80
+    track = HERO["track"]
+    step = (x1 - x0) / (len(track) - 1)
+    css = []
     out.append(f'<line x1="{x0}" y1="{y}" x2="{x1}" y2="{y}" stroke="{c["line"]}" stroke-width="2"/>')
-    for i, (year, label) in enumerate(HERO["track"]):
+    for i, (year, label) in enumerate(track):
         x = x0 + step * i
-        last = i == len(HERO["track"]) - 1
-        dot = c["accent"] if last else c["bg"]
-        ring = c["accent"] if last else c["faint"]
-        out.append(f'<circle cx="{x}" cy="{y}" r="6" fill="{dot}" stroke="{ring}" stroke-width="2"/>')
-        out.append(t(x, y + 30, f"{year}  {label}", 14, c["ink"] if last else c["muted"], step - 12,
-                     600 if last else 400, anchor="middle"))
+        now = year == "2026"
+        nxt = year == "NEXT"
+        dash = ' stroke-dasharray="3 3"' if nxt else ""
+        out.append(f'<circle cx="{x:.0f}" cy="{y}" r="6" fill="{c["accent"] if now else c["bg"]}" '
+                   f'stroke="{c["accent"] if now else c["faint"]}" stroke-width="2"{dash}/>')
+        out.append(t(x, y + 30, f"{year}  {label}", 14, c["ink"] if now else c["muted"], step - 12,
+                     600 if now else 400, anchor="middle"))
+        lit = [k for k, (_, nodes, _) in enumerate(CHAPTERS, start=1) if i in nodes]
+        if lit:
+            phases = len(CHAPTERS) + 1
+            span = 100 / phases
+            k = lit[0]
+            s = k * span
+            css.append(f"@keyframes hl{i}{{0%,{s + span * .14:.2f}%{{opacity:0}}{s + span * .2:.2f}%,"
+                       f"{s + span * .76:.2f}%{{opacity:1}}{s + span * .8:.2f}%,100%{{opacity:0}}}}")
+            out.append(f'<g class="hl" style="animation-name:hl{i}">'
+                       f'<circle cx="{x:.0f}" cy="{y}" r="13" fill="{c["accent"]}" opacity=".18"/>'
+                       f'<circle cx="{x:.0f}" cy="{y}" r="6" fill="{c["accent"]}"/></g>')
+    out.insert(2, f'<style>{"".join(css)}</style>')
     out.append("</svg>")
     return "\n".join(out)
 
@@ -290,7 +405,6 @@ def card(d, c) -> str:
 # ── Build with me: 방문자가 이슈로 요청한 모양을 코드 입자로 그려 주는 빌드 로그 카드 ──────────
 
 BUILDS = ROOT / "data" / "builds.json"
-SHAPE_NAMES = {"car": "car", "robot": "robot", "rocket": "rocket"}
 
 
 def load_builds() -> dict:
@@ -342,7 +456,7 @@ def build_log(c, builds) -> str:
     if recent:
         for r, b in enumerate(recent[:5]):
             y = 126 + r * 26
-            out.append(t(tx, y, f"{SHAPE_NAMES[b['shape']]:<7}", 15, c["accent"], 90, 600, MONO, extra=' xml:space="preserve"'))
+            out.append(t(tx, y, f"{b['shape']:<7}", 15, c["accent"], 90, 600, MONO, extra=' xml:space="preserve"'))
             out.append(t(tx + 90, y, "@" + b["user"], 15, c["ink"], 400, 400, MONO))
             out.append(t(W - 50, y, b["at"], 15, c["faint"], 140, 400, MONO, anchor="end"))
     else:
@@ -351,7 +465,7 @@ def build_log(c, builds) -> str:
 
     n = builds["counts"]
     total = sum(n.values())
-    summary = f"car {n['car']} · robot {n['robot']} · rocket {n['rocket']}  ·  total {total}"
+    summary = " · ".join(f"{s} {n.get(s, 0)}" for s in SHAPES) + f"  ·  total {total}"
     out.append(t(tx, H - 34, summary, 14, c["muted"], 680, 500, MONO))
     out.append("</svg>")
     return "\n".join(out)
@@ -361,7 +475,7 @@ def main():
     ASSETS.mkdir(exist_ok=True)
     builds = load_builds()
     for mode, c in THEMES.items():
-        (ASSETS / f"hero_{mode}.svg").write_text(hero(c), encoding="utf-8")
+        (ASSETS / f"hero_{mode}.svg").write_text(hero(c, mode), encoding="utf-8")
         (ASSETS / f"buildlog_{mode}.svg").write_text(build_log(c, builds), encoding="utf-8")
         for d in CARDS:
             (ASSETS / f"card_{d['slug']}_{mode}.svg").write_text(card(d, c), encoding="utf-8")

@@ -1,4 +1,4 @@
-# 방문자가 README의 버튼으로 'build: car|robot|rocket' 이슈를 열면
+# 방문자가 README의 버튼으로 'build: <모양>' 이슈를 열면
 # 빌드 로그 카드를 다시 그려 커밋하고, 이슈에 답글을 단 뒤 닫는다.
 name: build-with-me
 
@@ -11,7 +11,7 @@ permissions:
   issues: write
 
 concurrency:
-  group: build-with-me
+  group: profile-render  # 일일 갱신과 같은 그룹 — 동시에 push 하지 않게
   cancel-in-progress: false
 
 jobs:
@@ -55,6 +55,6 @@ jobs:
           if [ -n "$SHAPE" ]; then
             MSG="🔧 빌드 완료! 코드 조각들이 **${SHAPE}** 모양으로 조립됐어요. 1~2분 뒤 프로필에서 확인해 주세요 → https://github.com/${GITHUB_REPOSITORY_OWNER}"
           else
-            MSG="제목을 \`build: car\`, \`build: robot\`, \`build: rocket\` 중 하나로 남겨주시면 빌드할 수 있어요 🙂"
+            MSG="제목을 \`build: robot\`, \`car\`, \`drone\`, \`rocket\`, \`ufo\` 중 하나로 남겨주시면 빌드할 수 있어요 🙂"
           fi
           gh issue close "$NUMBER" --repo "$GITHUB_REPOSITORY" --comment "$MSG"

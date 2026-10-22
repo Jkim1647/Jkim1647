@@ -1,4 +1,4 @@
-"""'build: car|robot|rocket' 이슈 하나를 처리해 data/builds.json과 빌드 로그 SVG를 갱신한다.
+"""'build: <모양>' 이슈 하나를 처리해 data/builds.json과 빌드 로그 SVG를 갱신한다.
 
 GitHub Actions(.github/workflows/build-with-me.yml)에서 호출된다. 이슈 제목·작성자는
 방문자가 정하는 값이라 환경변수로만 받고, 허용 목록과 정규식으로 검증한 값만 기록한다.
@@ -11,7 +11,7 @@ from datetime import datetime, timedelta, timezone
 
 import render_cards
 
-TITLE = re.compile(r"^\s*build:\s*(car|robot|rocket)\s*$", re.IGNORECASE)
+TITLE = re.compile(r"^\s*build:\s*(" + "|".join(render_cards.SHAPES) + r")\s*$", re.IGNORECASE)
 LOGIN = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$")  # GitHub 아이디 규칙
 KEEP = 20
 
@@ -33,7 +33,7 @@ def main() -> None:
 
     shape = m.group(1).lower()
     builds = render_cards.load_builds()
-    builds["counts"][shape] += 1
+    builds["counts"][shape] = builds["counts"].get(shape, 0) + 1
     at = datetime.now(timezone(timedelta(hours=9))).strftime("%m/%d %H:%M")
     builds["recent"] = ([{"shape": shape, "user": user, "at": at}] + builds["recent"])[:KEEP]
 
