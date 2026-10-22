@@ -160,8 +160,7 @@ SHAPES = {
     "rocket": lambda x, y: (_in_rect(x, y, 160, 40, 200, 150)
                             or _in_poly(x, y, [(160, 41), (180, 0), (200, 41)])
                             or _in_poly(x, y, [(161, 104), (132, 156), (161, 148)])
-                            or _in_poly(x, y, [(199, 104), (228, 156), (199, 148)])
-                            or _in_poly(x, y, [(166, 156), (194, 156), (180, 198)])),
+                            or _in_poly(x, y, [(199, 104), (228, 156), (199, 148)])),  # 불꽃은 입자가 아니라 효과로 그린다
     "earth": _on_globe,
 }
 
@@ -317,10 +316,12 @@ def calendar_swarm(c, ramp, contrib) -> tuple[str, str]:
     css.append("@keyframes mo{" + "".join(mo) + "}")
 
     # 효과: 드론 로터 회전, 지구의 도는 경선과 서울 핀 — 줌이 시작되기 전, 머무는 동안만
-    for name, k in {"drone": 3, "earth": 5}.items():
+    for name, k in {"drone": 3, "rocket": 4, "earth": 5}.items():
         css.append(f"@keyframes fx_{name}{{{_vis(k * SPAN + SPAN * ZOOM_OUT_END, k * SPAN + SPAN * (ZOOM_IN_START - .02))}}}")
     css.append("@keyframes spin{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.25)}}"
                ".spin{animation:spin .16s linear infinite;transform-box:fill-box;transform-origin:50% 50%}"
+               "@keyframes flick{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.3)}}"
+               ".flick{animation:flick .18s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 0}"
                # 오른쪽 반원 경선을 왼쪽 끝까지 뒤집어 지구가 도는 것처럼 보인다
                "@keyframes sweep{0%{transform:scaleX(1)}100%{transform:scaleX(-1)}}"
                ".sweep{animation:sweep 3s linear infinite;transform-box:fill-box;transform-origin:0 50%}"
@@ -342,7 +343,12 @@ def calendar_swarm(c, ramp, contrib) -> tuple[str, str]:
                   # 글자 둘레를 배경색으로 감싸 아래 칸 위에서도 읽히게
                   + t(px + 38, py - 24, "SEOUL", 15, pin, 90, 700, MONO,
                       extra=f' stroke="{c["panel"]}" stroke-width="5" paint-order="stroke" stroke-linejoin="round"') + "</g>")
-    fx = []
+    # 로켓 불꽃: 기여 칸(파랑)과 섞이지 않게 노즐 아래에 따로 그린다
+    fl = lambda w, depth: (f"M{(180 - w) * S:.0f} {152 * S:.0f} Q{180 * S:.0f} {(152 + depth) * S:.0f} "
+                           f"{(180 + w) * S:.0f} {152 * S:.0f} Z")
+    fx = [f'<g class="fx" style="animation-name:fx_rocket">'
+          f'<path class="flick" d="{fl(15, 56)}" fill="#F0883E" opacity=".85"/>'
+          f'<path class="flick" d="{fl(8, 36)}" fill="#FFD33D" style="animation-delay:.09s"/></g>']
 
     # 입자: 단계 동안 제자리에 있다가, 화면이 한 칸으로 가려진 경계 순간에만 다음 자리로 옮긴다
     parts = []
@@ -361,8 +367,6 @@ def calendar_swarm(c, ramp, contrib) -> tuple[str, str]:
             else:
                 edge = shapes[k - 1][i][2]
                 fill = ramp[max(lv, 3 if edge else 1)]
-                if CHAPTERS[k - 1][0] == "rocket" and y > 154 * SCALE:  # 로켓 아래 삼각형 = 불꽃
-                    fill = "#F0883E" if edge else "#FFB454"
             frames += [at(k * SPAN + .05 if k else 0, (x, y), fill), at((k + 1) * SPAN - .05, (x, y), fill)]
         frames.append(at(100, grid[i], ramp[lv]))
         css.append(f"@keyframes k{i}{{{''.join(frames)}}}")
@@ -402,7 +406,7 @@ def calendar_swarm(c, ramp, contrib) -> tuple[str, str]:
                          c["ink"] if k else c["muted"], STAGE_W, 600 if k else 500, anchor="middle",
                          extra=f' class="cap{" c0" if k == 0 else ""}" style="animation-name:cap{k}"'))
     # 모션 줄이기에서는 정지된 달력과 그 캡션만 보인다
-    css.append("@media (prefers-reduced-motion:reduce){.cam,.mo,.p,.cap,.hl,.fx,.cv,.day,.spin,.sweep,.pulse{animation:none}"
+    css.append("@media (prefers-reduced-motion:reduce){.cam,.mo,.p,.cap,.hl,.fx,.cv,.day,.spin,.sweep,.pulse,.flick{animation:none}"
                ".c0{opacity:1}}")
 
     cx0, cy0, cx1, cy1 = clip
