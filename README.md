@@ -26,19 +26,19 @@
 <p align="center"><b>어떤 분이신가요?</b> 고르시면 맞는 곳으로 바로 안내할게요.</p>
 
 <p align="center">
-  <a href="#for-recruiter">
+  <a href="https://github.com/Jkim1647/Jkim1647#for-recruiter">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/path_recruiter_dark.svg">
       <img src="./assets/path_recruiter_light.svg" width="32%" alt="채용담당자라면 — 30초 요약 보기" />
     </picture>
   </a>
-  <a href="#for-developer">
+  <a href="https://github.com/Jkim1647/Jkim1647#for-developer">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/path_developer_dark.svg">
       <img src="./assets/path_developer_light.svg" width="32%" alt="개발자라면 — 기술 깊이 보기" />
     </picture>
   </a>
-  <a href="#for-ssafy">
+  <a href="https://github.com/Jkim1647/Jkim1647#for-ssafy">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/path_ssafy_dark.svg">
       <img src="./assets/path_ssafy_light.svg" width="32%" alt="SSAFY 동기라면 — 같이 놀기" />
@@ -107,7 +107,7 @@
 - **병역**: 공군 병장 만기전역 (2024.03 – 2025.12)
 - **자료**: 📄 [포트폴리오 PDF (14쪽)](https://github.com/Jkim1647/portfolio/blob/main/kim-jinyoung-portfolio.pdf) · ✉️ kjy164777@gmail.com
 
-<sub><a href="#top">↑ 처음으로</a></sub>
+<sub><a href="https://github.com/Jkim1647/Jkim1647#top">↑ 처음으로</a></sub>
 
 <a id="for-developer"></a>
 
@@ -122,7 +122,7 @@
   </picture>
 </p>
 
-트러블슈팅과 기술 선택 이유는 아래 **프로젝트 상세**를 펼치거나 [포트폴리오 문서](https://github.com/Jkim1647/portfolio)에서 볼 수 있습니다. <sub><a href="#top">↑ 처음으로</a></sub>
+트러블슈팅과 기술 선택 이유는 아래 **프로젝트 상세**를 펼치거나 [포트폴리오 문서](https://github.com/Jkim1647/portfolio)에서 볼 수 있습니다. <sub><a href="https://github.com/Jkim1647/Jkim1647#top">↑ 처음으로</a></sub>
 
 ## 🔍 프로젝트 상세
 
@@ -269,7 +269,7 @@
 
 ## 🙌 SSAFY 동기라면
 
-16기 광주에서 같이 달리는 중이에요. [Algorithm](https://github.com/Jkim1647/Algorithm)(96문제)와 AI 챌린지 코드([1차](https://github.com/Jkim1647/ssafy16-ai-challenge-1) · [2차](https://github.com/Jkim1647/ssafy16-ai-challenge-2))를 공개해 두었으니 편하게 보시고, 맞팔 환영입니다. 들른 김에 아래에서 하나 빌드하고 가세요 ↓ <sub><a href="#top">↑ 처음으로</a></sub>
+16기 광주에서 같이 달리는 중이에요. [Algorithm](https://github.com/Jkim1647/Algorithm)(96문제)와 AI 챌린지 코드([1차](https://github.com/Jkim1647/ssafy16-ai-challenge-1) · [2차](https://github.com/Jkim1647/ssafy16-ai-challenge-2))를 공개해 두었으니 편하게 보시고, 맞팔 환영입니다. 들른 김에 아래에서 하나 빌드하고 가세요 ↓ <sub><a href="https://github.com/Jkim1647/Jkim1647#top">↑ 처음으로</a></sub>
 
 ## 🕹️ 같이 빌드하기
 
