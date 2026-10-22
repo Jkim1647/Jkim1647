@@ -209,8 +209,33 @@ def _calendar_xy(days):
     return xy, pitch
 
 
+PHASES = len(CHAPTERS) + 1           # 달력 + 모양들
+SPAN = 100 / PHASES                   # 한 단계가 차지하는 % 구간
+ZOOM_OUT_END, ZOOM_IN_START = .16, .62  # 단계 안에서: 줌아웃(빠져나옴) → 머묾 → 줌인(파고듦)
+
+
+def _vis(t0, t1, on="opacity:1", off="opacity:0", fade=.6):
+    """t0~t1(%) 동안만 on인 키프레임 본문. 100%를 넘어가면 처음으로 이어 붙인다."""
+    if t1 <= 100:
+        a, b = max(t0 - fade, 0), min(t1 + fade, 100)
+        return f"0%,{a:.2f}%{{{off}}}{t0:.2f}%,{t1:.2f}%{{{on}}}{b:.2f}%,100%{{{off}}}"
+    t1 -= 100
+    return (f"0%,{t1:.2f}%{{{on}}}{t1 + fade:.2f}%,{t0 - fade:.2f}%{{{off}}}{t0:.2f}%,100%{{{on}}}")
+
+
+def _focal_days(days, k):
+    """줌으로 파고들 날: 기여가 많은 날부터 k개(모자라면 반복)."""
+    ranked = sorted(range(len(days)), key=lambda i: (-days[i]["count"], -days[i]["level"], days[i]["date"]))
+    active = [i for i in ranked if days[i]["count"] > 0] or ranked[-1:]
+    return [active[i % len(active)] for i in range(k)]
+
+
 def calendar_swarm(c, ramp, contrib) -> tuple[str, str]:
-    """(스테이지 SVG, 캡션 SVG). 입자 하나 = 지난 1년의 하루."""
+    """(스테이지 SVG, 캡션 SVG). 입자 하나 = 지난 1년의 하루.
+
+    단계가 바뀔 때 카메라가 하루 한 칸으로 지수적으로 줌인해 그 칸이 창을 가득 채우면(그날 날짜 표시),
+    가려진 동안 나머지 칸이 다음 모양으로 재배치되고, 같은 날에서 줌아웃하면 주변이 바뀌어 있다.
+    """
     import random
     rng = random.Random(1647)
     days = contrib["days"]
@@ -218,104 +243,143 @@ def calendar_swarm(c, ramp, contrib) -> tuple[str, str]:
     grid, pitch = _calendar_xy(days)
     size = max(4.0, pitch * 0.78)
     shapes = [[(x * SCALE, y * SCALE, e) for x, y, e in _sample(s, n, rng, g=5)] for s, _, _ in CHAPTERS]
+    pos = [[(x, y) for x, y in grid]] + [[(x, y) for x, y, _ in sh] for sh in shapes]
+    cycle = PHASE_SEC * PHASES
+    focal = _focal_days(days, PHASES)  # focal[k] = k단계 → 다음 단계로 넘어갈 때 파고드는 날
+    cover = ramp[4]
+    r, g, b = (int(cover[i:i + 2], 16) for i in (1, 3, 5))
+    on_cover = "#FFFFFF" if .2126 * r + .7152 * g + .0722 * b < 140 else "#0D1117"  # 진한 칸엔 흰 글씨
 
-    phases = len(CHAPTERS) + 1  # 달력 + 모양들
-    cycle = PHASE_SEC * phases
-    span = 100 / phases
-    cx, cy = STAGE_W / 2, STAGE_H / 2
+    # 창(클립) 영역: 이 사각형을 다 덮을 만큼 확대해야 전환이 보이지 않는다
+    clip = (-12, -10, STAGE_W + 12, STAGE_H + 6)
 
-    # 줌: 단계마다 아주 작게(줌아웃) 회전하며 들어와 → 커지고(줌인) → 머물다 → 다시 작아진다
-    zoom = []
-    for k in range(phases):
-        s = k * span
-        zoom += [f"{s:.2f}%{{transform:scale(.06) rotate(-80deg)}}",
-                 f"{s + span * .16:.2f}%{{transform:scale(1) rotate(0)}}",
-                 f"{s + span * .80:.2f}%{{transform:scale(1) rotate(0)}}",
-                 f"{s + span:.2f}%{{transform:scale(.06) rotate(80deg)}}"]
+    def max_scale(p):
+        reach = max(abs(p[0] - clip[0]), abs(clip[2] - p[0]), abs(p[1] - clip[1]), abs(clip[3] - p[1]))
+        return reach / (size / 2) * 1.08
 
-    def window(k, inner):  # k번째 단계 동안만 켜지는 키프레임
-        s, e = k * span, (k + 1) * span
-        return (f"0%,{s + span * .14:.2f}%{{{inner[0]}}}{s + span * .2:.2f}%,{s + span * .76:.2f}%{{{inner[1]}}}"
-                f"{s + span * .8:.2f}%,100%{{{inner[0]}}}")
+    # 카메라: 줌 구간은 배율을 지수적으로(같은 시간에 같은 배수) 키워야 카메라가 다가가는 느낌이 난다
+    cam, steps = [], 8
+    for k in range(PHASES):
+        a = k * SPAN
+        p_out = pos[k][focal[k - 1]]      # 이전 단계에서 파고든 날 — 여기서 빠져나온다
+        p_in = pos[k][focal[k]]           # 다음 단계로 넘어가며 파고들 날
+        s_out, s_in = max_scale(p_out), max_scale(p_in)
+        o_out = f"transform-origin:{p_out[0]:.1f}px {p_out[1]:.1f}px"
+        o_in = f"transform-origin:{p_in[0]:.1f}px {p_in[1]:.1f}px"
+        for i in range(steps + 1):
+            at_ = a + SPAN * ZOOM_OUT_END * i / steps
+            cam.append(f"{at_:.2f}%{{transform:scale({s_out ** (1 - i / steps):.3f});{o_out}}}")
+        for i in range(steps + 1):
+            at_ = a + SPAN * (ZOOM_IN_START + (1 - ZOOM_IN_START - .02) * i / steps)
+            cam.append(f"{at_:.2f}%{{transform:scale({s_in ** (i / steps):.3f});{o_in}}}")
+        cam.append(f"{a + SPAN - .01:.2f}%{{transform:scale({s_in:.3f});{o_in}}}")
+    cam.append(f"100%{{transform:scale({max_scale(pos[0][focal[-1]]):.3f});"
+               f"transform-origin:{pos[0][focal[-1]][0]:.1f}px {pos[0][focal[-1]][1]:.1f}px}}")
 
-    css = [f".z{{animation:z {cycle}s cubic-bezier(.65,0,.35,1) infinite;transform-origin:{cx:.0f}px {cy:.0f}px}}",
-           f".mo{{animation:mo {cycle}s ease-in-out infinite;transform-origin:{cx:.0f}px {cy:.0f}px}}",
-           f".p{{animation:{cycle}s cubic-bezier(.5,0,.2,1) infinite}}",
-           f".cap{{opacity:0;animation:{cycle}s linear infinite}}",
-           f".hl{{opacity:0;animation:{cycle}s linear infinite}}",
-           f".fx{{opacity:0;animation:{cycle}s linear infinite}}",
-           "@keyframes z{" + "".join(zoom) + "}"]
+    css = [f".cam{{animation:cam {cycle}s linear infinite}}",
+           f".mo{{animation:mo {cycle}s ease-in-out infinite;transform-origin:{STAGE_W / 2:.0f}px {STAGE_H / 2:.0f}px}}",
+           f".p{{animation:{cycle}s linear infinite}}",
+           f".cap,.hl,.fx,.cv,.day{{opacity:0;animation:{cycle}s linear infinite}}",
+           "@keyframes cam{" + "".join(cam) + "}"]
 
-    # 모양별 움직임: 로봇은 춤, 자동차는 주행, 드론은 호버링, 로켓은 상승, UFO는 기울며 떠 있기
-    def seg(k, a, b):
-        return k * span + span * a, k * span + span * b
+    # 머무는 동안의 움직임: 로봇은 춤, 자동차는 주행, 드론은 호버링, 로켓은 떨림, UFO는 기울며 떠 있기
+    def seg(k, f0=.2, f1=.58):
+        return k * SPAN + SPAN * f0, k * SPAN + SPAN * f1
     mo = ["0%{transform:none}"]
-    r0, r1 = seg(1, .2, .76)
+    r0, r1 = seg(1)
     mo += [f"{r0 + (r1 - r0) * i / 6:.2f}%{{transform:rotate({(-6, 6)[i % 2] if 0 < i < 6 else 0}deg)}}"
            for i in range(7)]
-    c0, c1 = seg(2, .2, .76)
-    mo += [f"{c0:.2f}%{{transform:none}}", f"{(c0 + c1) / 2:.2f}%{{transform:translateX(18px)}}",
+    c0, c1 = seg(2)
+    mo += [f"{c0:.2f}%{{transform:none}}", f"{(c0 + c1) / 2:.2f}%{{transform:translateX(16px)}}",
            f"{c1:.2f}%{{transform:none}}"]
-    d0, d1 = seg(3, .2, .76)
-    mo += [f"{d0 + (d1 - d0) * i / 4:.2f}%{{transform:translateY({(0, -9, 0, -9, 0)[i]}px)}}" for i in range(5)]
-    k0, k1 = seg(4, .2, .76)
-    mo += [f"{k0:.2f}%{{transform:none}}", f"{k0 + 1:.2f}%{{transform:translateX(-2px)}}",
-           f"{k0 + 2:.2f}%{{transform:translateX(2px)}}", f"{k1:.2f}%{{transform:translateY(-22px)}}"]
-    u0, u1 = seg(5, .2, .76)
+    d0, d1 = seg(3)
+    mo += [f"{d0 + (d1 - d0) * i / 4:.2f}%{{transform:translateY({(0, -8, 0, -8, 0)[i]}px)}}" for i in range(5)]
+    k0, k1 = seg(4)
+    mo += [f"{k0 + (k1 - k0) * i / 8:.2f}%{{transform:translate({(0, -2, 2, -2, 2, -2, 2, -1, 0)[i]}px,"
+           f"{(0, -2, -3, -4, -5, -6, -7, -4, 0)[i]}px)}}" for i in range(9)]
+    u0, u1 = seg(5)
     mo += [f"{u0:.2f}%{{transform:none}}", f"{(u0 * 2 + u1) / 3:.2f}%{{transform:translateY(-8px) rotate(-4deg)}}",
            f"{(u0 + u1 * 2) / 3:.2f}%{{transform:translateY(-4px) rotate(4deg)}}", f"{u1:.2f}%,100%{{transform:none}}"]
     css.append("@keyframes mo{" + "".join(mo) + "}")
 
-    # 효과: 드론 로터 회전, 로켓 불꽃, UFO 광선 — 해당 단계에서만 보인다
-    fx_on = {"drone": 3, "ufo": 5}
-    for name, k in fx_on.items():
-        css.append(f"@keyframes fx_{name}{{{window(k, ('opacity:0', 'opacity:1'))}}}")
+    # 효과: 드론 로터 회전, UFO 광선 — 줌이 시작되기 전, 머무는 동안만
+    for name, k in {"drone": 3, "ufo": 5}.items():
+        css.append(f"@keyframes fx_{name}{{{_vis(k * SPAN + SPAN * ZOOM_OUT_END, k * SPAN + SPAN * (ZOOM_IN_START - .02))}}}")
     css.append("@keyframes spin{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.25)}}"
                ".spin{animation:spin .16s linear infinite;transform-box:fill-box;transform-origin:50% 50%}")
     S = SCALE
     fx_top = [f'<g class="fx" style="animation-name:fx_drone" stroke="{c["accent"]}" stroke-opacity=".7" stroke-width="2" fill="none">'
-          + "".join(f'<ellipse class="spin" cx="{x * S:.0f}" cy="{y * S:.0f}" rx="{58 * S:.0f}" ry="{6 * S:.0f}"/>'
-                    for x, y in ROTORS) + "</g>"]
+              + "".join(f'<ellipse class="spin" cx="{x * S:.0f}" cy="{y * S:.0f}" rx="{58 * S:.0f}" ry="{6 * S:.0f}"/>'
+                        for x, y in ROTORS) + "</g>"]
     fx = [f'<g class="fx" style="animation-name:fx_ufo"><path d="M{150 * S:.0f} {146 * S:.0f} L{210 * S:.0f} {146 * S:.0f} '
           f'L{250 * S:.0f} {204 * S:.0f} L{110 * S:.0f} {204 * S:.0f} Z" fill="{c["accent"]}" opacity=".14"/></g>']
 
-    # 입자: 달력 칸 → 모양들 → 달력. 활동한 날(단계 1 이상)은 모양 안에서도 진한 색으로 반짝인다
+    # 입자: 단계 동안 제자리에 있다가, 화면이 한 칸으로 가려진 경계 순간에만 다음 자리로 옮긴다
     parts = []
     for i, d in enumerate(days):
         lv = d["level"]
         bx, by = grid[i]
-        j = rng.uniform(0, span * .08)
 
         def at(p, pt, fill):
             return f"{p:.2f}%{{transform:translate({pt[0] - bx:.0f}px,{pt[1] - by:.0f}px);fill:{fill}}}"
 
-        frames = [at(0, (bx, by), ramp[lv]), at(span * .8, (bx, by), ramp[lv])]
-        for k, pts in enumerate(shapes, start=1):
-            x, y, edge = pts[i]
-            fill = ramp[max(lv, 3 if edge else 1)]
-            if CHAPTERS[k - 1][0] == "rocket" and y > 154 * SCALE:  # 로켓 아래 삼각형 = 불꽃
-                fill = "#F0883E" if edge else "#FFB454"
-            frames += [at(k * span + span * .05 + j, (x, y), fill), at(k * span + span * .8, (x, y), fill)]
-        frames.append(at(100, (bx, by), ramp[lv]))  # 마지막 줌아웃 동안 달력으로 돌아가 반복
+        frames = []
+        for k in range(PHASES):
+            x, y = pos[k][i]
+            if k == 0:
+                fill = ramp[lv]
+            else:
+                edge = shapes[k - 1][i][2]
+                fill = ramp[max(lv, 3 if edge else 1)]
+                if CHAPTERS[k - 1][0] == "rocket" and y > 154 * SCALE:  # 로켓 아래 삼각형 = 불꽃
+                    fill = "#F0883E" if edge else "#FFB454"
+            frames += [at(k * SPAN + .05 if k else 0, (x, y), fill), at((k + 1) * SPAN - .05, (x, y), fill)]
+        frames.append(at(100, grid[i], ramp[lv]))
         css.append(f"@keyframes k{i}{{{''.join(frames)}}}")
         parts.append(f'<rect class="p" x="{bx - size / 2:.1f}" y="{by - size / 2:.1f}" width="{size:.1f}" '
                      f'height="{size:.1f}" rx="1.5" fill="{ramp[lv]}" style="animation-name:k{i}"/>')
 
-    # 캡션: 단계마다 하나씩, 스테이지 아래 가운데
+    # 덮개: 파고드는 날의 칸 위에 같은 크기 칸을 맨 위에 올려, 확대됐을 때 창 전체를 한 색으로 가린다
+    covers, day_labels = [], []
+    for k in range(PHASES):
+        f, nxt = focal[k], (k + 1) % PHASES
+        end = (k + 1) * SPAN
+        for idx, (pk, t0, t1) in enumerate(((k, k * SPAN + SPAN * ZOOM_IN_START, end),
+                                            (nxt, end, end + SPAN * ZOOM_OUT_END))):
+            x, y = pos[pk][f]
+            name = f"cv{k}_{idx}"
+            css.append(f"@keyframes {name}{{{_vis(t0, t1, fade=.01)}}}")
+            covers.append(f'<rect class="cv" x="{x - size / 2:.1f}" y="{y - size / 2:.1f}" width="{size:.1f}" '
+                          f'height="{size:.1f}" rx="1.5" fill="{cover}" style="animation-name:{name}"/>')
+        # 가려진 순간에 그날이 언제였는지 보여준다
+        dd = days[f]
+        css.append(f"@keyframes day{k}{{{_vis(end - SPAN * .07, end + SPAN * .008, fade=.3)}}}")  # 줌아웃 시작 전에 사라진다
+        label = f"{dd['date'].replace('-', '.')}"
+        sub = f"{dd['count']} contribution{'s' if dd['count'] != 1 else ''}"
+        day_labels.append(
+            f'<g class="day" style="animation-name:day{k}">'
+            + t(STAGE_W / 2, STAGE_H / 2 - 4, label, 34, on_cover, STAGE_W, 700, MONO, anchor="middle")
+            + t(STAGE_W / 2, STAGE_H / 2 + 26, sub, 16, on_cover, STAGE_W, 500, MONO, anchor="middle")
+            + "</g>")
+
+    # 캡션: 단계마다 하나, 화면이 가려진 순간에 바뀐다
     caps = [f"지난 1년 {contrib['total']} contributions · 활동 {contrib['active_days']}일 · "
             f"최장 연속 {contrib['longest_streak']}일"] + [cap for _, _, cap in CHAPTERS]
     cap_svg = []
     for k, cap in enumerate(caps):
-        css.append(f"@keyframes cap{k}{{{window(k, ('opacity:0', 'opacity:1'))}}}")
-        cap_svg.append(t(STAGE_X + STAGE_W / 2, STAGE_Y + STAGE_H + 26, cap, 15,
+        css.append(f"@keyframes cap{k}{{{_vis(k * SPAN + .4, (k + 1) * SPAN - .4, fade=.4)}}}")
+        cap_svg.append(t(STAGE_X + STAGE_W / 2, STAGE_Y + STAGE_H + 30, cap, 15,
                          c["ink"] if k else c["muted"], STAGE_W, 600 if k else 500, anchor="middle",
                          extra=f' class="cap{" c0" if k == 0 else ""}" style="animation-name:cap{k}"'))
     # 모션 줄이기에서는 정지된 달력과 그 캡션만 보인다
-    css.append("@media (prefers-reduced-motion:reduce){.z,.mo,.p,.cap,.hl,.fx,.spin{animation:none}"
+    css.append("@media (prefers-reduced-motion:reduce){.cam,.mo,.p,.cap,.hl,.fx,.cv,.day,.spin{animation:none}"
                ".c0{opacity:1}}")
 
-    stage = (f'<g transform="translate({STAGE_X},{STAGE_Y})"><g class="z"><g class="mo">'
-             f'{"".join(fx)}{"".join(parts)}{"".join(fx_top)}</g></g></g>')
+    cx0, cy0, cx1, cy1 = clip
+    stage = (f'<clipPath id="win"><rect x="{cx0}" y="{cy0}" width="{cx1 - cx0:.0f}" height="{cy1 - cy0:.0f}" rx="14"/></clipPath>'
+             f'<g transform="translate({STAGE_X},{STAGE_Y})"><g clip-path="url(#win)">'
+             f'<g class="cam"><g class="mo">{"".join(fx)}{"".join(parts)}{"".join(fx_top)}{"".join(covers)}</g></g>'
+             f'{"".join(day_labels)}</g></g>')
     return f'<style>{"".join(css)}</style>' + stage, "".join(cap_svg)
 
 
@@ -326,8 +390,7 @@ def hero(c, mode) -> str:
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
            f'role="img" aria-label="{escape(HERO["name"])} · {escape(HERO["role"])}">',
            f'<rect width="{W}" height="{H}" rx="16" fill="{c["panel"]}" stroke="{c["line"]}"/>',
-           f'<clipPath id="stageclip"><rect x="{STAGE_X - 30}" y="2" width="{STAGE_W + 50}" height="{STAGE_H + 6}"/></clipPath>',
-           f'<g clip-path="url(#stageclip)">{stage}</g>',
+           stage,
            captions,
            # 왼쪽 글은 스테이지(x≥578)를 넘지 않게 폭을 제한한다
            t(56, 78, "TARGET  ·  " + HERO["target"], 15, c["accent"], 510, 600, MONO),
@@ -354,12 +417,8 @@ def hero(c, mode) -> str:
                      600 if now else 400, anchor="middle"))
         lit = [k for k, (_, nodes, _) in enumerate(CHAPTERS, start=1) if i in nodes]
         if lit:
-            phases = len(CHAPTERS) + 1
-            span = 100 / phases
-            k = lit[0]
-            s = k * span
-            css.append(f"@keyframes hl{i}{{0%,{s + span * .14:.2f}%{{opacity:0}}{s + span * .2:.2f}%,"
-                       f"{s + span * .76:.2f}%{{opacity:1}}{s + span * .8:.2f}%,100%{{opacity:0}}}}")
+            s = lit[0] * SPAN
+            css.append(f"@keyframes hl{i}{{{_vis(s + SPAN * ZOOM_OUT_END, s + SPAN * .9)}}}")
             out.append(f'<g class="hl" style="animation-name:hl{i}">'
                        f'<circle cx="{x:.0f}" cy="{y}" r="13" fill="{c["accent"]}" opacity=".18"/>'
                        f'<circle cx="{x:.0f}" cy="{y}" r="6" fill="{c["accent"]}"/></g>')
