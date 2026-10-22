@@ -4,7 +4,7 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/hero_dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="./assets/hero_light.svg">
-  <img src="./assets/hero_light.svg" width="100%" alt="김진영 · Jinyoung Kim — 운영을 아는 백엔드 개발자. 지난 1년 기여 달력의 칸들이 커리어 단계의 모양으로 바뀝니다: 로봇(2017–2019 서울로봇고, 전국기능경기대회 장려상) → 자동차(2021–2024 현대자동차그룹 통합사원증 운영) → 드론(2024–2025 공군 방공관제) → 로켓(2025–2026 백엔드 22.8초, AI 챌린지 2위) → 서울에 핀이 꽂힌 지구(NEXT: 백엔드 · IT 운영 · AI 서비스)" />
+  <img src="./assets/hero_light.svg" width="100%" alt="김진영 · Jinyoung Kim — 운영을 아는 백엔드 개발자. 지난 1년 기여 달력의 칸들이 커리어 단계의 모양으로 바뀝니다: 로봇(2017–2019 서울로봇고, 전국기능경기대회 장려상) → 자동차(2021–2024 현대자동차그룹 통합사원증 운영) → 레이더(2024–2025 공군 방공관제) → 로켓(2025–2026 백엔드 22.8초, AI 챌린지 2위) → 정의의 저울(2026 SafeLaw 생활법률 RAG) → 서울에 핀이 꽂힌 대한민국 지도(NEXT: 백엔드 · IT 운영 · AI 서비스)" />
 </picture>
 
 <br/>
@@ -97,12 +97,20 @@
   </a>
 </p>
 <p align="center">
+  <a href="https://github.com/Jkim1647/ssafy16-safelaw-rag">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="./assets/card_safelaw_dark.svg">
+      <img src="./assets/card_safelaw_light.svg" width="49%" alt="SafeLaw 생활법률 RAG — 질문당 응답 31.8~64.0초 → 8.3~16.7초, 법령 Recall@5 1.000, 인용 원문 검증" />
+    </picture>
+  </a>
   <a href="https://github.com/Jkim1647/ssafy16-ai-challenge-2">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/card_ai2_dark.svg">
       <img src="./assets/card_ai2_light.svg" width="49%" alt="SSAFY AI 챌린지 2차 · 사진 속 글자 읽기 VQA — 217팀 중 최종 2위" />
     </picture>
   </a>
+</p>
+<p align="center">
   <a href="https://github.com/Jkim1647/ssafy16-ai-challenge-1">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/card_ai1_dark.svg">
@@ -209,6 +217,26 @@
 **AI**
 
 <details>
+<summary><b>SafeLaw — 개인정보 보호형 생활법률 RAG</b> · 2026.10 · 개인 · SSAFY AI 코어 프로젝트 2회차 — 법령 Recall@5 <b>1.000</b></summary>
+<br/>
+
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/ex_safelaw_dark.svg">
+  <img src="./assets/ex_safelaw_light.svg" width="100%" alt="SafeLaw 파이프라인: 외부 모델 호출 전 로컬 마스킹, 법령 381개 조문과 판례 50건을 Chroma에서 검색, LangGraph로 답변 생성, 인용 문구가 원문에 그대로 있는지 확인하고 확인되지 않으면 답하지 않는다." />
+</picture>
+</p>
+
+`Python` `LangGraph` `Chroma` `Streamlit` `FastAPI` · [저장소](https://github.com/Jkim1647/ssafy16-safelaw-rag)
+
+- 근로계약 · 부당해고, 전세 · 임대차 보증금, 상속 — 일상어 질문으로 관련 법령과 유사 판례를 찾아 판단 요소와 근거를 보여 주는 의사결정 보조 도구 (승소 · 패소는 단정하지 않음)
+- 외부 모델을 부르기 전 **로컬에서 이름 · 주민등록번호 · 전화번호 · 이메일 · 주소를 가리고** 원문은 저장하지 않음 · 국가법령정보센터 현행 법령 381개 조문과 공개 판례 50건을 Chroma에 색인
+- LangGraph `retrieve` → `generate`로 답하고 **인용 문구가 원문에 그대로 있는지 코드로 검증**, 확인되지 않으면 답하지 않음
+- 30문항 평가: 법령 Recall@5 1.000 · 정답 조문과 단어가 겹치지 않는 질문 17/17(초기 10/17) · 판례 Recall@5 0.933 · 인용 정확성 1.000 · 응답 31.8~64.0초 → 8.3~16.7초(대신 E2E 성공률 0.750 → 0.667) · 테스트 168개 — 정답 라벨은 개발자 작성으로 법률 전문가 검수 전
+
+</details>
+
+<details>
 <summary><b>SSAFY AI 챌린지 2차 · 사진 속 글자 읽기 VQA</b> · 5인 팀 — <b>217팀 중 최종 2위</b> (Private 0.98093)</summary>
 <br/>
 
@@ -284,6 +312,9 @@
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
 ![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?style=flat-square&logo=huggingface&logoColor=black)
 ![LangChain](https://img.shields.io/badge/LangChain-1C3C3C?style=flat-square&logo=langchain&logoColor=white)
+![LangGraph](https://img.shields.io/badge/LangGraph-1C3C3C?style=flat-square&logo=langgraph&logoColor=white)
+![Chroma](https://img.shields.io/badge/Chroma-FF6446?style=flat-square)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)
 ![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=amazonwebservices&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
@@ -303,9 +334,10 @@ SSAFY 동기도, 처음 오신 분도 환영해요. 버튼을 누르고 이슈�
 <p align="center">
   <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20robot&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%A4%96_robot-8250DF?style=for-the-badge" alt="build robot" /></a>
   <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20car&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%9A%97_car-0969DA?style=for-the-badge" alt="build car" /></a>
-  <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20drone&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%9B%B8_drone-1F883D?style=for-the-badge" alt="build drone" /></a>
+  <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20radar&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%93%A1_radar-1F883D?style=for-the-badge" alt="build radar" /></a>
   <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20rocket&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%9A%80_rocket-F0883E?style=for-the-badge" alt="build rocket" /></a>
-  <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20earth&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%8C%8F_earth-BF3989?style=for-the-badge" alt="build earth" /></a>
+  <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20scale&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%E2%9A%96%EF%B8%8F_scale-6E7781?style=for-the-badge" alt="build scale" /></a>
+  <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20korea&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%97%BA%EF%B8%8F_korea-BF3989?style=for-the-badge" alt="build korea" /></a>
 </p>
 
 <p align="center">
@@ -315,4 +347,4 @@ SSAFY 동기도, 처음 오신 분도 환영해요. 버튼을 누르고 이슈�
   </picture>
 </p>
 
-<sub>이슈 제목이 <code>build: robot</code> · <code>car</code> · <code>drone</code> · <code>rocket</code> · <code>earth</code>일 때만 동작하고, 처리 후 이슈는 자동으로 닫힙니다. 배너의 입자는 지난 1년 기여 달력의 하루하루이며 매일 자동 갱신됩니다. <a href="https://github.com/Jkim1647/Jkim1647#top">↑ 처음으로</a></sub>
+<sub>이슈 제목이 <code>build: robot</code> · <code>car</code> · <code>radar</code> · <code>rocket</code> · <code>scale</code> · <code>korea</code>일 때만 동작하고, 처리 후 이슈는 자동으로 닫힙니다. 배너의 입자는 지난 1년 기여 달력의 하루하루이며 매일 자동 갱신됩니다. <a href="https://github.com/Jkim1647/Jkim1647#top">↑ 처음으로</a></sub>
