@@ -1,3 +1,4 @@
+<a id="top"></a>
 <div align="center">
 
 <picture>
@@ -19,6 +20,31 @@
 <img src="https://img.shields.io/badge/전국기능경기대회-장려상-d4a017?style=flat-square" alt="전국기능경기대회 장려상" />
 
 </div>
+
+<br/>
+
+<p align="center"><b>어떤 분이신가요?</b> 고르시면 맞는 곳으로 바로 안내할게요.</p>
+
+<p align="center">
+  <a href="#for-recruiter">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="./assets/path_recruiter_dark.svg">
+      <img src="./assets/path_recruiter_light.svg" width="32%" alt="채용담당자라면 — 30초 요약 보기" />
+    </picture>
+  </a>
+  <a href="#for-developer">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="./assets/path_developer_dark.svg">
+      <img src="./assets/path_developer_light.svg" width="32%" alt="개발자라면 — 기술 깊이 보기" />
+    </picture>
+  </a>
+  <a href="#for-ssafy">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="./assets/path_ssafy_dark.svg">
+      <img src="./assets/path_ssafy_light.svg" width="32%" alt="SSAFY 동기라면 — 같이 놀기" />
+    </picture>
+  </a>
+</p>
 
 <br/>
 
@@ -68,6 +94,35 @@
 </p>
 
 <p align="center"><sub>카드를 누르면 해당 저장소 · 문서로 이동합니다. 아래에서 항목별 상세를 펼쳐 볼 수 있습니다.</sub></p>
+
+<a id="for-recruiter"></a>
+
+## 🧑‍💼 채용담당자 30초 요약
+
+- **지원 분야**: 백엔드 개발 · IT 시스템 운영 · AI 서비스
+- **경력**: 에이치디에스㈜ 사원 2021.02–2024.01 — 현대자동차그룹 통합사원증·출입통제 시스템 운영 (20개 계열사 · 175개 사업장 · 임직원 약 12.8만 명)
+- **대표 성과**: 수양회 시스템 라벨 ZIP 생성 **3~5분 → 22.8초** · SSAFY AI 챌린지 2차 **217팀 중 2위**
+- **학력 · 교육**: 한양대학교 ERICA 스마트ICT융합전공 (GPA 4.0/4.5) · SSAFY 16기 (2026.07 –)
+- **자격**: 정보처리기사 · 전자산업기사
+- **병역**: 공군 병장 만기전역 (2024.03 – 2025.12)
+- **자료**: 📄 [포트폴리오 PDF (14쪽)](https://github.com/Jkim1647/portfolio/blob/main/kim-jinyoung-portfolio.pdf) · ✉️ kjy164777@gmail.com
+
+<sub><a href="#top">↑ 처음으로</a></sub>
+
+<a id="for-developer"></a>
+
+## 👩‍💻 개발자를 위한 기술 깊이
+
+이미지 1장마다 Chromium을 띄우던 라벨 생성을 **브라우저 풀 + 환경별 동시성 제어**로 바꿨습니다. 동시성 값은 감이 아니라 실험 커밋으로 환경별 수치를 재서 정했습니다.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/explainer_dark.svg">
+    <img src="./assets/explainer_light.svg" width="100%" alt="라벨 ZIP 생성 최적화 개념도 — BEFORE: 이미지마다 Chromium을 띄우는 순차 처리로 3~5분. AFTER: 미리 띄워 둔 브라우저 풀에서 병렬 처리해 22.8초." />
+  </picture>
+</p>
+
+트러블슈팅과 기술 선택 이유는 아래 **프로젝트 상세**를 펼치거나 [포트폴리오 문서](https://github.com/Jkim1647/portfolio)에서 볼 수 있습니다. <sub><a href="#top">↑ 처음으로</a></sub>
 
 ## 🔍 프로젝트 상세
 
@@ -209,6 +264,12 @@
 - **측정 먼저** — 동시성 값도 감이 아니라 실험 커밋으로 환경별 수치를 재서 정합니다
 - **기준은 직접 만든다** — AI 대회에서는 Public 점수 대신 팀이 재라벨링한 채점표로 채택을 판단했습니다
 - **AI 보조는 밝힌다** — AI와 페어로 만든 작업은 어디까지 AI가 했고 무엇을 직접 결정했는지 함께 적습니다
+
+<a id="for-ssafy"></a>
+
+## 🙌 SSAFY 동기라면
+
+16기 광주에서 같이 달리는 중이에요. [Algorithm](https://github.com/Jkim1647/Algorithm)(96문제)와 AI 챌린지 코드([1차](https://github.com/Jkim1647/ssafy16-ai-challenge-1) · [2차](https://github.com/Jkim1647/ssafy16-ai-challenge-2))를 공개해 두었으니 편하게 보시고, 맞팔 환영입니다. 들른 김에 아래에서 하나 빌드하고 가세요 ↓ <sub><a href="#top">↑ 처음으로</a></sub>
 
 ## 🕹️ 같이 빌드하기
 

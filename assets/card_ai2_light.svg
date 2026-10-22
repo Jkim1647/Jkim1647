@@ -1,9 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="600" height="270" viewBox="0 0 600 270" role="img" aria-label="AI 챌린지 2차 · 사진 속 글자 읽기">
+<style>@keyframes go{0%,15%{transform:var(--from)}32%,92%{transform:none}92.01%,100%{transform:var(--from)}}.go{animation:go 8s cubic-bezier(.6,0,.2,1) infinite;transform-box:fill-box}@media (prefers-reduced-motion:reduce){.go,.fade{animation:none}}@keyframes fade{0%,22%{opacity:1}30%,92%{opacity:0}92.01%,100%{opacity:1}}.fade{opacity:0;animation:fade 8s linear infinite}</style>
 <rect x="1" y="1" width="598" height="268" rx="14" fill="#F6F8FA" stroke="#D0D7DE"/>
 <text x="32" y="50" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="600" fill="#0969DA" text-anchor="start" letter-spacing="1">AI · VQA · TEAM</text>
 <text x="32" y="86" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="22" font-weight="700" fill="#1F2328" text-anchor="start">AI 챌린지 2차 · 사진 속 글자 읽기</text>
 <text x="32" y="114" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#59636E" text-anchor="start">5인 팀 · vLLM · Qwen3.5 · Gemma 4 · LoRA</text>
 <text x="32" y="178" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="40" font-weight="700" fill="#0969DA" text-anchor="start">2위</text>
 <text x="108.0" y="178" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="18" font-weight="500" fill="#59636E" text-anchor="start">/ 217팀</text>
-<text x="32" y="240" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#59636E" text-anchor="start">Public 11위 → Private 2위 · 자체 채점표 401문제</text>
+<circle cx="45.4" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="72.2" cy="202" r="2.6" fill="#D0D7DE"/>
+<circle cx="99.0" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="125.8" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="152.6" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="179.4" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="206.2" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="233.0" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="259.8" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="286.6" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="313.4" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="340.2" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="367.0" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="393.8" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="420.6" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="447.4" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="474.2" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="501.0" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="527.8" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle cx="554.6" cy="202" r="2.6" fill="#E6EAEF"/>
+<circle class="go" cx="72.2" cy="202" r="6" fill="#0969DA" style="--from:translateX(241.2px)"/>
+<text x="313.40000000000003" y="222" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="11" font-weight="500" fill="#8C959F" text-anchor="middle" class="fade">Public 11위</text>
+<text x="568" y="222" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="11" font-weight="500" fill="#8C959F" text-anchor="end">상위 20위 구간</text>
+<text x="32" y="248" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#59636E" text-anchor="start">Public 11위 → Private 2위 · 자체 채점표 401문제</text>
 </svg>
