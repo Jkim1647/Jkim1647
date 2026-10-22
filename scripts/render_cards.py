@@ -123,6 +123,23 @@ def _in_rect(x, y, x0, y0, x1, y1):
 CAR_BODY = [(16, 148), (26, 120), (118, 106), (165, 78), (238, 78), (290, 110), (342, 118), (350, 148)]
 WHEELS = [(92, 168), (282, 168)]
 ROTORS = [(72, 64), (288, 64)]
+GLOBE = (180, 100, 92)      # 지구: 중심 x, y, 반지름
+SEOUL = (212, 72)           # 지구 위 서울 핀 자리(그림용)
+
+
+def _on_globe(x, y):
+    """선으로 그린 지구: 테두리 · 가운데 경선 · 경선 두 쌍 · 위선 셋."""
+    cx, cy, r = GLOBE
+    d = ((x - cx) ** 2 + (y - cy) ** 2) ** .5
+    if d > r + 3:
+        return False
+    if abs(d - r) <= 3 or abs(x - cx) <= 2.5:
+        return True
+    for k in (.45, .82):
+        rx = r * k
+        if abs((((x - cx) / rx) ** 2 + ((y - cy) / r) ** 2) ** .5 - 1) * rx <= 2.8:
+            return True
+    return any(abs(y - (cy + r * s)) <= 2.5 for s in (-.55, 0, .55))
 
 SHAPES = {
     "robot": lambda x, y: (_in_rect(x, y, 152, 8, 208, 54) or _in_rect(x, y, 132, 62, 228, 134)
@@ -145,10 +162,7 @@ SHAPES = {
                             or _in_poly(x, y, [(161, 104), (132, 156), (161, 148)])
                             or _in_poly(x, y, [(199, 104), (228, 156), (199, 148)])
                             or _in_poly(x, y, [(166, 156), (194, 156), (180, 198)])),
-    # 비행접시: 원반 + 돔 + 아래 링
-    "ufo": lambda x, y: (_in_ellipse(x, y, 180, 112, 140, 24)
-                         or (_in_circle(x, y, 180, 100, 48) and y <= 100)
-                         or _in_ellipse(x, y, 180, 136, 62, 9)),
+    "earth": _on_globe,
 }
 
 # 커리어 단계: (모양, 히어로 하단 트랙에서 밝힐 노드, 캡션). 첫 단계는 기여 달력 그 자체.
@@ -157,7 +171,7 @@ CHAPTERS = [
     ("car", [1], "2021–2024 · 현대자동차그룹 통합사원증 운영 — 임직원 약 12.8만 명"),
     ("drone", [2], "2024–2025 · 공군 방공관제 — 24시간 관제 체계 운용 지원"),
     ("rocket", [3, 4], "2025–2026 · 백엔드 3~5분 → 22.8초 · AI 챌린지 2위/217팀"),
-    ("ufo", [5], "NEXT · 백엔드 · IT 운영 · AI 서비스 — 함께할 팀을 찾습니다"),
+    ("earth", [5], "NEXT · 백엔드 · IT 운영 · AI 서비스 — 함께할 팀을 찾습니다"),
 ]
 
 RAMP = {  # 기여 단계 0~4 색. 단계가 높을수록 진하다(다크는 밝다)
@@ -282,7 +296,7 @@ def calendar_swarm(c, ramp, contrib) -> tuple[str, str]:
            f".cap,.hl,.fx,.cv,.day{{opacity:0;animation:{cycle}s linear infinite}}",
            "@keyframes cam{" + "".join(cam) + "}"]
 
-    # 머무는 동안의 움직임: 로봇은 춤, 자동차는 주행, 드론은 호버링, 로켓은 떨림, UFO는 기울며 떠 있기
+    # 머무는 동안의 움직임: 로봇은 춤, 자동차는 주행, 드론은 호버링, 로켓은 떨림, 지구는 천천히 떠 있기
     def seg(k, f0=.2, f1=.58):
         return k * SPAN + SPAN * f0, k * SPAN + SPAN * f1
     mo = ["0%{transform:none}"]
@@ -298,21 +312,37 @@ def calendar_swarm(c, ramp, contrib) -> tuple[str, str]:
     mo += [f"{k0 + (k1 - k0) * i / 8:.2f}%{{transform:translate({(0, -2, 2, -2, 2, -2, 2, -1, 0)[i]}px,"
            f"{(0, -2, -3, -4, -5, -6, -7, -4, 0)[i]}px)}}" for i in range(9)]
     u0, u1 = seg(5)
-    mo += [f"{u0:.2f}%{{transform:none}}", f"{(u0 * 2 + u1) / 3:.2f}%{{transform:translateY(-8px) rotate(-4deg)}}",
-           f"{(u0 + u1 * 2) / 3:.2f}%{{transform:translateY(-4px) rotate(4deg)}}", f"{u1:.2f}%,100%{{transform:none}}"]
+    mo += [f"{u0:.2f}%{{transform:none}}", f"{(u0 + u1) / 2:.2f}%{{transform:translateY(-5px)}}",
+           f"{u1:.2f}%,100%{{transform:none}}"]
     css.append("@keyframes mo{" + "".join(mo) + "}")
 
-    # 효과: 드론 로터 회전, UFO 광선 — 줌이 시작되기 전, 머무는 동안만
-    for name, k in {"drone": 3, "ufo": 5}.items():
+    # 효과: 드론 로터 회전, 지구의 도는 경선과 서울 핀 — 줌이 시작되기 전, 머무는 동안만
+    for name, k in {"drone": 3, "earth": 5}.items():
         css.append(f"@keyframes fx_{name}{{{_vis(k * SPAN + SPAN * ZOOM_OUT_END, k * SPAN + SPAN * (ZOOM_IN_START - .02))}}}")
     css.append("@keyframes spin{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.25)}}"
-               ".spin{animation:spin .16s linear infinite;transform-box:fill-box;transform-origin:50% 50%}")
+               ".spin{animation:spin .16s linear infinite;transform-box:fill-box;transform-origin:50% 50%}"
+               # 오른쪽 반원 경선을 왼쪽 끝까지 뒤집어 지구가 도는 것처럼 보인다
+               "@keyframes sweep{0%{transform:scaleX(1)}100%{transform:scaleX(-1)}}"
+               ".sweep{animation:sweep 3s linear infinite;transform-box:fill-box;transform-origin:0 50%}"
+               "@keyframes pulse{0%{transform:scale(.6);opacity:.8}100%{transform:scale(2.8);opacity:0}}"
+               ".pulse{animation:pulse 1.4s ease-out infinite;transform-box:fill-box;transform-origin:50% 50%}")
     S = SCALE
     fx_top = [f'<g class="fx" style="animation-name:fx_drone" stroke="{c["accent"]}" stroke-opacity=".7" stroke-width="2" fill="none">'
               + "".join(f'<ellipse class="spin" cx="{x * S:.0f}" cy="{y * S:.0f}" rx="{58 * S:.0f}" ry="{6 * S:.0f}"/>'
                         for x, y in ROTORS) + "</g>"]
-    fx = [f'<g class="fx" style="animation-name:fx_ufo"><path d="M{150 * S:.0f} {146 * S:.0f} L{210 * S:.0f} {146 * S:.0f} '
-          f'L{250 * S:.0f} {204 * S:.0f} L{110 * S:.0f} {204 * S:.0f} Z" fill="{c["accent"]}" opacity=".14"/></g>']
+    gx, gy, gr = (v * S for v in GLOBE)
+    px, py = SEOUL[0] * S, SEOUL[1] * S
+    pin = "#F0883E"
+    fx_top.append(f'<g class="fx" style="animation-name:fx_earth">'
+                  f'<path class="sweep" d="M{gx:.0f} {gy - gr:.0f} A{gr:.0f} {gr:.0f} 0 0 1 {gx:.0f} {gy + gr:.0f}" '
+                  f'fill="none" stroke="{c["accent"]}" stroke-opacity=".6" stroke-width="2.5"/>'
+                  f'<circle class="pulse" cx="{px:.0f}" cy="{py:.0f}" r="8" fill="{pin}"/>'
+                  f'<circle cx="{px:.0f}" cy="{py:.0f}" r="7" fill="{pin}" stroke="{c["panel"]}" stroke-width="2.5"/>'
+                  f'<line x1="{px + 8:.0f}" y1="{py - 6:.0f}" x2="{px + 34:.0f}" y2="{py - 26:.0f}" stroke="{pin}" stroke-width="2"/>'
+                  # 글자 둘레를 배경색으로 감싸 아래 칸 위에서도 읽히게
+                  + t(px + 38, py - 24, "SEOUL", 15, pin, 90, 700, MONO,
+                      extra=f' stroke="{c["panel"]}" stroke-width="5" paint-order="stroke" stroke-linejoin="round"') + "</g>")
+    fx = []
 
     # 입자: 단계 동안 제자리에 있다가, 화면이 한 칸으로 가려진 경계 순간에만 다음 자리로 옮긴다
     parts = []
@@ -372,7 +402,7 @@ def calendar_swarm(c, ramp, contrib) -> tuple[str, str]:
                          c["ink"] if k else c["muted"], STAGE_W, 600 if k else 500, anchor="middle",
                          extra=f' class="cap{" c0" if k == 0 else ""}" style="animation-name:cap{k}"'))
     # 모션 줄이기에서는 정지된 달력과 그 캡션만 보인다
-    css.append("@media (prefers-reduced-motion:reduce){.cam,.mo,.p,.cap,.hl,.fx,.cv,.day,.spin{animation:none}"
+    css.append("@media (prefers-reduced-motion:reduce){.cam,.mo,.p,.cap,.hl,.fx,.cv,.day,.spin,.sweep,.pulse{animation:none}"
                ".c0{opacity:1}}")
 
     cx0, cy0, cx1, cy1 = clip

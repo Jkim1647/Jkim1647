@@ -10,5 +10,5 @@
 <text x="470" y="92" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="15" font-weight="600" fill="#1F2328" text-anchor="start">$ git log --builds --last 5</text>
 <text x="470" y="132" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="15" font-weight="400" fill="#59636E" text-anchor="start">(아직 빌드 기록이 없어요)</text>
 <text x="470" y="160" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="15" font-weight="400" fill="#59636E" text-anchor="start">아래 버튼으로 첫 번째 빌더가 되어주세요</text>
-<text x="470" y="266" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="14" font-weight="500" fill="#59636E" text-anchor="start">robot 0 · car 0 · drone 0 · rocket 0 · ufo 0  ·  total 0</text>
+<text x="470" y="266" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="14" font-weight="500" fill="#59636E" text-anchor="start">robot 0 · car 0 · drone 0 · rocket 0 · earth 0  ·  total 0</text>
 </svg>
