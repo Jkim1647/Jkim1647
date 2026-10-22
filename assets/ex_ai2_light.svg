@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500" role="img" aria-label="1단계: 원본 사진에 네 조각으로 나눠 두 배로 키운 조각 4장을 함께 넣는다. 2단계: 질문과 관련된 글자를 먼저 받아 적게 한 뒤 a부터 d 중 하나를 고른다. 35B 모델이 추가 학습 없이 0.9445에서 0.9655로. 3단계: 9B부터 397B까지 8종의 a~d 확률을 평균해 Private 0.98093.">
+<style>.a{animation:13s linear infinite}@keyframes tile0{0%,6.15%{transform:none;opacity:0}7.69%{transform:none;opacity:1}16.92%,95.38%{transform:translate(-2px,120px) scale(1.4);opacity:1}98.46%,100%{opacity:0}}@keyframes tile1{0%,6.15%{transform:none;opacity:0}7.69%{transform:none;opacity:1}16.92%,95.38%{transform:translate(32px,120px) scale(1.4);opacity:1}98.46%,100%{opacity:0}}@keyframes tile2{0%,6.15%{transform:none;opacity:0}7.69%{transform:none;opacity:1}16.92%,95.38%{transform:translate(-2px,144px) scale(1.4);opacity:1}98.46%,100%{opacity:0}}@keyframes tile3{0%,6.15%{transform:none;opacity:0}7.69%{transform:none;opacity:1}16.92%,95.38%{transform:translate(32px,144px) scale(1.4);opacity:1}98.46%,100%{opacity:0}}@keyframes x2{0%,14.62%{opacity:0}16.92%,95.38%{opacity:1}97.69%,100%{opacity:0}}@keyframes type{0%,23.08%{transform:scaleX(0)}35.38%,95.38%{transform:scaleX(1)}98.46%,100%{transform:scaleX(0)}}@keyframes p0{0%,36.92%{transform:scaleX(0)}44.62%,95.38%{transform:none}98.46%,100%{transform:scaleX(0)}}@keyframes p1{0%,36.92%{transform:scaleX(0)}44.62%,95.38%{transform:none}98.46%,100%{transform:scaleX(0)}}@keyframes p2{0%,36.92%{transform:scaleX(0)}44.62%,95.38%{transform:none}98.46%,100%{transform:scaleX(0)}}@keyframes p3{0%,36.92%{transform:scaleX(0)}44.62%,95.38%{transform:none}98.46%,100%{transform:scaleX(0)}}@keyframes avg{0%,51.54%{opacity:0}53.85%,95.38%{opacity:1}97.69%,100%{opacity:0}}@keyframes ai2res{0%,60.77%{opacity:0}63.08%,95.38%{opacity:1}97.69%,100%{opacity:0}}@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style>
+<rect x="1" y="1" width="1198" height="498" rx="16" fill="#F6F8FA" stroke="#D0D7DE"/>
+<text x="40" y="48" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="20" font-weight="700" fill="#1F2328" text-anchor="start">AI 챌린지 2차 — 모델을 키우는 대신 잘 보여 주고, 여러 모델의 확률을 모았다</text>
+<text x="40" y="74" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="13" font-weight="400" fill="#59636E" text-anchor="start">사진 속 글자 읽기 VQA · 217팀 중 2위</text>
+<g transform="translate(0,30)">
+<text x="40" y="96" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="16" font-weight="700" fill="#1F2328" text-anchor="start">① 잘라서 확대</text>
+<rect x="60" y="118" width="150" height="100" rx="10" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1.5"/>
+<rect x="74" y="142" width="52" height="5" rx="2.5" fill="#8C959F"/>
+<rect x="144" y="142" width="42" height="5" rx="2.5" fill="#8C959F"/>
+<rect x="74" y="186" width="32" height="5" rx="2.5" fill="#8C959F"/>
+<rect x="144" y="186" width="52" height="5" rx="2.5" fill="#8C959F"/>
+<text x="224" y="174" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#59636E" text-anchor="start">원본</text>
+<rect class="a" x="62" y="120" width="71" height="46" rx="5" fill="#FFFFFF" stroke="#0969DA" stroke-width="1.5" style="animation-name:tile0;transform-box:fill-box;transform-origin:0 0"/>
+<rect class="a" x="137" y="120" width="71" height="46" rx="5" fill="#FFFFFF" stroke="#0969DA" stroke-width="1.5" style="animation-name:tile1;transform-box:fill-box;transform-origin:0 0"/>
+<rect class="a" x="62" y="170" width="71" height="46" rx="5" fill="#FFFFFF" stroke="#0969DA" stroke-width="1.5" style="animation-name:tile2;transform-box:fill-box;transform-origin:0 0"/>
+<rect class="a" x="137" y="170" width="71" height="46" rx="5" fill="#FFFFFF" stroke="#0969DA" stroke-width="1.5" style="animation-name:tile3;transform-box:fill-box;transform-origin:0 0"/>
+<g class="a" style="animation-name:x2"><text x="288.79999999999995" y="300" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="700" fill="#0969DA" text-anchor="start">+ 4조각</text><text x="288.79999999999995" y="320" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="700" fill="#0969DA" text-anchor="start">× 2배 확대</text></g>
+<text x="420" y="96" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="16" font-weight="700" fill="#1F2328" text-anchor="start">② 읽고 나서 고르기</text>
+<rect x="420" y="118" width="320" height="92" rx="10" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1.5"/>
+<text x="436" y="142" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="12" font-weight="400" fill="#59636E" text-anchor="start">"질문과 관련된 글자를 그대로 받아 적어라"</text>
+<rect class="a" x="436" y="160" width="250" height="10" rx="5" fill="#0969DA" opacity=".55" style="animation-name:type;animation-delay:0.0s;transform-box:fill-box;transform-origin:0 50%"/>
+<rect class="a" x="436" y="182" width="180" height="10" rx="5" fill="#0969DA" opacity=".55" style="animation-name:type;animation-delay:0.3s;transform-box:fill-box;transform-origin:0 50%"/>
+<text x="428" y="249" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">a</text>
+<rect x="454" y="236" width="260" height="16" rx="8" fill="#E6EAEF"/>
+<rect class="a" x="454" y="236" width="21" height="16" rx="8" fill="#8C959F" style="animation-name:p0;transform-box:fill-box;transform-origin:0 50%"/>
+<text x="428" y="283" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">b</text>
+<rect x="454" y="270" width="260" height="16" rx="8" fill="#E6EAEF"/>
+<rect class="a" x="454" y="270" width="31" height="16" rx="8" fill="#8C959F" style="animation-name:p1;transform-box:fill-box;transform-origin:0 50%"/>
+<text x="428" y="317" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">c</text>
+<rect x="454" y="304" width="260" height="16" rx="8" fill="#E6EAEF"/>
+<rect class="a" x="454" y="304" width="185" height="16" rx="8" fill="#0969DA" style="animation-name:p2;transform-box:fill-box;transform-origin:0 50%"/>
+<text x="428" y="351" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">d</text>
+<rect x="454" y="338" width="260" height="16" rx="8" fill="#E6EAEF"/>
+<rect class="a" x="454" y="338" width="23" height="16" rx="8" fill="#8C959F" style="animation-name:p3;transform-box:fill-box;transform-origin:0 50%"/>
+<text x="420" y="392" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="12" font-weight="400" fill="#59636E" text-anchor="start">글로 답하게 하지 않고 a~d 각각의 확률을 받는다</text>
+<text x="800" y="96" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="16" font-weight="700" fill="#1F2328" text-anchor="start">③ 8종 확률 평균</text>
+<text x="800" y="130" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="500" fill="#59636E" text-anchor="start">모델 1</text>
+<rect x="864" y="120" width="13" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<rect x="938" y="120" width="12" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<rect x="1012" y="120" width="39" height="12" rx="3" fill="#0969DA" opacity=".8"/>
+<rect x="1086" y="120" width="4" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<text x="800" y="156" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="500" fill="#59636E" text-anchor="start">모델 2</text>
+<rect x="864" y="146" width="11" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<rect x="938" y="146" width="10" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<rect x="1012" y="146" width="37" height="12" rx="3" fill="#0969DA" opacity=".8"/>
+<rect x="1086" y="146" width="10" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<text x="800" y="182" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="500" fill="#59636E" text-anchor="start">모델 3</text>
+<rect x="864" y="172" width="10" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<rect x="938" y="172" width="6" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<rect x="1012" y="172" width="44" height="12" rx="3" fill="#0969DA" opacity=".8"/>
+<rect x="1086" y="172" width="8" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<text x="800" y="208" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="500" fill="#59636E" text-anchor="start">모델 4</text>
+<rect x="864" y="198" width="12" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<rect x="938" y="198" width="37" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<rect x="1012" y="198" width="11" height="12" rx="3" fill="#0969DA" opacity=".8"/>
+<rect x="1086" y="198" width="7" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<text x="800" y="234" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="500" fill="#59636E" text-anchor="start">모델 5</text>
+<rect x="864" y="224" width="9" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<rect x="938" y="224" width="5" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<rect x="1012" y="224" width="42" height="12" rx="3" fill="#0969DA" opacity=".8"/>
+<rect x="1086" y="224" width="12" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<text x="800" y="260" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="500" fill="#59636E" text-anchor="start">모델 6</text>
+<rect x="864" y="250" width="8" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<rect x="938" y="250" width="14" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<rect x="1012" y="250" width="35" height="12" rx="3" fill="#0969DA" opacity=".8"/>
+<rect x="1086" y="250" width="11" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<text x="800" y="286" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="500" fill="#59636E" text-anchor="start">모델 7</text>
+<rect x="864" y="276" width="4" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<rect x="938" y="276" width="44" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<rect x="1012" y="276" width="9" height="12" rx="3" fill="#0969DA" opacity=".8"/>
+<rect x="1086" y="276" width="10" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<text x="800" y="312" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="500" fill="#59636E" text-anchor="start">모델 8</text>
+<rect x="864" y="302" width="12" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<rect x="938" y="302" width="9" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<rect x="1012" y="302" width="36" height="12" rx="3" fill="#0969DA" opacity=".8"/>
+<rect x="1086" y="302" width="11" height="12" rx="3" fill="#8C959F" opacity=".8"/>
+<g class="a" style="animation-name:avg"><line x1="800" y1="334" x2="1160" y2="334" stroke="#D0D7DE"/><text x="800" y="362" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="700" fill="#1F2328" text-anchor="start">평균</text><rect x="864" y="350" width="15" height="16" rx="4" fill="#8C959F"/><text x="864" y="386" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#59636E" text-anchor="start">a</text><rect x="938" y="350" width="27" height="16" rx="4" fill="#8C959F"/><text x="938" y="386" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#59636E" text-anchor="start">b</text><rect x="1012" y="350" width="49" height="16" rx="4" fill="#0969DA"/><text x="1012" y="386" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#59636E" text-anchor="start">c</text><rect x="1086" y="350" width="14" height="16" rx="4" fill="#8C959F"/><text x="1086" y="386" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#59636E" text-anchor="start">d</text></g>
+<g class="a" style="animation-name:ai2res"><text x="404" y="420" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="700" fill="#0969DA" text-anchor="start">35B · 입력만 바꿔 0.9445 → 0.9655 (추가 학습 없음)</text><text x="800" y="420" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="700" fill="#0969DA" text-anchor="start">8종 평균 → Private 0.98093 · 2위</text></g>
+</g>
+<text x="40" y="482" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="12" font-weight="400" fill="#8C959F" text-anchor="start">개념도 — 사진 · 확률 막대는 그림용입니다. 점수는 저장소 README의 실측값(35B val 정확도, 최종 Private 점수)입니다.</text>
+</svg>

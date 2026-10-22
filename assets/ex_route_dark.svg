@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="482" viewBox="0 0 1200 482" role="img" aria-label="방문 순서 최적화 개념도: 사용자가 정한 순서 1,400.6km를 Held-Karp 비트마스크 DP와 2-opt로 570.3km로 줄였다. 충전소 경유 경로는 Dijkstra로 충전소 8,072곳에서 중앙값 17ms.">
+<style>.a{animation:10s linear infinite}@keyframes naive{0%,1.00%{opacity:0}4.00%,94.00%{opacity:1}97.00%,100%{opacity:0}}@keyframes draw{0%,20.00%{stroke-dashoffset:1119}50.00%,94.00%{stroke-dashoffset:0}98.00%,100%{stroke-dashoffset:1119}}@keyframes res{0%,47.00%{opacity:0}50.00%,94.00%{opacity:1}97.00%,100%{opacity:0}}@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style>
+<rect x="1" y="1" width="1198" height="480" rx="16" fill="#161B22" stroke="#30363D"/>
+<text x="40" y="48" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="20" font-weight="700" fill="#E6EDF3" text-anchor="start">여행 동선 최적화 — 관광지 10곳 방문 순서를 다시 계산</text>
+<text x="40" y="74" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="13" font-weight="400" fill="#9198A1" text-anchor="start">SSAFY 1학기 관통 프로젝트 4차 · Java 17 · Spring Boot</text>
+<g transform="translate(0,30)">
+<rect x="40" y="74" width="600" height="330" rx="10" fill="#0D1117" stroke="#30363D" stroke-width="1.5"/>
+<path class="a" d="M377 212 L437 272 L420 142 L591 352 L598 112 L503 314 L149 300 L210 348 L278 174 L527 257" fill="none" stroke="#6E7681" stroke-width="2" stroke-dasharray="6 6" style="animation-name:naive"/>
+<path class="a" d="M377 212 L437 272 L503 314 L591 352 L527 257 L598 112 L420 142 L278 174 L149 300 L210 348" fill="none" stroke="#4493F8" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1119" style="animation-name:draw"/>
+<circle cx="377" cy="212" r="9" fill="#0D1117" stroke="#E6EDF3" stroke-width="2.5"/>
+<circle cx="503" cy="314" r="7" fill="#0D1117" stroke="#4493F8" stroke-width="2.5"/>
+<circle cx="420" cy="142" r="7" fill="#0D1117" stroke="#4493F8" stroke-width="2.5"/>
+<circle cx="210" cy="348" r="7" fill="#0D1117" stroke="#4493F8" stroke-width="2.5"/>
+<circle cx="598" cy="112" r="7" fill="#0D1117" stroke="#4493F8" stroke-width="2.5"/>
+<circle cx="527" cy="257" r="7" fill="#0D1117" stroke="#4493F8" stroke-width="2.5"/>
+<circle cx="278" cy="174" r="7" fill="#0D1117" stroke="#4493F8" stroke-width="2.5"/>
+<circle cx="437" cy="272" r="7" fill="#0D1117" stroke="#4493F8" stroke-width="2.5"/>
+<circle cx="149" cy="300" r="7" fill="#0D1117" stroke="#4493F8" stroke-width="2.5"/>
+<circle cx="591" cy="352" r="7" fill="#0D1117" stroke="#4493F8" stroke-width="2.5"/>
+<text x="391.129349238755" y="199.5111542155298" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="12" font-weight="700" fill="#E6EDF3" text-anchor="start">출발</text>
+<text x="680" y="116" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#9198A1" text-anchor="start">사용자가 정한 순서</text>
+<text x="680" y="150" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="30" font-weight="700" fill="#6E7681" text-anchor="start" text-decoration="line-through">1,400.6km</text>
+<g class="a" style="animation-name:res"><text x="680" y="196" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="600" fill="#4493F8" text-anchor="start">Held-Karp DP · 2-opt</text><text x="680" y="240" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="44" font-weight="700" fill="#4493F8" text-anchor="start">570.3km</text></g>
+<text x="680" y="290" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#E6EDF3" text-anchor="start">· Held-Karp 비트마스크 DP (≤15곳) · 2-opt</text>
+<text x="680" y="316" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#E6EDF3" text-anchor="start">· 충전소 경유: "80%까지 충전" 모델 + Dijkstra</text>
+<text x="680" y="342" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#E6EDF3" text-anchor="start">· 충전소 8,072곳에서 중앙값 17ms</text>
+<text x="680" y="368" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#E6EDF3" text-anchor="start">· 완전탐색 · JDK · RFC 벡터와 비교 검증</text>
+</g>
+<text x="40" y="464" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="12" font-weight="400" fill="#6E7681" text-anchor="start">개념도 — 점 위치는 그림용이고(그림 속 최적 경로는 실제로 Held-Karp로 계산), 거리 값은 프로젝트의 실측 결과(관광지 10곳)입니다.</text>
+</svg>

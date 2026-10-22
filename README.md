@@ -119,6 +119,10 @@
 
 ## 👩‍💻 개발자를 위한 기술 깊이
 
+프로젝트마다 무엇을 바꿨고 왜 나아졌는지를 움직이는 그림으로 정리했습니다. 수치는 모두 기록 문서의 측정값이고, 그림을 위해 만든 값은 각 그림 아래에 밝혔습니다.
+
+### ⚙️ 라벨 ZIP 생성 3~5분 → 22.8초
+
 이미지 1장마다 Chromium을 띄우던 라벨 생성을 **브라우저 풀 + 환경별 동시성 제어**로 바꿨습니다. 동시성 값은 감이 아니라 실험 커밋으로 환경별 수치를 재서 정했습니다.
 
 <p align="center">
@@ -127,6 +131,51 @@
     <img src="./assets/explainer_light.svg" width="100%" alt="라벨 ZIP 생성 최적화 개념도 — BEFORE: 이미지마다 Chromium을 띄우는 순차 처리로 3~5분. AFTER: 미리 띄워 둔 브라우저 풀에서 병렬 처리해 22.8초." />
   </picture>
 </p>
+
+### 🧪 2026 리팩토링 — 고정하고, 재고, 고친다
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/ex_refactor_dark.svg">
+    <img src="./assets/ex_refactor_light.svg" width="100%" alt="리팩토링 진행 순서와 측정값: 특성화 테스트로 동작 고정, 측정 도구 먼저, 리팩토링, 로컬 DB로 38개 화면 검증. 꼬리표 이미지 29.9초에서 9.9초, 신청 폼 렌더 882회에서 14회, First Load JS 781kB에서 273kB, 리더 포털 첫 화면 2508ms에서 1467ms." />
+  </picture>
+</p>
+
+### 🏢 통합사원증 — 데이터 흐름과 장애 추적
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/ex_hds_dark.svg">
+    <img src="./assets/ex_hds_light.svg" width="100%" alt="통합사원증 시스템 구조: 계열사 인사 시스템과 서버가 송수신하고, 서버가 카드사 · 출입통제 · 식수 관리 · 자가문진 · 통근버스로 연동. 출입 장애는 ACU, 카드리더, 서버 로그 순으로 좁힌다." />
+  </picture>
+</p>
+
+### 🗺️ 여행 동선 1,400.6km → 570.3km
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/ex_route_dark.svg">
+    <img src="./assets/ex_route_light.svg" width="100%" alt="방문 순서 최적화: 사용자가 정한 순서 1,400.6km를 Held-Karp 비트마스크 DP와 2-opt로 570.3km로. 충전소 경유 경로는 Dijkstra, 충전소 8,072곳에서 중앙값 17ms." />
+  </picture>
+</p>
+
+### 🤖 AI 챌린지 — 잘 보여 주고, 모으고, 돌려 묻기
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/ex_ai2_dark.svg">
+    <img src="./assets/ex_ai2_light.svg" width="100%" alt="AI 챌린지 2차: 사진을 네 조각으로 나눠 두 배로 키워 함께 넣고, 글자를 먼저 받아 적게 한 뒤 고르게 해 35B가 0.9445에서 0.9655로. 8종 모델의 확률 평균으로 Private 0.98093, 217팀 중 2위." />
+  </picture>
+</p>
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/ex_ai1_dark.svg">
+    <img src="./assets/ex_ai1_light.svg" width="100%" alt="AI 챌린지 1차 선택지 회전 TTA: 선택지 순서를 순환 이동해 추론하고 확률을 원래 위치로 복원해 평균해 위치 편향을 줄인다." />
+  </picture>
+</p>
+
+### 🚨 직접 해 보기
 
 장애를 어떻게 좁혀 가는지는 직접 골라 보며 확인할 수 있어요. 제가 실제로 겪은 장애 3가지로 만들었습니다.
 
