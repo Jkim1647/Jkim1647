@@ -408,76 +408,90 @@ def ai1_tta(c, mode) -> str:
 # ── 6. SafeLaw: 가리고 → 찾고 → 답하고 → 인용이 원문에 있는지 확인한다 ─────────────────────────
 
 def safelaw_flow(c, mode) -> str:
-    H, C = 430, 12.0
+    """SafeLaw의 세 축: 개인정보 마스킹 · 일상어 → 법률 용어 · 원문 근거 RAG."""
+    H, C = 452, 13.0
     ok, warn = ("#1A7F37", WARN[mode]) if mode == "light" else ("#3FB950", WARN[mode])
-    out = _open(c, H, "SafeLaw — 개인정보는 가리고, 원문에 있는 근거로만 답한다",
-                "개인정보 보호형 생활법률 RAG · SSAFY 16기 AI 코어 프로젝트 2회차 · 개인",
-                "SafeLaw 파이프라인: 외부 모델 호출 전 로컬에서 이름 · 주소 · 연락처를 가리고, 법령 381개 조문과 판례 50건을 Chroma에서 찾고, "
-                "LangGraph retrieve에서 generate로 답한 뒤, 인용 문구가 원문에 그대로 있는지 코드로 확인하고 확인되지 않으면 답하지 않는다.")
-    css = [".a{animation:12s linear infinite}"]
+    out = _open(c, H, "SafeLaw — 가리고, 법률 용어로 바꿔 찾고, 원문에 있는 근거로만 답한다",
+                "개인정보 보호형 생활법률 RAG · 근로 · 임대차 · 상속 · SSAFY 16기 AI 코어 프로젝트 2회차 · 개인",
+                "SafeLaw 파이프라인: 1. 외부 모델 호출 전 로컬에서 이름 · 전화번호 · 주소 등을 플레이스홀더로 바꾸고 원문과 매핑은 저장하지 않는다. "
+                "2. 일상 표현을 법률 용어로 바꾸고 원문 질문과 함께 검색한다. 3. 법령 381개 조문과 판례 50건을 Chroma에서 찾는다. "
+                "4. LangGraph로 답하고 인용 문구가 원문에 그대로 있는지 확인해, 확인되지 않으면 답하지 않는다.")
+    css = [".a{animation:13s linear infinite}"]
     acc = c["accent"]
-    bw, bh, by = 250, 170, 100
-    xs = [40 + i * 290 for i in range(4)]
-    titles = [("① 로컬 마스킹", "외부 호출 전 · 원문 저장 안 함"), ("② 근거 검색 · Chroma", "법령 381개 조문 · 판례 50건"),
-              ("③ 답변 · LangGraph", "retrieve → generate"), ("④ 인용 검증", "원문에 그대로 있는가")]
-    for i, (x, (t1, t2)) in enumerate(zip(xs, titles)):
+    bw, bh, by = 260, 196, 96
+    xs = [40 + i * 284 for i in range(4)]
+    stages = [("① 개인정보 마스킹", "외부 호출 전, 로컬에서"), ("② 일상어 → 법률 용어", "원문 질문도 함께 검색"),
+              ("③ 근거 검색 · RAG", "Chroma · 법령 381조 · 판례 50건"), ("④ 근거로만 답변", "LangGraph · 인용 원문 검증")]
+    starts = [.3, 2.8, 5.6, 8.0]
+    for i, (x, (t1, t2)) in enumerate(zip(xs, stages)):
         name = f"stg{i}"
-        css.append(f"@keyframes {name}{{0%,{(i * 2.2) / C * 100:.2f}%{{opacity:.35}}{(i * 2.2 + .3) / C * 100:.2f}%,"
-                   f"{11.4 / C * 100:.2f}%{{opacity:1}}{11.8 / C * 100:.2f}%,100%{{opacity:.35}}}}")
+        css.append(f"@keyframes {name}{{0%,{starts[i] / C * 100:.2f}%{{opacity:.35}}{(starts[i] + .3) / C * 100:.2f}%,"
+                   f"{12.4 / C * 100:.2f}%{{opacity:1}}{12.8 / C * 100:.2f}%,100%{{opacity:.35}}}}")
         out.append(f'<g class="a" style="animation-name:{name}">{_box(x, by, bw, bh, c, stroke=acc)}'
                    + t(x + 16, by + 30, t1, 15, c["ink"], bw - 32, 700) + t(x + 16, by + 52, t2, 12, c["muted"], bw - 32) + "</g>")
         if i < 3:
-            out.append(t(x + bw + 20, by + bh / 2 + 6, "→", 18, c["faint"], 20, anchor="middle"))
+            out.append(t(x + bw + 12, by + bh / 2 + 6, "→", 16, c["faint"], 20, anchor="middle"))
 
-    # ① 이름 · 주소 · 연락처가 가려진다
+    # ① 원문 → 플레이스홀더 (가상의 값)
     x = xs[0]
-    for k, lab in enumerate(["이름", "주소", "연락처"]):
-        y = by + 78 + k * 28
-        out.append(f'<rect x="{x + 16}" y="{y}" width="120" height="20" rx="4" fill="{c["track"]}"/>' + t(x + 26, y + 15, lab, 12, c["ink"], 100, 600))
-        css.append(_show(f"mask{k}", .8 + k * .3, 11.4, C))
-        out.append(f'<g class="a" style="animation-name:mask{k}"><rect x="{x + 16}" y="{y}" width="120" height="20" rx="4" fill="{c["ink"]}"/>'
-                   + t(x + 76, y + 15, "[가림]", 12, c["panel"], 100, 700, MONO, anchor="middle") + "</g>")
-    out.append(t(x + 150, by + 120, "판단에 필요한", 11, c["muted"], 90) + t(x + 150, by + 136, "사실은 남긴다", 11, c["muted"], 90))
+    rows = [("홍길동", "[이름]"), ("010-1234-5678", "[전화번호]"), ("서울시 ○○구 ○○로", "[주소]")]
+    for k, (raw, masked) in enumerate(rows):
+        y = by + 72 + k * 30
+        out.append(f'<rect x="{x + 14}" y="{y}" width="{bw - 28}" height="22" rx="5" fill="{c["track"]}"/>'
+                   + t(x + 24, y + 16, raw, 12, c["ink"], bw - 48, 600, MONO))
+        css.append(_show(f"mask{k}", .9 + k * .35, 12.4, C))
+        out.append(f'<g class="a" style="animation-name:mask{k}"><rect x="{x + 14}" y="{y}" width="{bw - 28}" height="22" rx="5" fill="{c["ink"]}"/>'
+                   + t(x + 24, y + 16, masked, 12, c["panel"], bw - 48, 700, MONO) + "</g>")
+    out.append(t(x + 16, by + 176, "\"누가\"는 가리고 \"무슨 일\"은 남긴다", 12, c["muted"], bw - 32, 600))
 
-    # ② 후보 막대 중 상위 5개가 강조된다
+    # ② 일상 표현 → 법률 용어 칩
     x = xs[1]
-    for k in range(8):
-        y = by + 74 + k * 11
-        w = 200 - k * 18
+    out.append(f'<rect x="{x + 14}" y="{by + 70}" width="{bw - 28}" height="40" rx="8" fill="{c["track"]}"/>'
+               + t(x + 24, by + 95, "\"문자 한 통으로 잘렸어요\"", 13, c["ink"], bw - 48, 600))
+    css.append(_show("arrow2", 3.3, 12.4, C))
+    out.append(f'<g class="a" style="animation-name:arrow2">' + t(x + bw / 2, by + 130, "↓", 16, acc, 20, 700, anchor="middle") + "</g>")
+    cx, cy = x + 14, by + 142
+    for k, term in enumerate(["해고", "서면통지", "근로기준법 제27조"]):
+        w = max(56, sum(13 if ord(ch) > 0x2E80 else 7.8 for ch in term) + 22)
+        if cx + w > x + bw - 14:  # 상자를 넘으면 다음 줄로
+            cx, cy = x + 14, cy + 30
+        css.append(_show(f"term{k}", 3.7 + k * .35, 12.4, C))
+        out.append(f'<g class="a" style="animation-name:term{k}"><rect x="{cx:.0f}" y="{cy}" width="{w:.0f}" height="26" rx="13" fill="{acc}" opacity=".16"/>'
+                   + t(cx + w / 2, cy + 18, term, 12, acc, w, 700, anchor="middle") + "</g>")
+        cx += w + 6
+
+    # ③ 후보 중 Top-5
+    x = xs[2]
+    for k in range(9):
+        y = by + 72 + k * 11
+        w = 214 - k * 18
         out.append(f'<rect x="{x + 16}" y="{y}" width="{w}" height="7" rx="3.5" fill="{c["track"]}"/>')
         if k < 5:
-            css.append(_show(f"top{k}", 3.0 + k * .12, 11.4, C))
+            css.append(_show(f"top{k}", 6.0 + k * .12, 12.4, C))
             out.append(f'<rect class="a" x="{x + 16}" y="{y}" width="{w}" height="7" rx="3.5" fill="{acc}" style="animation-name:top{k}"/>')
-    css.append(_show("top5", 3.8, 11.4, C))
-    out.append(f'<g class="a" style="animation-name:top5">' + t(x + bw - 16, by + 160, "Top-5", 12, acc, 80, 700, MONO, anchor="end") + "</g>")
+    css.append(_show("top5", 6.8, 12.4, C))
+    out.append(f'<g class="a" style="animation-name:top5">' + t(x + bw - 16, by + 182, "Top-5 근거", 12, acc, 120, 700, anchor="end") + "</g>")
 
-    # ③ 답변 줄이 써진다
-    x = xs[2]
-    css.append(f"@keyframes wr{{0%,{4.6 / C * 100:.2f}%{{transform:scaleX(0)}}{6.0 / C * 100:.2f}%,{11.4 / C * 100:.2f}%{{transform:scaleX(1)}}"
-               f"{11.8 / C * 100:.2f}%,100%{{transform:scaleX(0)}}}}")
-    for k, w in enumerate((200, 170, 190, 120)):
-        out.append(f'<rect class="a" x="{x + 16}" y="{by + 80 + k * 18}" width="{w}" height="8" rx="4" fill="{acc}" opacity=".55" '
-                   f'style="animation-name:wr;animation-delay:{k * .25}s;transform-box:fill-box;transform-origin:0 50%"/>')
-
-    # ④ 인용이 원문과 맞으면 ✓, 아니면 답하지 않는다
+    # ④ 인용 = 원문이면 답변, 아니면 답하지 않음
     x = xs[3]
-    css.append(_show("chk", 7.0, 11.4, C))
-    out.append(f'<g class="a" style="animation-name:chk"><rect x="{x + 16}" y="{by + 76}" width="218" height="30" rx="6" fill="{ok}" opacity=".14"/>'
-               + t(x + 28, by + 96, "✓ 인용 = 원문 · 답변", 13, ok, 200, 700) + "</g>")
-    css.append(_show("rej", 8.2, 11.4, C))
-    out.append(f'<g class="a" style="animation-name:rej"><rect x="{x + 16}" y="{by + 116}" width="218" height="30" rx="6" fill="{warn}" opacity=".12"/>'
-               + t(x + 28, by + 136, "✕ 확인 안 되면 답하지 않음", 13, warn, 200, 700) + "</g>")
+    css.append(_show("chk", 8.6, 12.4, C))
+    out.append(f'<g class="a" style="animation-name:chk"><rect x="{x + 14}" y="{by + 76}" width="{bw - 28}" height="34" rx="6" fill="{ok}" opacity=".14"/>'
+               + t(x + 26, by + 98, "✓ 인용 = 원문 → 답변", 13, ok, bw - 48, 700) + "</g>")
+    css.append(_show("rej", 9.6, 12.4, C))
+    out.append(f'<g class="a" style="animation-name:rej"><rect x="{x + 14}" y="{by + 120}" width="{bw - 28}" height="34" rx="6" fill="{warn}" opacity=".12"/>'
+               + t(x + 26, by + 142, "✕ 확인 안 되면 답하지 않음", 13, warn, bw - 48, 700) + "</g>")
+    out.append(t(x + 16, by + 180, "어려운 용어는 50개 용어집으로 풀이", 12, c["muted"], bw - 32, 600))
 
     # 결과 지표
-    metrics = ["법령 Recall@5 1.000", "판례 Recall@5 0.933", "인용 정확성 1.000", "응답 31.8~64.0초 → 8.3~16.7초"]
+    metrics = ["일상어 질문 Top-5 17/17 (초기 10/17)", "법령 Recall@5 1.000", "판례 Recall@5 0.933", "인용 정확성 1.000"]
     mx = 40
     for k, m in enumerate(metrics):
-        w = len(m) * 8.6 + 34
-        css.append(_show(f"met{k}", 9.0 + k * .25, 11.4, C))
-        out.append(f'<g class="a" style="animation-name:met{k}"><rect x="{mx:.0f}" y="300" width="{w:.0f}" height="34" rx="17" fill="{acc}" opacity=".12"/>'
-                   + t(mx + 17, 322, m, 13, acc, w, 700) + "</g>")
-        mx += w + 14
-    return _close(out, css, "30문항 평가 · 정답 라벨은 개발자 작성으로 법률 전문가 검수 전 · 응답을 빠르게 한 대신 E2E 성공률은 0.750 → 0.667 · 자동 테스트 168개", c, H)
+        w = sum(13 if ord(ch) > 0x2E80 else 7.8 for ch in m) + 34
+        css.append(_show(f"met{k}", 10.4 + k * .25, 12.4, C))
+        out.append(f'<g class="a" style="animation-name:met{k}"><rect x="{mx:.0f}" y="320" width="{w:.0f}" height="34" rx="17" fill="{acc}" opacity=".12"/>'
+                   + t(mx + 17, 342, m, 13, acc, w, 700) + "</g>")
+        mx += w + 12
+    return _close(out, css, "예시 질문 · 값은 그림용(가상) · 30문항 평가, 정답 라벨은 개발자 작성으로 법률 전문가 검수 전 · 응답 31.8~64.0초 → 8.3~16.7초(E2E 0.750 → 0.667) · 테스트 168개", c, H)
 
 
 ALL = {"hds": hds_flow, "refactor": refactor_loop, "route": route, "ai2": ai2_pipeline, "ai1": ai1_tta,

@@ -4,7 +4,7 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/hero_dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="./assets/hero_light.svg">
-  <img src="./assets/hero_light.svg" width="100%" alt="김진영 · Jinyoung Kim — 운영을 아는 백엔드 개발자. 지난 1년 기여 달력의 칸들이 커리어 단계의 모양으로 바뀝니다: 로봇(2017–2019 서울로봇고, 전국기능경기대회 장려상) → 자동차(2021–2024 현대자동차그룹 통합사원증 운영) → 레이더(2024–2025 공군 방공관제) → 로켓(2025–2026 백엔드 22.8초, AI 챌린지 2위) → 정의의 저울(2026 SafeLaw 생활법률 RAG) → 서울에 핀이 꽂힌 대한민국 지도(NEXT: 백엔드 · IT 운영 · AI 서비스)" />
+  <img src="./assets/hero_light.svg" width="100%" alt="김진영 · Jinyoung Kim — 운영을 아는 백엔드 개발자. 지난 1년 기여 달력의 칸들이 커리어 단계의 모양으로 바뀝니다: 로봇(2017–2019 서울로봇고, 전국기능경기대회 장려상) → 자동차(2021–2024 현대자동차그룹 통합사원증 운영) → 레이더(2024–2025 공군 방공관제) → 로켓(2025 수양회 백엔드 22.8초) → 신경망(2026 SSAFY AI 챌린지 2위 · 18위) → 정의의 저울(2026 SafeLaw: 개인정보 마스킹 · 일상어를 법률 용어로 · 근거 RAG) → 서울에 핀이 꽂힌 대한민국 지도(NEXT: 백엔드 · IT 운영 · AI 서비스)" />
 </picture>
 
 <br/>
@@ -100,7 +100,7 @@
   <a href="https://github.com/Jkim1647/ssafy16-safelaw-rag">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/card_safelaw_dark.svg">
-      <img src="./assets/card_safelaw_light.svg" width="49%" alt="SafeLaw 생활법률 RAG — 질문당 응답 31.8~64.0초 → 8.3~16.7초, 법령 Recall@5 1.000, 인용 원문 검증" />
+      <img src="./assets/card_safelaw_light.svg" width="49%" alt="SafeLaw 생활법률 RAG — 로컬 개인정보 마스킹, 일상어를 법률 용어로 바꿔 찾기(일상어 질문 Top-5 17/17, 초기 10/17), 법령 381조 · 판례 50건 근거 RAG" />
     </picture>
   </a>
   <a href="https://github.com/Jkim1647/ssafy16-ai-challenge-2">
@@ -217,22 +217,24 @@
 **AI**
 
 <details>
-<summary><b>SafeLaw — 개인정보 보호형 생활법률 RAG</b> · 2026.10 · 개인 · SSAFY AI 코어 프로젝트 2회차 — 법령 Recall@5 <b>1.000</b></summary>
+<summary><b>SafeLaw — 개인정보 보호형 생활법률 RAG</b> · 2026.10 · 개인 · SSAFY AI 코어 프로젝트 2회차 — 일상어 질문 Top-5 <b>17/17</b></summary>
 <br/>
 
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/ex_safelaw_dark.svg">
-  <img src="./assets/ex_safelaw_light.svg" width="100%" alt="SafeLaw 파이프라인: 외부 모델 호출 전 로컬 마스킹, 법령 381개 조문과 판례 50건을 Chroma에서 검색, LangGraph로 답변 생성, 인용 문구가 원문에 그대로 있는지 확인하고 확인되지 않으면 답하지 않는다." />
+  <img src="./assets/ex_safelaw_light.svg" width="100%" alt="SafeLaw 파이프라인: 1. 외부 호출 전 로컬 개인정보 마스킹 2. 일상 표현을 법률 용어로 바꿔 원문 질문과 함께 검색 3. 법령 381개 조문 · 판례 50건 Chroma 검색 4. 인용이 원문에 있는지 확인되면 답변, 아니면 답하지 않음" />
 </picture>
 </p>
 
 `Python` `LangGraph` `Chroma` `Streamlit` `FastAPI` · [저장소](https://github.com/Jkim1647/ssafy16-safelaw-rag)
 
-- 근로계약 · 부당해고, 전세 · 임대차 보증금, 상속 — 일상어 질문으로 관련 법령과 유사 판례를 찾아 판단 요소와 근거를 보여 주는 의사결정 보조 도구 (승소 · 패소는 단정하지 않음)
-- 외부 모델을 부르기 전 **로컬에서 이름 · 주민등록번호 · 전화번호 · 이메일 · 주소를 가리고** 원문은 저장하지 않음 · 국가법령정보센터 현행 법령 381개 조문과 공개 판례 50건을 Chroma에 색인
-- LangGraph `retrieve` → `generate`로 답하고 **인용 문구가 원문에 그대로 있는지 코드로 검증**, 확인되지 않으면 답하지 않음
-- 30문항 평가: 법령 Recall@5 1.000 · 정답 조문과 단어가 겹치지 않는 질문 17/17(초기 10/17) · 판례 Recall@5 0.933 · 인용 정확성 1.000 · 응답 31.8~64.0초 → 8.3~16.7초(대신 E2E 성공률 0.750 → 0.667) · 테스트 168개 — 정답 라벨은 개발자 작성으로 법률 전문가 검수 전
+근로계약 · 부당해고, 전세 · 임대차 보증금, 상속 상담에서 관련 법령과 유사 판례, 판단 요소를 근거와 함께 보여 주는 의사결정 보조 도구입니다 (승소 · 패소는 단정하지 않음).
+
+- **개인정보 마스킹** — 외부 모델을 부르기 전 로컬에서 이름 · 주민등록번호 · 전화번호 · 이메일 · 주소를 플레이스홀더로 바꾸고, 원문과 치환 매핑은 파일 · 로그 · Vector DB에 남기지 않음. 외부 모델은 "누가"를 모른 채 "무슨 일"만 보고 근거를 찾음
+- **일상어 → 법률 용어** — 도메인 규칙과 LLM이 일상 표현을 법률 용어로 바꾸고 원문 질문과 함께 순위를 합침 → 정답 조문 제목과 단어가 하나도 겹치지 않는 질문 **17/17 Top-5**(초기 10/17). 답변의 `서면통지` · `대항력` 같은 용어는 50개 용어집으로 쉽게 풀이
+- **근거 RAG** — 국가법령정보센터 현행 법령 381개 조문 · 공개 판례 50건을 Chroma에 색인, LangGraph `retrieve` → `generate`로 답하고 **인용 문구가 원문에 그대로 있는지 코드로 검증**, 확인되지 않으면 답하지 않음
+- 30문항 평가: 법령 Recall@5 1.000 · 판례 Recall@5 0.933 · 인용 정확성 1.000 · 응답 31.8~64.0초 → 8.3~16.7초(대신 E2E 성공률 0.750 → 0.667) · 테스트 168개 — 정답 라벨은 개발자 작성으로 법률 전문가 검수 전
 
 </details>
 
@@ -327,24 +329,4 @@
 - **기준은 직접 만든다** — AI 대회에서는 Public 점수 대신 팀이 재라벨링한 채점표로 채택을 판단했습니다
 - **AI 보조는 밝힌다** — AI와 페어로 만든 작업은 어디까지 AI가 했고 무엇을 직접 결정했는지 함께 적습니다
 
-## 방문 기념으로 하나 조립하고 가기
-
-SSAFY 동기도, 처음 오신 분도 환영해요. 버튼을 누르고 이슈를 그대로 제출하면 GitHub Actions가 코드 조각을 그 모양으로 조립해 아래 로그에 아이디와 함께 남깁니다. 맞팔도 환영입니다.
-
-<p align="center">
-  <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20robot&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%A4%96_robot-8250DF?style=for-the-badge" alt="build robot" /></a>
-  <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20car&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%9A%97_car-0969DA?style=for-the-badge" alt="build car" /></a>
-  <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20radar&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%93%A1_radar-1F883D?style=for-the-badge" alt="build radar" /></a>
-  <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20rocket&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%9A%80_rocket-F0883E?style=for-the-badge" alt="build rocket" /></a>
-  <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20scale&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%E2%9A%96%EF%B8%8F_scale-6E7781?style=for-the-badge" alt="build scale" /></a>
-  <a href="https://github.com/Jkim1647/Jkim1647/issues/new?title=build%3A%20korea&body=%EC%9D%B4%EB%8C%80%EB%A1%9C%20Submit%20%ED%95%98%EB%A9%B4%201~2%EB%B6%84%20%EB%92%A4%20%ED%94%84%EB%A1%9C%ED%95%84%EC%9D%98%20%EB%B9%8C%EB%93%9C%20%EB%A1%9C%EA%B7%B8%EC%97%90%20%EB%82%B4%20%EC%95%84%EC%9D%B4%EB%94%94%EA%B0%80%20%EC%98%AC%EB%9D%BC%EA%B0%80%EC%9A%94.%20%28%EC%A0%9C%EB%AA%A9%EC%9D%80%20%EB%B0%94%EA%BE%B8%EC%A7%80%20%EB%A7%90%EC%95%84%20%EC%A3%BC%EC%84%B8%EC%9A%94%29"><img src="https://img.shields.io/badge/build-%F0%9F%97%BA%EF%B8%8F_korea-BF3989?style=for-the-badge" alt="build korea" /></a>
-</p>
-
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./assets/buildlog_dark.svg">
-    <img src="./assets/buildlog_light.svg" width="100%" alt="Build with me 로그 — 방문자가 요청한 최근 빌드와 모양별 누적 횟수" />
-  </picture>
-</p>
-
-<sub>이슈 제목이 <code>build: robot</code> · <code>car</code> · <code>radar</code> · <code>rocket</code> · <code>scale</code> · <code>korea</code>일 때만 동작하고, 처리 후 이슈는 자동으로 닫힙니다. 배너의 입자는 지난 1년 기여 달력의 하루하루이며 매일 자동 갱신됩니다. <a href="https://github.com/Jkim1647/Jkim1647#top">↑ 처음으로</a></sub>
+<sub>배너의 입자는 지난 1년 기여 달력의 하루하루이며 매일 자동 갱신됩니다. <a href="https://github.com/Jkim1647/Jkim1647#top">↑ 처음으로</a></sub>
