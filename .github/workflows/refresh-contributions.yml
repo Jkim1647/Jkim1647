@@ -1,4 +1,4 @@
-# 매일 공개 기여 달력을 다시 읽어 히어로 배너(달력 입자 · 기여 수 캡션)를 갱신한다.
+# 매일 공개 기여 달력과 광주 날씨를 다시 읽어 히어로 배너 · 인사말을 갱신한다.
 name: refresh-contributions
 
 on:
@@ -23,9 +23,11 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Fetch calendar and render
+      # 날씨는 실패해도 계속 — 인사말이 날씨 없이 요일 인사로 나간다
+      - name: Fetch calendar and weather, then render
         run: |
           python scripts/fetch_contributions.py
+          python scripts/fetch_weather.py || echo "weather skipped"
           python scripts/render_cards.py
 
       - name: Commit if changed
