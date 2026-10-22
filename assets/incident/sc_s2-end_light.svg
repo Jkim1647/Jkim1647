@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-label="나머지 이미지로 ZIP을 완성하고 대응 체크리스트가 채워지는 장면">
+<style>.a{animation:9s linear infinite}@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.2}}.blink{animation:blink 1s infinite}@keyframes k1{0%,2.11%{opacity:0}3.89%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k2{0%,2.67%{opacity:0}4.44%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k3{0%,3.22%{opacity:0}5.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k4{0%,3.78%{opacity:0}5.56%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k5{0%,4.33%{opacity:0}6.11%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k6{0%,4.89%{opacity:0}6.67%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k7{0%,5.44%{opacity:0}7.22%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k8{0%,6.00%{opacity:0}7.78%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k9{0%,6.56%{opacity:0}8.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k10{0%,7.11%{opacity:0}8.89%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k11{0%,7.67%{opacity:0}9.44%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k12{0%,8.22%{opacity:0}10.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k13{0%,8.78%{opacity:0}10.56%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k14{0%,9.33%{opacity:0}11.11%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k15{0%,9.89%{opacity:0}11.67%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k16{0%,10.44%{opacity:0}12.22%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k17{0%,11.00%{opacity:0}12.78%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k18{0%,11.56%{opacity:0}13.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k19{0%,12.11%{opacity:0}13.89%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k20{0%,12.67%{opacity:0}14.44%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k21{0%,13.22%{opacity:0}15.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k22{0%,13.78%{opacity:0}15.56%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k23{0%,14.33%{opacity:0}16.11%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k24{0%,14.89%{opacity:0}16.67%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k25{0%,15.44%{opacity:0}17.22%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k26{0%,16.00%{opacity:0}17.78%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k27{0%,16.56%{opacity:0}18.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k28{0%,17.11%{opacity:0}18.89%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k29{0%,17.67%{opacity:0}19.44%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k30{0%,18.22%{opacity:0}20.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k31{0%,18.78%{opacity:0}20.56%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k32{0%,19.33%{opacity:0}21.11%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k33{0%,19.89%{opacity:0}21.67%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k34{0%,20.44%{opacity:0}22.22%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k35{0%,21.00%{opacity:0}22.78%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k36{0%,21.56%{opacity:0}23.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k37{0%,22.11%{opacity:0}23.89%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k38{0%,22.67%{opacity:0}24.44%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k39{0%,23.22%{opacity:0}25.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k40{0%,23.78%{opacity:0}25.56%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k41{0%,26.56%{opacity:0}28.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k42{0%,31.00%{opacity:0}32.78%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k43{0%,38.78%{opacity:0}40.56%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k44{0%,46.56%{opacity:0}48.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k45{0%,54.33%{opacity:0}56.11%,95.56%{opacity:1}97.78%,100%{opacity:0}}@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style>
+<rect x="1" y="1" width="1198" height="298" rx="16" fill="#F6F8FA" stroke="#D0D7DE"/>
+<rect x="1" y="1" width="1198" height="44" rx="16" fill="#FFFFFF"/>
+<line x1="1" y1="45" x2="1199" y2="45" stroke="#D0D7DE"/>
+<rect x="1" y="1" width="6" height="298" rx="3" fill="#1A7F37"/>
+<text x="32" y="29" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="700" fill="#1A7F37" text-anchor="start" letter-spacing="1">SCENARIO 2 · CLEAR</text>
+<text x="1044.52" y="29" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="600" fill="#59636E" text-anchor="end">실제 대응</text>
+<g class=""><rect x="1077" y="12" width="95" height="22" rx="11" fill="#1A7F37" opacity=".15"/><circle cx="1091" cy="23" r="4" fill="#1A7F37"/><text x="1102.52" y="28" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="700" fill="#1A7F37" text-anchor="start">ZIP 완료</text></g>
+<rect x="40" y="72" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k1"><rect x="40" y="72" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="76" y="72" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k2"><rect x="76" y="72" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="112" y="72" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k3"><rect x="112" y="72" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="148" y="72" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k4"><rect x="148" y="72" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="184" y="72" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k5"><rect x="184" y="72" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="220" y="72" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k6"><rect x="220" y="72" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="256" y="72" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k7"><rect x="256" y="72" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="292" y="72" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k8"><rect x="292" y="72" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="328" y="72" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k9"><rect x="328" y="72" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="364" y="72" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k10"><rect x="364" y="72" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="40" y="108" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k11"><rect x="40" y="108" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="76" y="108" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k12"><rect x="76" y="108" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="112" y="108" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k13"><rect x="112" y="108" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="148" y="108" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k14"><rect x="148" y="108" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="184" y="108" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k15"><rect x="184" y="108" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="220" y="108" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k16"><rect x="220" y="108" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="256" y="108" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k17"><rect x="256" y="108" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="292" y="108" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k18"><rect x="292" y="108" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="328" y="108" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k19"><rect x="328" y="108" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="364" y="108" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k20"><rect x="364" y="108" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="40" y="144" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k21"><rect x="40" y="144" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="76" y="144" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k22"><rect x="76" y="144" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="112" y="144" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k23"><rect x="112" y="144" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="148" y="144" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k24"><rect x="148" y="144" width="30" height="30" rx="3" fill="#9A6700"/></g>
+<rect x="184" y="144" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k25"><rect x="184" y="144" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="220" y="144" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k26"><rect x="220" y="144" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="256" y="144" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k27"><rect x="256" y="144" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="292" y="144" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k28"><rect x="292" y="144" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="328" y="144" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k29"><rect x="328" y="144" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="364" y="144" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k30"><rect x="364" y="144" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="40" y="180" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k31"><rect x="40" y="180" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="76" y="180" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k32"><rect x="76" y="180" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="112" y="180" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k33"><rect x="112" y="180" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="148" y="180" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k34"><rect x="148" y="180" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="184" y="180" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k35"><rect x="184" y="180" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="220" y="180" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k36"><rect x="220" y="180" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="256" y="180" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k37"><rect x="256" y="180" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="292" y="180" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k38"><rect x="292" y="180" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="328" y="180" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k39"><rect x="328" y="180" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<rect x="364" y="180" width="30" height="30" rx="3" fill="#E6EAEF"/>
+<g class="a" style="animation-name:k40"><rect x="364" y="180" width="30" height="30" rx="3" fill="#1A7F37"/></g>
+<g class="a" style="animation-name:k41"><text x="40" y="260" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="13" font-weight="700" fill="#9A6700" text-anchor="start">■ 실패한 장은 따로 · 나머지로 ZIP 완성</text></g>
+<circle cx="482" cy="92" r="12" fill="none" stroke="#D0D7DE" stroke-width="2"/>
+<g class="a" style="animation-name:k42"><circle cx="482" cy="92" r="12" fill="#1A7F37"/><path d="M476 92 l4 4 l8 -8" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/><text x="504" y="97" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="15" font-weight="700" fill="#1F2328" text-anchor="start">Chromium</text><text x="588.0" y="97" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#59636E" text-anchor="start">운영에서는 시스템 경로 /usr/bin/chromium-browser</text></g>
+<circle cx="482" cy="132" r="12" fill="none" stroke="#D0D7DE" stroke-width="2"/>
+<g class="a" style="animation-name:k43"><circle cx="482" cy="132" r="12" fill="#1A7F37"/><path d="M476 132 l4 4 l8 -8" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/><text x="504" y="137" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="15" font-weight="700" fill="#1F2328" text-anchor="start">sandbox</text><text x="579.0" y="137" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#59636E" text-anchor="start">--no-sandbox · --disable-setuid-sandbox</text></g>
+<circle cx="482" cy="172" r="12" fill="none" stroke="#D0D7DE" stroke-width="2"/>
+<g class="a" style="animation-name:k44"><circle cx="482" cy="172" r="12" fill="#1A7F37"/><path d="M476 172 l4 4 l8 -8" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/><text x="504" y="177" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="15" font-weight="700" fill="#1F2328" text-anchor="start">타임아웃</text><text x="576" y="177" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#59636E" text-anchor="start">느린 서버에 맞춰 연장</text></g>
+<circle cx="482" cy="212" r="12" fill="none" stroke="#D0D7DE" stroke-width="2"/>
+<g class="a" style="animation-name:k45"><circle cx="482" cy="212" r="12" fill="#1A7F37"/><path d="M476 212 l4 4 l8 -8" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/><text x="504" y="217" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="15" font-weight="700" fill="#1F2328" text-anchor="start">부분 실패</text><text x="585.0" y="217" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#59636E" text-anchor="start">Promise.allSettled</text></g>
+</svg>

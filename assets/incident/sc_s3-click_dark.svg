@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-label="로컬 DB에 붙여 38개 화면을 차례로 눌러 보며 12건의 버그를 찾는 장면">
+<style>.a{animation:9s linear infinite}@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.2}}.blink{animation:blink 1s infinite}@keyframes k1{0%,3.22%{opacity:0}5.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k2{0%,4.56%{opacity:0}6.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k3{0%,5.89%{opacity:0}7.67%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k4{0%,7.22%{opacity:0}9.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k5{0%,8.56%{opacity:0}10.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k6{0%,9.89%{opacity:0}11.67%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k7{0%,11.22%{opacity:0}13.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k8{0%,12.56%{opacity:0}14.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k9{0%,13.89%{opacity:0}15.67%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k10{0%,15.22%{opacity:0}17.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k11{0%,16.56%{opacity:0}18.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k12{0%,17.89%{opacity:0}19.67%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k13{0%,19.22%{opacity:0}21.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k14{0%,20.56%{opacity:0}22.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k15{0%,21.89%{opacity:0}23.67%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k16{0%,23.22%{opacity:0}25.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k17{0%,24.56%{opacity:0}26.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k18{0%,25.89%{opacity:0}27.67%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k19{0%,27.22%{opacity:0}29.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k20{0%,28.56%{opacity:0}30.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k21{0%,29.89%{opacity:0}31.67%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k22{0%,31.22%{opacity:0}33.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k23{0%,32.56%{opacity:0}34.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k24{0%,33.89%{opacity:0}35.67%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k25{0%,35.22%{opacity:0}37.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k26{0%,36.56%{opacity:0}38.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k27{0%,37.89%{opacity:0}39.67%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k28{0%,39.22%{opacity:0}41.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k29{0%,40.56%{opacity:0}42.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k30{0%,41.89%{opacity:0}43.67%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k31{0%,43.22%{opacity:0}45.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k32{0%,44.56%{opacity:0}46.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k33{0%,45.89%{opacity:0}47.67%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k34{0%,47.22%{opacity:0}49.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k35{0%,48.56%{opacity:0}50.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k36{0%,49.89%{opacity:0}51.67%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k37{0%,51.22%{opacity:0}53.00%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k38{0%,52.56%{opacity:0}54.33%,95.56%{opacity:1}97.78%,100%{opacity:0}}@keyframes k39{0%,55.44%{opacity:0}57.22%,95.56%{opacity:1}97.78%,100%{opacity:0}}@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style>
+<rect x="1" y="1" width="1198" height="298" rx="16" fill="#161B22" stroke="#30363D"/>
+<rect x="1" y="1" width="1198" height="44" rx="16" fill="#0D1117"/>
+<line x1="1" y1="45" x2="1199" y2="45" stroke="#30363D"/>
+<rect x="1" y="1" width="6" height="298" rx="3" fill="#D29922"/>
+<text x="32" y="29" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="700" fill="#D29922" text-anchor="start" letter-spacing="1">SCENARIO 3 · 실제 DB</text>
+<text x="1039.84" y="29" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="600" fill="#9198A1" text-anchor="end">STEP 2/2</text>
+<g class=""><rect x="1072" y="12" width="100" height="22" rx="11" fill="#D29922" opacity=".15"/><circle cx="1086" cy="23" r="4" fill="#D29922"/><text x="1097.84" y="28" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="700" fill="#D29922" text-anchor="start">버그 12건</text></g>
+<rect x="40" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k1"><rect x="40" y="72" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="98" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k2"><rect x="98" y="72" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="156" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k3"><rect x="156" y="72" width="46" height="46" rx="3" fill="#F85149"/></g>
+<rect x="214" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k4"><rect x="214" y="72" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="272" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k5"><rect x="272" y="72" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="330" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k6"><rect x="330" y="72" width="46" height="46" rx="3" fill="#F85149"/></g>
+<rect x="388" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k7"><rect x="388" y="72" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="446" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k8"><rect x="446" y="72" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="504" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k9"><rect x="504" y="72" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="562" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k10"><rect x="562" y="72" width="46" height="46" rx="3" fill="#F85149"/></g>
+<rect x="620" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k11"><rect x="620" y="72" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="678" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k12"><rect x="678" y="72" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="736" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k13"><rect x="736" y="72" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="794" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k14"><rect x="794" y="72" width="46" height="46" rx="3" fill="#F85149"/></g>
+<rect x="852" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k15"><rect x="852" y="72" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="910" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k16"><rect x="910" y="72" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="968" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k17"><rect x="968" y="72" width="46" height="46" rx="3" fill="#F85149"/></g>
+<rect x="1026" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k18"><rect x="1026" y="72" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="1084" y="72" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k19"><rect x="1084" y="72" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="40" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k20"><rect x="40" y="130" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="98" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k21"><rect x="98" y="130" width="46" height="46" rx="3" fill="#F85149"/></g>
+<rect x="156" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k22"><rect x="156" y="130" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="214" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k23"><rect x="214" y="130" width="46" height="46" rx="3" fill="#F85149"/></g>
+<rect x="272" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k24"><rect x="272" y="130" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="330" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k25"><rect x="330" y="130" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="388" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k26"><rect x="388" y="130" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="446" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k27"><rect x="446" y="130" width="46" height="46" rx="3" fill="#F85149"/></g>
+<rect x="504" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k28"><rect x="504" y="130" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="562" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k29"><rect x="562" y="130" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="620" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k30"><rect x="620" y="130" width="46" height="46" rx="3" fill="#F85149"/></g>
+<rect x="678" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k31"><rect x="678" y="130" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="736" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k32"><rect x="736" y="130" width="46" height="46" rx="3" fill="#F85149"/></g>
+<rect x="794" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k33"><rect x="794" y="130" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="852" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k34"><rect x="852" y="130" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="910" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k35"><rect x="910" y="130" width="46" height="46" rx="3" fill="#F85149"/></g>
+<rect x="968" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k36"><rect x="968" y="130" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="1026" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k37"><rect x="1026" y="130" width="46" height="46" rx="3" fill="#4493F8"/></g>
+<rect x="1084" y="130" width="46" height="46" rx="3" fill="#21262D"/>
+<g class="a" style="animation-name:k38"><rect x="1084" y="130" width="46" height="46" rx="3" fill="#F85149"/></g>
+<g class="a" style="animation-name:k39"><text x="40" y="236" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="18" font-weight="700" fill="#E6EDF3" text-anchor="start">38개 화면 순회</text><text x="300" y="236" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="18" font-weight="700" fill="#F85149" text-anchor="start">● 버그 12건 추가 발견</text></g>
+<text x="40" y="276" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="13" font-weight="400" fill="#6E7681" text-anchor="start">mock 테스트가 모두 통과한 뒤에 나온 버그들 · 빨간 칸의 위치는 그림용</text>
+</svg>

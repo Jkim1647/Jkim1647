@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-label="로컬과 운영 서버의 코드가 같은데 결과만 다른 장면">
+<style>.a{animation:8.0s linear infinite}@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.2}}.blink{animation:blink 1s infinite}@keyframes k1{0%,14.88%{opacity:0}16.88%,95.00%{opacity:1}97.50%,100%{opacity:0}}@keyframes k2{0%,14.88%{opacity:0}16.88%,95.00%{opacity:1}97.50%,100%{opacity:0}}@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style>
+<rect x="1" y="1" width="1198" height="298" rx="16" fill="#161B22" stroke="#30363D"/>
+<rect x="1" y="1" width="1198" height="44" rx="16" fill="#0D1117"/>
+<line x1="1" y1="45" x2="1199" y2="45" stroke="#30363D"/>
+<rect x="1" y="1" width="6" height="298" rx="3" fill="#D29922"/>
+<text x="32" y="29" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="700" fill="#D29922" text-anchor="start" letter-spacing="1">SCENARIO 2 · 선택 A</text>
+<text x="1042.18" y="29" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="600" fill="#9198A1" text-anchor="end">코드 다시 읽기</text>
+<g class=""><rect x="1074" y="12" width="98" height="22" rx="11" fill="#D29922" opacity=".15"/><circle cx="1088" cy="23" r="4" fill="#D29922"/><text x="1100.18" y="28" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="700" fill="#D29922" text-anchor="start">변화 없음</text></g>
+<rect x="40" y="64" width="520" height="168" rx="10" fill="#0D1117" stroke="#30363D"/><text x="60" y="92" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="14" font-weight="600" fill="#9198A1" text-anchor="start">로컬 코드</text>
+<rect x="60" y="110" width="300" height="10" rx="5" fill="#6E7681" opacity=".55"/>
+<rect x="84" y="136" width="380" height="10" rx="5" fill="#6E7681" opacity=".55"/>
+<rect x="60" y="162" width="240" height="10" rx="5" fill="#6E7681" opacity=".55"/>
+<rect x="84" y="188" width="340" height="10" rx="5" fill="#6E7681" opacity=".55"/>
+<g class="a" style="animation-name:k1"><text x="540" y="222" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="15" font-weight="700" fill="#3FB950" text-anchor="end">✓ 성공</text></g>
+<rect x="640" y="64" width="520" height="168" rx="10" fill="#0D1117" stroke="#30363D"/><text x="660" y="92" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="14" font-weight="600" fill="#9198A1" text-anchor="start">운영 코드</text>
+<rect x="660" y="110" width="300" height="10" rx="5" fill="#6E7681" opacity=".55"/>
+<rect x="684" y="136" width="380" height="10" rx="5" fill="#6E7681" opacity=".55"/>
+<rect x="660" y="162" width="240" height="10" rx="5" fill="#6E7681" opacity=".55"/>
+<rect x="684" y="188" width="340" height="10" rx="5" fill="#6E7681" opacity=".55"/>
+<g class="a" style="animation-name:k2"><text x="1140" y="222" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="15" font-weight="700" fill="#F85149" text-anchor="end">✕ 실패</text></g>
+<text x="600" y="156" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="34" font-weight="700" fill="#E6EDF3" text-anchor="middle">=</text>
+<text x="40" y="276" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#9198A1" text-anchor="start">같은 코드가 로컬에서는 돕니다. 다른 건 코드가 도는 환경입니다</text>
+</svg>

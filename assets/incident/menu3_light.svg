@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="150" viewBox="0 0 400 150" role="img" aria-label="시나리오 3: mock 테스트가 전부 통과했다. 배포해도 될까?">
+<rect x="1" y="1" width="398" height="148" rx="14" fill="#F6F8FA" stroke="#D0D7DE"/>
+<rect x="1" y="1" width="398" height="6" rx="3" fill="#CF222E"/>
+<text x="24" y="40" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="700" fill="#CF222E" text-anchor="start" letter-spacing="1">SCENARIO 3</text>
+<text x="24" y="74" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="17" font-weight="700" fill="#1F2328" text-anchor="start">mock 테스트가 전부 통과했다. 배포해도</text>
+<text x="24" y="98" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="17" font-weight="700" fill="#1F2328" text-anchor="start">될까?</text>
+<text x="24" y="132" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="13" font-weight="400" fill="#59636E" text-anchor="start">수양회 시스템 리팩토링 · 2026</text>
+</svg>
