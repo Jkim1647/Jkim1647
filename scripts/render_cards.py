@@ -58,12 +58,12 @@ CARDS = [
     dict(slug="ai2", tag="AI · VQA · TEAM",
          title="AI 챌린지 2차 · 사진 속 글자 읽기",
          sub="5인 팀 · vLLM · Qwen3.5 · Gemma 4 · LoRA",
-         metric="2위", note="/ 217팀",
+         metric="2위", note="/ 217팀", rank=(11, 2, 20),
          caption="Public 11위 → Private 2위 · 자체 채점표 401문제"),
     dict(slug="ai1", tag="AI · VQA · SOLO",
          title="AI 챌린지 1차 · 재활용품",
          sub="개인전 · Qwen3-VL · QLoRA · RunPod A100",
-         metric="18위", note="/ 954명 · 상위 1.9%",
+         metric="18위", note="/ 954명 · 상위 1.9%", rank=(12, 18, 30),
          caption="선택지 회전 TTA · 해시 기반 grouped validation"),
 ]
 
@@ -450,13 +450,180 @@ def card(d, c) -> str:
         if "note" in d:
             out.append(t(P + width(d["metric"], 40) + 12, my, d["note"], 18, c["muted"], 300, 500))
 
-    # 비율 막대: 회색 = 개선 전 100%, 강조색 = 개선 후 비율
+    # 8초 주기: 개선 전 상태로 잠깐 머문 뒤 개선 후로 바뀌고, 한동안 유지. 모션 줄이기에서는 개선 후 상태로 정지.
+    loop = ("@keyframes go{0%,15%{transform:var(--from)}32%,92%{transform:none}"
+            "92.01%,100%{transform:var(--from)}}"
+            ".go{animation:go 8s cubic-bezier(.6,0,.2,1) infinite;transform-box:fill-box}"
+            "@media (prefers-reduced-motion:reduce){.go,.fade{animation:none}}")
+
+    # 비율 막대: 회색 = 개선 전 100%, 강조색이 100%에서 개선 후 비율까지 줄어든다
     if "ratio" in d:
         by = 198
+        out.insert(1, f"<style>{loop}</style>")
         out.append(f'<rect x="{P}" y="{by}" width="{room}" height="6" rx="3" fill="{c["track"]}"/>')
-        out.append(f'<rect x="{P}" y="{by}" width="{room * d["ratio"]:.1f}" height="6" rx="3" fill="{c["accent"]}"/>')
+        out.append(f'<rect class="go" x="{P}" y="{by}" width="{room * d["ratio"]:.1f}" height="6" rx="3" '
+                   f'fill="{c["accent"]}" style="--from:scaleX({1 / d["ratio"]:.3f});transform-origin:0 50%"/>')
 
-    out.append(t(P, 240, d["caption"], 14, c["muted"], room))
+    # 순위 띠: 상위 n위 구간을 점으로 펼치고, 내 점이 Public 순위에서 Private 순위로 움직인다
+    if "rank" in d:
+        pub, pri, n = d["rank"]
+        by, pitch = 202, room / n
+        x_of = lambda r: P + (r - .5) * pitch
+        out.insert(1, f"<style>{loop}@keyframes fade{{0%,22%{{opacity:1}}30%,92%{{opacity:0}}92.01%,100%{{opacity:1}}}}"
+                      f".fade{{opacity:0;animation:fade 8s linear infinite}}</style>")
+        out += [f'<circle cx="{x_of(r):.1f}" cy="{by}" r="2.6" fill="{c["track"] if r != pri else c["line"]}"/>'
+                for r in range(1, n + 1)]
+        out.append(f'<circle class="go" cx="{x_of(pri):.1f}" cy="{by}" r="6" fill="{c["accent"]}" '
+                   f'style="--from:translateX({x_of(pub) - x_of(pri):.1f}px)"/>')
+        out.append(t(x_of(pub), by + 20, f"Public {pub}위", 11, c["faint"], 90, 500, MONO, anchor="middle",
+                     extra=' class="fade"'))
+        out.append(t(P + room, by + 20, f"상위 {n}위 구간", 11, c["faint"], 120, 500, MONO, anchor="end"))
+
+    out.append(t(P, 240 if "rank" not in d else 248, d["caption"], 14, c["muted"], room))
+    out.append("</svg>")
+    return "\n".join(out)
+
+
+# ── 경로 선택 버튼: 방문자 유형별로 README 안의 해당 섹션으로 이동 ──────────────────────────────
+
+PATHS = [
+    dict(slug="recruiter", tag="FOR RECRUITERS", title="채용담당자라면", sub="30초 요약 보기"),
+    dict(slug="developer", tag="FOR DEVELOPERS", title="개발자라면", sub="기술 깊이 보기"),
+    dict(slug="ssafy", tag="FOR SSAFY 16기", title="SSAFY 동기라면", sub="같이 놀기"),
+]
+
+
+def path_button(d, c, delay) -> str:
+    W, H, P = 400, 112, 26
+    # 화살표가 살짝 앞으로 밀렸다 돌아온다 — 세 버튼이 차례로 움직이게 지연을 준다
+    css = (f"@keyframes nudge{{0%,70%,100%{{transform:none}}80%{{transform:translateX(7px)}}90%{{transform:none}}}}"
+           f".arw{{animation:nudge 3s ease-in-out {delay}s infinite}}"
+           "@media (prefers-reduced-motion:reduce){.arw{animation:none}}")
+    sub_w = width(d["sub"], 15)
+    return "\n".join([
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
+        f'role="img" aria-label="{escape(d["title"])} — {escape(d["sub"])}">',
+        f"<style>{css}</style>",
+        f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="14" fill="{c["panel"]}" stroke="{c["line"]}"/>',
+        f'<rect x="1" y="1" width="5" height="{H - 2}" rx="2" fill="{c["accent"]}"/>',
+        t(P, 36, d["tag"], 12, c["accent"], W - 2 * P, 700, MONO, extra=' letter-spacing="1"'),
+        t(P, 70, d["title"], 22, c["ink"], W - 2 * P, 700),
+        t(P, 96, d["sub"], 15, c["muted"], W - 2 * P - 40, 500),
+        f'<g class="arw">' + t(P + sub_w + 10, 96, "→", 16, c["accent"], 30, 700) + "</g>",
+        "</svg>"])
+
+
+# ── 최적화 설명: 라벨 ZIP 생성 3~5분 → 22.8초를 "작업이 흘러가는 모습"으로 보여준다 ──────────────
+# 동시성 수 · 작업 수는 개념도용 예시. 두 줄이 끝나는 시점의 비율만 실제(3분 기준 vs 22.8초)를 따른다.
+
+def explainer(c) -> str:
+    W, H = 1200, 404
+    C, START, WORK = 14.0, 0.5, 12.0          # 주기, 시작, BEFORE가 끝나기까지(= 3분)
+    after_work = WORK * 22.8 / 180              # AFTER가 끝나는 시점 — 실제 비율
+    RESET0, RESET1 = 13.5, 13.8
+    J, POOL = 24, 4
+    pc = lambda s: f"{s / C * 100:.2f}%"
+    css = ["@media (prefers-reduced-motion:reduce){*{animation:none!important}}",
+           f".a{{animation:{C}s linear infinite}}"]
+    out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
+           f'role="img" aria-label="라벨 ZIP 생성 최적화 개념도: 이미지마다 Chromium을 띄우던 순차 처리 3~5분 → 브라우저 풀과 동시성 제어 22.8초">',
+           f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="16" fill="{c["panel"]}" stroke="{c["line"]}"/>',
+           t(40, 48, "라벨 이미지 ZIP 생성 — 참가자 약 1,500명분", 20, c["ink"], 700, 700),
+           t(W - 40, 48, "시간은 실제 비율대로 압축 (3분 기준)", 13, c["muted"], 400, anchor="end")]
+
+    # 시간 축: 0 → 3분, 커서가 흐르고 22.8초 지점에 표시
+    ax0, ax1, ay = 300, W - 40, 88
+    out.append(f'<line x1="{ax0}" y1="{ay}" x2="{ax1}" y2="{ay}" stroke="{c["line"]}" stroke-width="2"/>')
+    for sec, lab in ((0, "0"), (60, "1분"), (120, "2분"), (180, "3분")):
+        x = ax0 + (ax1 - ax0) * sec / 180
+        out.append(f'<line x1="{x:.0f}" y1="{ay - 5}" x2="{x:.0f}" y2="{ay + 5}" stroke="{c["faint"]}"/>')
+        out.append(t(x, ay + 22, lab, 12, c["faint"], 60, 500, MONO, anchor="middle"))
+    x228 = ax0 + (ax1 - ax0) * 22.8 / 180
+    out.append(f'<line x1="{x228:.0f}" y1="{ay - 8}" x2="{x228:.0f}" y2="{ay + 8}" stroke="{c["accent"]}" stroke-width="2"/>')
+    out.append(t(x228, ay - 14, "22.8초", 12, c["accent"], 60, 700, MONO, anchor="middle"))
+    out.append(t(40, ay + 5, "경과 시간", 13, c["muted"], 200, 500))
+    css.append(f"@keyframes cur{{0%,{pc(START)}{{transform:none}}{pc(START + WORK)},{pc(RESET0)}{{transform:translateX({ax1 - ax0}px)}}"
+               f"{pc(RESET1)},100%{{transform:none;opacity:0}}}}")
+    out.append(f'<g class="a" style="animation-name:cur"><circle cx="{ax0}" cy="{ay}" r="5" fill="{c["ink"]}"/></g>')
+
+    lanes = [dict(y=128, tag="BEFORE", title="이미지마다 Chromium 실행", sub="순차 처리 · 매번 기동 비용",
+                  pool=1, slot=WORK / J, result="3~5분", done=START + WORK, tagc=c["faint"]),
+             dict(y=258, tag="AFTER", title="브라우저 풀 + 동시성 제어", sub="띄워 둔 브라우저 재사용 · 병렬",
+                  pool=POOL, slot=after_work / (J / POOL), result="22.8초", done=START + after_work, tagc=c["accent"])]
+    qx, bx0, zx, rx = 310, 520, 800, 930
+    for li, L in enumerate(lanes):
+        y = L["y"]
+        out += [t(40, y + 22, L["tag"], 13, L["tagc"], 200, 700, MONO, extra=' letter-spacing="1"'),
+                t(40, y + 50, L["title"], 17, c["ink"], 240, 700),
+                t(40, y + 74, L["sub"], 13, c["muted"], 240)]
+        if li == 0:
+            out.append(f'<line x1="40" y1="{y + 112}" x2="{W - 40}" y2="{y + 112}" stroke="{c["line"]}" stroke-dasharray="4 6"/>')
+
+        # 브라우저: BEFORE는 1개(작업마다 켜졌다 꺼짐), AFTER는 미리 띄워 둔 4개
+        if L["pool"] == 1:
+            boxes = [(bx0 + 40, y + 10, 140, 76)]
+        else:
+            boxes = [(bx0 + (k % 2) * 108, y + 4 + (k // 2) * 46, 96, 38) for k in range(POOL)]
+        for k, (x, by, w, h) in enumerate(boxes):
+            name = f"br{li}_{k}"
+            if L["pool"] == 1:  # 작업마다 기동: 켜졌다 꺼지는 깜박임
+                ks = [f"0%{{opacity:.15}}"]
+                for i in range(J):
+                    s0 = START + i * L["slot"]
+                    ks += [f"{pc(s0 + .06)}{{opacity:.15}}", f"{pc(s0 + .12)}{{opacity:1}}",
+                           f"{pc(s0 + L['slot'] * .85)}{{opacity:1}}", f"{pc(s0 + L['slot'] * .95)}{{opacity:.15}}"]
+                ks.append("100%{opacity:.15}")
+            else:  # 계속 켜져 있다가 일하는 동안 테두리가 밝아진다
+                ks = [f"0%,{pc(START)}{{opacity:.75}}", f"{pc(START + .05)},{pc(L['done'])}{{opacity:1}}",
+                      f"{pc(L['done'] + .2)},100%{{opacity:.75}}"]
+            css.append(f"@keyframes {name}{{{''.join(ks)}}}")
+            out.append(f'<g class="a" style="animation-name:{name}">'
+                       f'<rect x="{x}" y="{by}" width="{w}" height="{h}" rx="6" fill="{c["bg"]}" stroke="{c["accent"]}" stroke-width="1.5"/>'
+                       f'<line x1="{x}" y1="{by + 10}" x2="{x + w}" y2="{by + 10}" stroke="{c["line"]}"/>'
+                       + "".join(f'<circle cx="{x + 7 + d * 7}" cy="{by + 5}" r="1.8" fill="{c["faint"]}"/>' for d in range(3))
+                       + "</g>")
+        label = "Chromium × 작업 수만큼 기동" if L["pool"] == 1 else "Chromium 풀"
+        out.append(t(bx0 + 110, y + 104, label, 12, c["faint"], 260, 500, MONO, anchor="middle"))
+
+        # ZIP 상자: 작업이 들어올수록 차오른다
+        zy = y + 14
+        out.append(f'<rect x="{zx}" y="{zy}" width="80" height="70" rx="8" fill="none" stroke="{c["line"]}" stroke-width="1.5"/>')
+        css.append(f"@keyframes zf{li}{{0%,{pc(START)}{{transform:scaleY(0)}}{pc(L['done'])},{pc(RESET0)}{{transform:scaleY(1)}}"
+                   f"{pc(RESET1)},100%{{transform:scaleY(0)}}}}")
+        out.append(f'<rect class="a" x="{zx + 4}" y="{zy + 4}" width="72" height="62" rx="5" fill="{c["accent"]}" opacity=".25" '
+                   f'style="animation-name:zf{li};transform-box:fill-box;transform-origin:50% 100%"/>')
+        out.append(t(zx + 40, zy + 42, "ZIP", 14, c["ink"], 60, 700, MONO, anchor="middle"))
+
+        # 결과: 끝나는 순간 나타난다
+        css.append(f"@keyframes rs{li}{{0%,{pc(L['done'])}{{opacity:0}}{pc(L['done'] + .25)},{pc(RESET0)}{{opacity:1}}"
+                   f"{pc(RESET1)},100%{{opacity:0}}}}")
+        out.append(f'<g class="a" style="animation-name:rs{li}">'  # 모션 줄이기에서는 결과가 그대로 보인다
+                   + t(rx, y + 58, L["result"], 36, c["accent"] if li else c["ink"], 230, 700)
+                   + t(rx, y + 84, "완료" if li else "완료 (서버 상황에 따라)", 13, c["muted"], 230)
+                   + "</g>")
+
+        # 작업 카드: 대기열 → 브라우저 → ZIP
+        for i in range(J):
+            qx_i, qy_i = qx + (i % 6) * 22, y + 18 + (i // 6) * 16
+            k, order = (0, i) if L["pool"] == 1 else (i % POOL, i // POOL)
+            x, by, w, h = boxes[k]
+            bxc, byc = x + w / 2 - 7, by + 10 + (h - 10) / 2 - 5
+            s0 = START + order * L["slot"]
+            sl = L["slot"]
+            mv = lambda px, py: f"transform:translate({px - qx_i:.0f}px,{py - qy_i:.0f}px)"
+            frames = [f"0%,{pc(s0)}{{{mv(qx_i, qy_i)};opacity:1}}",
+                      f"{pc(s0 + sl * .25)},{pc(s0 + sl * .75)}{{{mv(bxc, byc)};opacity:1}}",
+                      f"{pc(s0 + sl * .98)}{{{mv(zx + 33, zy + 30)};opacity:1}}",
+                      f"{pc(s0 + sl + .02)},{pc(RESET1)}{{{mv(zx + 33, zy + 30)};opacity:0}}",
+                      f"{pc(RESET1 + .01)}{{{mv(qx_i, qy_i)};opacity:0}}",
+                      f"100%{{{mv(qx_i, qy_i)};opacity:1}}"]
+            css.append(f"@keyframes j{li}_{i}{{{''.join(frames)}}}")
+            out.append(f'<rect class="a" x="{qx_i}" y="{qy_i}" width="14" height="10" rx="2" fill="{c["accent"]}" '
+                       f'style="animation-name:j{li}_{i}"/>')
+
+    out.append(t(40, H - 18, "개념도 — 동시성 수 · 작업 수는 예시이고, 두 줄이 끝나는 시점의 비율만 실제(3분 기준 vs 22.8초)를 따릅니다.",
+                 12, c["faint"], W - 80))
+    out.insert(1, f'<style>{"".join(css)}</style>')
     out.append("</svg>")
     return "\n".join(out)
 
@@ -536,9 +703,12 @@ def main():
     for mode, c in THEMES.items():
         (ASSETS / f"hero_{mode}.svg").write_text(hero(c, mode), encoding="utf-8")
         (ASSETS / f"buildlog_{mode}.svg").write_text(build_log(c, builds), encoding="utf-8")
+        (ASSETS / f"explainer_{mode}.svg").write_text(explainer(c), encoding="utf-8")
+        for i, d in enumerate(PATHS):
+            (ASSETS / f"path_{d['slug']}_{mode}.svg").write_text(path_button(d, c, i * .4), encoding="utf-8")
         for d in CARDS:
             (ASSETS / f"card_{d['slug']}_{mode}.svg").write_text(card(d, c), encoding="utf-8")
-    print(f"{len(THEMES) * (len(CARDS) + 2)} files → {ASSETS}")
+    print(f"{len(THEMES) * (len(CARDS) + len(PATHS) + 3)} files → {ASSETS}")
 
 
 if __name__ == "__main__":

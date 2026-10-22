@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="112" viewBox="0 0 400 112" role="img" aria-label="개발자라면 — 기술 깊이 보기">
+<style>@keyframes nudge{0%,70%,100%{transform:none}80%{transform:translateX(7px)}90%{transform:none}}.arw{animation:nudge 3s ease-in-out 0.4s infinite}@media (prefers-reduced-motion:reduce){.arw{animation:none}}</style>
+<rect x="1" y="1" width="398" height="110" rx="14" fill="#F6F8FA" stroke="#D0D7DE"/>
+<rect x="1" y="1" width="5" height="110" rx="2" fill="#0969DA"/>
+<text x="26" y="36" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="700" fill="#0969DA" text-anchor="start" letter-spacing="1">FOR DEVELOPERS</text>
+<text x="26" y="70" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="22" font-weight="700" fill="#1F2328" text-anchor="start">개발자라면</text>
+<text x="26" y="96" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="15" font-weight="500" fill="#59636E" text-anchor="start">기술 깊이 보기</text>
+<g class="arw"><text x="144.0" y="96" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="16" font-weight="700" fill="#0969DA" text-anchor="start">→</text></g>
+</svg>

@@ -1,9 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="600" height="270" viewBox="0 0 600 270" role="img" aria-label="AI 챌린지 1차 · 재활용품">
+<style>@keyframes go{0%,15%{transform:var(--from)}32%,92%{transform:none}92.01%,100%{transform:var(--from)}}.go{animation:go 8s cubic-bezier(.6,0,.2,1) infinite;transform-box:fill-box}@media (prefers-reduced-motion:reduce){.go,.fade{animation:none}}@keyframes fade{0%,22%{opacity:1}30%,92%{opacity:0}92.01%,100%{opacity:1}}.fade{opacity:0;animation:fade 8s linear infinite}</style>
 <rect x="1" y="1" width="598" height="268" rx="14" fill="#161B22" stroke="#30363D"/>
 <text x="32" y="50" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="600" fill="#4493F8" text-anchor="start" letter-spacing="1">AI · VQA · SOLO</text>
 <text x="32" y="86" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="22" font-weight="700" fill="#E6EDF3" text-anchor="start">AI 챌린지 1차 · 재활용품</text>
 <text x="32" y="114" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#9198A1" text-anchor="start">개인전 · Qwen3-VL · QLoRA · RunPod A100</text>
 <text x="32" y="178" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="40" font-weight="700" fill="#4493F8" text-anchor="start">18위</text>
 <text x="132.0" y="178" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="18" font-weight="500" fill="#9198A1" text-anchor="start">/ 954명 · 상위 1.9%</text>
-<text x="32" y="240" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#9198A1" text-anchor="start">선택지 회전 TTA · 해시 기반 grouped validation</text>
+<circle cx="40.9" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="58.8" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="76.7" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="94.5" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="112.4" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="130.3" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="148.1" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="166.0" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="183.9" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="201.7" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="219.6" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="237.5" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="255.3" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="273.2" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="291.1" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="308.9" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="326.8" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="344.7" cy="202" r="2.6" fill="#30363D"/>
+<circle cx="362.5" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="380.4" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="398.3" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="416.1" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="434.0" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="451.9" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="469.7" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="487.6" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="505.5" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="523.3" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="541.2" cy="202" r="2.6" fill="#21262D"/>
+<circle cx="559.1" cy="202" r="2.6" fill="#21262D"/>
+<circle class="go" cx="344.7" cy="202" r="6" fill="#4493F8" style="--from:translateX(-107.2px)"/>
+<text x="237.46666666666667" y="222" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="11" font-weight="500" fill="#6E7681" text-anchor="middle" class="fade">Public 12위</text>
+<text x="568" y="222" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="11" font-weight="500" fill="#6E7681" text-anchor="end">상위 30위 구간</text>
+<text x="32" y="248" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#9198A1" text-anchor="start">선택지 회전 TTA · 해시 기반 grouped validation</text>
 </svg>
