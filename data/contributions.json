@@ -1,5 +1,5 @@
 {
- "total": 161,
+ "total": 229,
  "days": [
   {
    "date": "2025-10-19",
@@ -1838,15 +1838,15 @@
   },
   {
    "date": "2026-10-21",
-   "level": 0,
-   "count": 0
+   "level": 4,
+   "count": 18
   },
   {
    "date": "2026-10-22",
-   "level": 1,
-   "count": 1
+   "level": 4,
+   "count": 51
   }
  ],
- "active_days": 40,
+ "active_days": 41,
  "longest_streak": 5
 }
