@@ -1,0 +1,60 @@
+# 방문자가 README의 버튼으로 'build: car|robot|rocket' 이슈를 열면
+# 빌드 로그 카드를 다시 그려 커밋하고, 이슈에 답글을 단 뒤 닫는다.
+name: build-with-me
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: build-with-me
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: startsWith(github.event.issue.title, 'build:')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # 이슈 제목·작성자는 외부 입력이라 run 스크립트에 직접 넣지 않고 환경변수로만 넘긴다
+      - name: Record build
+        id: record
+        env:
+          BUILD_TITLE: ${{ github.event.issue.title }}
+          BUILD_USER: ${{ github.event.issue.user.login }}
+        run: python scripts/handle_build.py
+
+      - name: Commit
+        if: steps.record.outputs.shape != ''
+        env:
+          SHAPE: ${{ steps.record.outputs.shape }}
+          BUILD_USER: ${{ github.event.issue.user.login }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data assets
+          git commit -m "build: ${SHAPE} by @${BUILD_USER}"
+          git pull --rebase
+          git push
+
+      - name: Reply and close
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.issue.number }}
+          SHAPE: ${{ steps.record.outputs.shape }}
+        run: |
+          if [ -n "$SHAPE" ]; then
+            MSG="🔧 빌드 완료! 코드 조각들이 **${SHAPE}** 모양으로 조립됐어요. 1~2분 뒤 프로필에서 확인해 주세요 → https://github.com/${GITHUB_REPOSITORY_OWNER}"
+          else
+            MSG="제목을 \`build: car\`, \`build: robot\`, \`build: rocket\` 중 하나로 남겨주시면 빌드할 수 있어요 🙂"
+          fi
+          gh issue close "$NUMBER" --repo "$GITHUB_REPOSITORY" --comment "$MSG"
