@@ -1,13 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="600" height="270" viewBox="0 0 600 270" role="img" aria-label="SafeLaw 생활법률 RAG">
 <style>@keyframes go{0%,15%{transform:var(--from)}32%,92%{transform:none}92.01%,100%{transform:var(--from)}}.go{animation:go 8s cubic-bezier(.6,0,.2,1) infinite;transform-box:fill-box}@media (prefers-reduced-motion:reduce){.go,.fade{animation:none}}</style>
 <rect x="1" y="1" width="598" height="268" rx="14" fill="#F6F8FA" stroke="#D0D7DE"/>
-<text x="32" y="50" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="600" fill="#0969DA" text-anchor="start" letter-spacing="1">RAG · 2026</text>
+<text x="32" y="50" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="600" fill="#0969DA" text-anchor="start" letter-spacing="1">RAG · PRIVACY · 2026</text>
 <text x="32" y="86" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="22" font-weight="700" fill="#1F2328" text-anchor="start">SafeLaw 생활법률 RAG</text>
-<text x="32" y="114" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#59636E" text-anchor="start">개인 · LangGraph · Chroma · 로컬 개인정보 마스킹</text>
-<text x="32" y="178" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="22" font-weight="500" fill="#8C959F" text-anchor="start" text-decoration="line-through">31.8~64.0초</text>
-<text x="186.79999999999998" y="178" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="22" font-weight="400" fill="#8C959F" text-anchor="start">→</text>
-<text x="222.79999999999998" y="178" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="40" font-weight="700" fill="#0969DA" text-anchor="start">8.3~16.7초</text>
+<text x="32" y="114" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#59636E" text-anchor="start">로컬 개인정보 마스킹 · 일상어 → 법률 용어 · 근거 검증</text>
+<text x="32" y="178" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="40" font-weight="700" fill="#0969DA" text-anchor="start">17/17</text>
+<text x="164.0" y="178" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="18" font-weight="500" fill="#59636E" text-anchor="start">일상어 질문 Top-5 (초기 10/17)</text>
 <rect x="32" y="198" width="536" height="6" rx="3" fill="#E6EAEF"/>
-<rect class="go" x="32" y="198" width="139.9" height="6" rx="3" fill="#0969DA" style="--from:scaleX(3.832);transform-origin:0 50%"/>
-<text x="32" y="240" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#59636E" text-anchor="start">질문당 응답 시간 · 법령 Recall@5 1.000 · 인용 원문 검증</text>
+<rect class="go" x="32" y="198" width="536.0" height="6" rx="3" fill="#0969DA" style="--from:scaleX(0.588);transform-origin:0 50%"/>
+<text x="32" y="240" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#59636E" text-anchor="start">법령 381조 · 판례 50건 · 법령 Recall@5 1.000 · 인용 정확성 1.000</text>
 </svg>

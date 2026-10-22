@@ -55,11 +55,11 @@ CARDS = [
          sub="2~3인 팀 · Java 17 · Spring Boot 3.5 · FastAPI",
          before="1,400km", metric="570km", ratio=570 / 1400,
          caption="Held-Karp DP로 방문 순서 최적화 · 4차에 걸쳐 확장"),
-    dict(slug="safelaw", tag="RAG · 2026",
+    dict(slug="safelaw", tag="RAG · PRIVACY · 2026",
          title="SafeLaw 생활법률 RAG",
-         sub="개인 · LangGraph · Chroma · 로컬 개인정보 마스킹",
-         before="31.8~64.0초", metric="8.3~16.7초", ratio=16.7 / 64.0,
-         caption="질문당 응답 시간 · 법령 Recall@5 1.000 · 인용 원문 검증"),
+         sub="로컬 개인정보 마스킹 · 일상어 → 법률 용어 · 근거 검증",
+         metric="17/17", note="일상어 질문 Top-5 (초기 10/17)", grow=(10 / 17, 1.0),
+         caption="법령 381조 · 판례 50건 · 법령 Recall@5 1.000 · 인용 정확성 1.000"),
     dict(slug="ai2", tag="AI · VQA · TEAM",
          title="AI 챌린지 2차 · 사진 속 글자 읽기",
          sub="5인 팀 · vLLM · Qwen3.5 · Gemma 4 · LoRA",
@@ -97,8 +97,6 @@ SCALE = 1.45
 STAGE_X, STAGE_Y = 608, 18
 STAGE_W, STAGE_H = BASE_W * SCALE, BASE_H * SCALE
 PHASE_SEC = 4.5
-TOKENS = ["{", "}", "<>", "=>", "fn", "0", "1", ";", "//", "[]", "()", "if", "&&", "λ", "#", "::", "$", "*"]
-N_PARTICLES = 120  # 빌드 로그 카드용(코드 토큰)
 
 CONTRIB = ROOT / "data" / "contributions.json"
 
@@ -174,6 +172,18 @@ def _on_korea(x, y):
             or any(_in_circle(x, y, ix, iy, 4.5) for ix, iy in ISLANDS))
 
 
+NET = [[(90, 50), (90, 100), (90, 150)],                       # 신경망: 층마다 노드 좌표
+       [(180, 35), (180, 80), (180, 125), (180, 170)],
+       [(270, 75), (270, 125)]]
+NET_EDGES = [(a, b) for l in range(len(NET) - 1) for a in NET[l] for b in NET[l + 1]]
+
+
+def _on_net(x, y):
+    """신경망: 노드(원) + 층 사이 연결선."""
+    return (any(_in_circle(x, y, nx, ny, 12) for layer in NET for nx, ny in layer)
+            or any(_near_seg(x, y, a, b, 2.4) for a, b in NET_EDGES))
+
+
 def _on_scale(x, y):
     """정의의 저울: 기둥 · 받침 · 가로대 · 꼭대기 장식 · 양쪽 줄과 접시."""
     return (_in_rect(x, y, 176, 36, 184, 182) or _in_rect(x, y, 136, 180, 224, 192)
@@ -196,6 +206,7 @@ SHAPES = {
                             or _in_poly(x, y, [(160, 41), (180, 0), (200, 41)])
                             or _in_poly(x, y, [(161, 104), (132, 156), (161, 148)])
                             or _in_poly(x, y, [(199, 104), (228, 156), (199, 148)])),  # 불꽃은 입자가 아니라 효과로 그린다
+    "ai": _on_net,
     "scale": _on_scale,
     "korea": _on_korea,
 }
@@ -206,8 +217,9 @@ CHAPTERS = [
     ("robot", [0], "2017–2019 · 서울로봇고 공업전자기기 — 전국기능경기대회 장려상"),
     ("car", [1], "2021–2024 · 현대자동차그룹 통합사원증 운영 — 임직원 약 12.8만 명"),
     ("radar", [2], "2024–2025 · 공군 방공관제 — 24시간 관제 체계 운용 지원"),
-    ("rocket", [3, 4], "2025–2026 · 백엔드 3~5분 → 22.8초 · AI 챌린지 2위/217팀"),
-    ("scale", [4], "2026 · SafeLaw 생활법률 RAG — 개인정보는 가리고 근거로만 답한다"),
+    ("rocket", [3], "2025 · 수양회 백엔드 — 라벨 ZIP 생성 3~5분 → 22.8초"),
+    ("ai", [4], "2026 · SSAFY AI 챌린지 — 2차 2위/217팀 · 1차 18위/954명"),
+    ("scale", [4], "2026 · SafeLaw — 개인정보 마스킹 · 일상어 → 법률 용어 · RAG"),
     ("korea", [5], "NEXT · 백엔드 · IT 운영 · AI 서비스 — 함께할 팀을 찾습니다"),
 ]
 
@@ -238,10 +250,6 @@ def _sample(shape, n, rng, g=8):
         picked[i] = (mx, my, True)
     rng.shuffle(picked)  # 입자마다 목적지를 섞어야 "모여드는" 움직임이 된다
     return picked
-
-
-def _scatter(n, rng):
-    return [(rng.uniform(-10, BASE_W + 10), rng.uniform(-6, BASE_H + 6)) for _ in range(n)]
 
 
 def load_contrib() -> dict:
@@ -359,7 +367,7 @@ def calendar_swarm(c, ramp, contrib) -> tuple[str, str]:
     css.append("@keyframes mo{" + "".join(mo) + "}")
 
     # 효과: 레이더 스윕 · 로켓 불꽃 · 서울 핀 — 줌이 시작되기 전, 머무는 동안만
-    for name in ("radar", "rocket", "korea"):
+    for name in ("radar", "rocket", "ai", "scale", "korea"):
         k = idx[name]
         css.append(f"@keyframes fx_{name}{{{_vis(k * SPAN + SPAN * ZOOM_OUT_END, k * SPAN + SPAN * (ZOOM_IN_START - .02))}}}")
     sweep_s = 2.4
@@ -372,6 +380,8 @@ def calendar_swarm(c, ramp, contrib) -> tuple[str, str]:
                f".rot{{animation:rot {sweep_s}s linear infinite;transform-box:fill-box;transform-origin:50% 50%}}"
                f"@keyframes blip{{0%,100%{{opacity:0}}6%{{opacity:1}}55%{{opacity:.15}}}}"
                f".blip{{animation:blip {sweep_s}s linear infinite;opacity:0}}")
+    # 신경망 신호: 입력 → 은닉 → 출력으로 점이 차례로 지나간다
+    sig_s, paths = 1.8, [(NET[0][0], NET[1][1], NET[2][0]), (NET[0][2], NET[1][2], NET[2][1]), (NET[0][1], NET[1][0], NET[2][0])]
     S = SCALE
     from math import cos, radians, sin
     rx, ry, rr = (v * S for v in SCOPE)
@@ -385,6 +395,22 @@ def calendar_swarm(c, ramp, contrib) -> tuple[str, str]:
               + "".join(f'<circle class="blip" cx="{rx + rr * d * cos(radians(a)):.0f}" cy="{ry + rr * d * sin(radians(a)):.0f}" r="6" '
                         f'fill="#3FB950" style="animation-delay:{a / 360 * sweep_s:.2f}s"/>' for a, d in blips)
               + "</g>"]
+    sig = []
+    for n, (a, b, c3) in enumerate(paths):
+        name = f"sig{n}"
+        css.append(f"@keyframes {name}{{0%{{transform:translate(0,0);opacity:0}}8%{{opacity:1}}"
+                   f"45%{{transform:translate({(b[0] - a[0]) * S:.0f}px,{(b[1] - a[1]) * S:.0f}px)}}"
+                   f"90%{{transform:translate({(c3[0] - a[0]) * S:.0f}px,{(c3[1] - a[1]) * S:.0f}px);opacity:1}}100%{{opacity:0}}}}")
+        sig.append(f'<circle class="sig" cx="{a[0] * S:.0f}" cy="{a[1] * S:.0f}" r="6" fill="#3FB950" '
+                   f'style="animation:{name} {sig_s}s linear {n * sig_s / 3:.2f}s infinite;opacity:0"/>')
+    fx_top.append(f'<g class="fx" style="animation-name:fx_ai">{"".join(sig)}</g>')
+    # 저울 접시 아래: 왼쪽은 가린 개인정보, 오른쪽은 근거 — 무엇을 재는지
+    halo = f' stroke="{c["panel"]}" stroke-width="5" paint-order="stroke" stroke-linejoin="round"'
+    chips = [(90, "개인정보 [가림]"), (270, "§ 법령 · 판례 근거")]
+    fx_top.append(f'<g class="fx" style="animation-name:fx_scale">'
+                  + "".join(f'<rect x="{cx * S - 74:.0f}" y="{142 * S:.0f}" width="148" height="28" rx="14" fill="{c["panel"]}" stroke="{c["accent"]}" stroke-width="1.5"/>'
+                            + t(cx * S, 142 * S + 19, lab, 13, c["accent"], 140, 700, anchor="middle", extra=halo) for cx, lab in chips)
+                  + "</g>")
     px, py = SEOUL[0] * S, SEOUL[1] * S
     pin = "#F0883E"
     fx_top.append(f'<g class="fx" style="animation-name:fx_korea">'
@@ -457,7 +483,7 @@ def calendar_swarm(c, ramp, contrib) -> tuple[str, str]:
                          c["ink"] if k else c["muted"], STAGE_W, 600 if k else 500, anchor="middle",
                          extra=f' class="cap{" c0" if k == 0 else ""}" style="animation-name:cap{k}"'))
     # 모션 줄이기에서는 정지된 달력과 그 캡션만 보인다
-    css.append("@media (prefers-reduced-motion:reduce){.cam,.mo,.p,.cap,.hl,.fx,.cv,.day,.pulse,.flick,.rot,.blip{animation:none}"
+    css.append("@media (prefers-reduced-motion:reduce){.cam,.mo,.p,.cap,.hl,.fx,.cv,.day,.pulse,.flick,.rot,.blip{animation:none}.sig{animation:none!important}"
                ".c0{opacity:1}}")
 
     cx0, cy0, cx1, cy1 = clip
@@ -548,6 +574,15 @@ def card(d, c) -> str:
         out.append(f'<rect x="{P}" y="{by}" width="{room}" height="6" rx="3" fill="{c["track"]}"/>')
         out.append(f'<rect class="go" x="{P}" y="{by}" width="{room * d["ratio"]:.1f}" height="6" rx="3" '
                    f'fill="{c["accent"]}" style="--from:scaleX({1 / d["ratio"]:.3f});transform-origin:0 50%"/>')
+
+    # 늘어나는 막대: 개선 전 비율에서 개선 후 비율까지 자란다
+    if "grow" in d:
+        g0, g1 = d["grow"]
+        by = 198
+        out.insert(1, f"<style>{loop}</style>")
+        out.append(f'<rect x="{P}" y="{by}" width="{room}" height="6" rx="3" fill="{c["track"]}"/>')
+        out.append(f'<rect class="go" x="{P}" y="{by}" width="{room * g1:.1f}" height="6" rx="3" '
+                   f'fill="{c["accent"]}" style="--from:scaleX({g0 / g1:.3f});transform-origin:0 50%"/>')
 
     # 순위 띠: 상위 n위 구간을 점으로 펼치고, 내 점이 Public 순위에서 Private 순위로 움직인다
     if "rank" in d:
@@ -713,82 +748,11 @@ def explainer(c) -> str:
     return "\n".join(out)
 
 
-# ── Build with me: 방문자가 이슈로 요청한 모양을 코드 입자로 그려 주는 빌드 로그 카드 ──────────
-
-BUILDS = ROOT / "data" / "builds.json"
-
-
-def load_builds() -> dict:
-    import json
-    if BUILDS.exists():
-        return json.loads(BUILDS.read_text(encoding="utf-8"))
-    return {"counts": {s: 0 for s in SHAPES}, "recent": []}
-
-
-def build_log(c, builds) -> str:
-    import random
-    W, H = 1200, 300
-    recent = builds["recent"]
-    latest = recent[0]["shape"] if recent else "car"
-    rng = random.Random(len(recent) * 31 + 7)
-    pts = _sample(latest, N_PARTICLES, rng)
-    scatter = _scatter(N_PARTICLES, rng)
-
-    # 왼쪽: 최근 요청된 모양이 한 번 조립된 뒤 그대로 머문다(무한 반복 아님 — 눈이 덜 피곤하다)
-    ox, oy = 50, 50
-    css = [f".q{{font:600 11px {MONO};fill:{c['accent']};animation:2.4s cubic-bezier(.2,.8,.2,1) both}}",
-           "@media (prefers-reduced-motion:reduce){.q{animation:none}}"]
-    parts = []
-    for i, (x, y, is_edge) in enumerate(pts):
-        sx, sy = scatter[i]
-        op = 1 if is_edge else 0.4
-        if not recent:
-            op *= 0.35  # 아직 아무도 안 만들었으면 흐린 자리표시
-        delay = rng.uniform(0, 0.6)
-        css.append(f"@keyframes q{i}{{from{{transform:translate({sx - x:.0f}px,{sy - y:.0f}px);opacity:0}}"
-                   f"to{{transform:none;opacity:{op}}}}}")
-        parts.append(f'<text class="q" x="{x}" y="{y}" text-anchor="middle" dominant-baseline="central" '
-                     f'style="animation-name:q{i};animation-delay:{delay:.2f}s">'
-                     f'{escape(TOKENS[i % len(TOKENS)])}</text>')
-
-    # 오른쪽: 터미널 로그
-    tx = 470
-    out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
-           f'role="img" aria-label="Build with me 로그">',
-           f'<style>{"".join(css)}</style>',
-           f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="16" fill="{c["panel"]}" stroke="{c["line"]}"/>',
-           f'<g transform="translate({ox},{oy})">{"".join(parts)}</g>',
-           f'<line x1="{tx - 30}" y1="28" x2="{tx - 30}" y2="{H - 28}" stroke="{c["line"]}"/>']
-    for k, col in enumerate(("#FF5F57", "#FEBC2E", "#28C840")):
-        out.append(f'<circle cx="{tx + 6 + k * 18}" cy="44" r="5" fill="{col}"/>')
-    out.append(t(tx + 70, 49, "build-with-me", 13, c["faint"], 300, 500, MONO))
-    out.append(t(tx, 92, "$ git log --builds --last 5", 15, c["ink"], 600, 600, MONO))
-
-    if recent:
-        for r, b in enumerate(recent[:5]):
-            y = 126 + r * 26
-            out.append(t(tx, y, f"{b['shape']:<7}", 15, c["accent"], 90, 600, MONO, extra=' xml:space="preserve"'))
-            out.append(t(tx + 90, y, "@" + b["user"], 15, c["ink"], 400, 400, MONO))
-            out.append(t(W - 50, y, b["at"], 15, c["faint"], 140, 400, MONO, anchor="end"))
-    else:
-        out.append(t(tx, 132, "(아직 빌드 기록이 없어요)", 15, c["muted"], 600, 400, MONO))
-        out.append(t(tx, 160, "아래 버튼으로 첫 번째 빌더가 되어주세요", 15, c["muted"], 600, 400, MONO))
-
-    n = builds["counts"]
-    total = sum(n.values())
-    summary = " · ".join(f"{s} {n.get(s, 0)}" for s in SHAPES) + f"  ·  total {total}"
-    out.append(t(tx, H - 34, summary, 14, c["muted"], 680, 500, MONO))
-    out.append("</svg>")
-    return "\n".join(out)
-
-
 def main():
     import explainers  # 프로젝트별 개념도 — 이 모듈의 t() 등을 쓰므로 여기서 불러온다
     ASSETS.mkdir(exist_ok=True)
-    builds = load_builds()
     for mode, c in THEMES.items():
         (ASSETS / f"hero_{mode}.svg").write_text(hero(c, mode), encoding="utf-8")
-        (ASSETS / f"buildlog_{mode}.svg").write_text(build_log(c, builds), encoding="utf-8")
         (ASSETS / f"explainer_{mode}.svg").write_text(explainer(c), encoding="utf-8")
         for name, draw in explainers.ALL.items():
             (ASSETS / f"ex_{name}_{mode}.svg").write_text(draw(c, mode), encoding="utf-8")
@@ -796,7 +760,7 @@ def main():
             (ASSETS / f"path_{d['slug']}_{mode}.svg").write_text(path_button(d, c, i * .4), encoding="utf-8")
         for d in CARDS:
             (ASSETS / f"card_{d['slug']}_{mode}.svg").write_text(card(d, c), encoding="utf-8")
-    print(f"{len(THEMES) * (len(CARDS) + len(PATHS) + 3 + len(explainers.ALL))} files → {ASSETS}")
+    print(f"{len(THEMES) * (len(CARDS) + len(PATHS) + 2 + len(explainers.ALL))} files → {ASSETS}")
 
 
 if __name__ == "__main__":
