@@ -763,6 +763,7 @@ def build_log(c, builds) -> str:
 
 
 def main():
+    import explainers  # 프로젝트별 개념도 — 이 모듈의 t() 등을 쓰므로 여기서 불러온다
     ASSETS.mkdir(exist_ok=True)
     builds = load_builds()
     for mode, c in THEMES.items():
@@ -770,11 +771,13 @@ def main():
         (ASSETS / f"buildlog_{mode}.svg").write_text(build_log(c, builds), encoding="utf-8")
         (ASSETS / f"explainer_{mode}.svg").write_text(explainer(c), encoding="utf-8")
         (ASSETS / f"chat_{mode}.svg").write_text(chat(c), encoding="utf-8")
+        for name, draw in explainers.ALL.items():
+            (ASSETS / f"ex_{name}_{mode}.svg").write_text(draw(c, mode), encoding="utf-8")
         for i, d in enumerate(PATHS):
             (ASSETS / f"path_{d['slug']}_{mode}.svg").write_text(path_button(d, c, i * .4), encoding="utf-8")
         for d in CARDS:
             (ASSETS / f"card_{d['slug']}_{mode}.svg").write_text(card(d, c), encoding="utf-8")
-    print(f"{len(THEMES) * (len(CARDS) + len(PATHS) + 4)} files → {ASSETS}")
+    print(f"{len(THEMES) * (len(CARDS) + len(PATHS) + 4 + len(explainers.ALL))} files → {ASSETS}")
 
 
 if __name__ == "__main__":

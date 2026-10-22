@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="482" viewBox="0 0 1200 482" role="img" aria-label="선택지 회전 TTA 개념도: 선택지 순서를 네 번 순환 이동해 추론하고, 확률을 원래 선택지 위치로 복원해 평균한다. 첫 번째 자리를 선호하는 편향이 있으면 회전 없이는 a를 고르지만, 평균하면 정답 c를 고른다.">
+<style>.a{animation:12s linear infinite}@keyframes row0{0%,3.33%{opacity:0;transform:translateX(-12px)}6.67%,95.00%{opacity:1;transform:none}98.33%,100%{opacity:0}}@keyframes row1{0%,13.33%{opacity:0;transform:translateX(-12px)}16.67%,95.00%{opacity:1;transform:none}98.33%,100%{opacity:0}}@keyframes row2{0%,23.33%{opacity:0;transform:translateX(-12px)}26.67%,95.00%{opacity:1;transform:none}98.33%,100%{opacity:0}}@keyframes row3{0%,33.33%{opacity:0;transform:translateX(-12px)}36.67%,95.00%{opacity:1;transform:none}98.33%,100%{opacity:0}}@keyframes avg1{0%,44.17%{opacity:0}46.67%,95.00%{opacity:1}97.50%,100%{opacity:0}}@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style>
+<rect x="1" y="1" width="1198" height="480" rx="16" fill="#F6F8FA" stroke="#D0D7DE"/>
+<text x="40" y="48" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="20" font-weight="700" fill="#1F2328" text-anchor="start">AI 챌린지 1차 — 선택지를 돌려 가며 물어 위치 편향을 지운다</text>
+<text x="40" y="74" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="13" font-weight="400" fill="#59636E" text-anchor="start">재활용품 VQA · 954명 중 18위 (상위 약 1.9%)</text>
+<g transform="translate(0,30)">
+<g class="a" style="animation-name:row0">
+<text x="40" y="130" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="600" fill="#59636E" text-anchor="start">회전 0</text>
+<rect x="120" y="100" width="104" height="48" rx="8" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="132" y="120" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#1F2328" text-anchor="start">1번 자리: a</text>
+<rect x="132" y="130" width="33" height="8" rx="4" fill="#8C959F"/>
+<rect x="240" y="100" width="104" height="48" rx="8" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="252" y="120" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#1F2328" text-anchor="start">2번 자리: b</text>
+<rect x="252" y="130" width="11" height="8" rx="4" fill="#8C959F"/>
+<rect x="360" y="100" width="104" height="48" rx="8" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="372" y="120" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#1F2328" text-anchor="start">3번 자리: c</text>
+<rect x="372" y="130" width="28" height="8" rx="4" fill="#0969DA"/>
+<rect x="480" y="100" width="104" height="48" rx="8" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="492" y="120" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#1F2328" text-anchor="start">4번 자리: d</text>
+<rect x="492" y="130" width="8" height="8" rx="4" fill="#8C959F"/>
+<text x="612" y="130" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="13" font-weight="600" fill="#CF222E" text-anchor="start">← 회전 없이: a (편향)</text>
+</g>
+<g class="a" style="animation-name:row1">
+<text x="40" y="196" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="600" fill="#59636E" text-anchor="start">회전 1</text>
+<rect x="120" y="166" width="104" height="48" rx="8" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="132" y="186" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#1F2328" text-anchor="start">1번 자리: b</text>
+<rect x="132" y="196" width="36" height="8" rx="4" fill="#8C959F"/>
+<rect x="240" y="166" width="104" height="48" rx="8" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="252" y="186" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#1F2328" text-anchor="start">2번 자리: c</text>
+<rect x="252" y="196" width="28" height="8" rx="4" fill="#0969DA"/>
+<rect x="360" y="166" width="104" height="48" rx="8" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="372" y="186" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#1F2328" text-anchor="start">3번 자리: d</text>
+<rect x="372" y="196" width="8" height="8" rx="4" fill="#8C959F"/>
+<rect x="480" y="166" width="104" height="48" rx="8" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="492" y="186" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#1F2328" text-anchor="start">4번 자리: a</text>
+<rect x="492" y="196" width="8" height="8" rx="4" fill="#8C959F"/>
+</g>
+<g class="a" style="animation-name:row2">
+<text x="40" y="262" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="600" fill="#59636E" text-anchor="start">회전 2</text>
+<rect x="120" y="232" width="104" height="48" rx="8" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="132" y="252" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#1F2328" text-anchor="start">1번 자리: c</text>
+<rect x="132" y="262" width="52" height="8" rx="4" fill="#0969DA"/>
+<rect x="240" y="232" width="104" height="48" rx="8" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="252" y="252" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#1F2328" text-anchor="start">2번 자리: d</text>
+<rect x="252" y="262" width="8" height="8" rx="4" fill="#8C959F"/>
+<rect x="360" y="232" width="104" height="48" rx="8" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="372" y="252" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#1F2328" text-anchor="start">3번 자리: a</text>
+<rect x="372" y="262" width="8" height="8" rx="4" fill="#8C959F"/>
+<rect x="480" y="232" width="104" height="48" rx="8" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="492" y="252" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#1F2328" text-anchor="start">4번 자리: b</text>
+<rect x="492" y="262" width="11" height="8" rx="4" fill="#8C959F"/>
+</g>
+<g class="a" style="animation-name:row3">
+<text x="40" y="328" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="600" fill="#59636E" text-anchor="start">회전 3</text>
+<rect x="120" y="298" width="104" height="48" rx="8" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="132" y="318" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#1F2328" text-anchor="start">1번 자리: d</text>
+<rect x="132" y="328" width="33" height="8" rx="4" fill="#8C959F"/>
+<rect x="240" y="298" width="104" height="48" rx="8" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="252" y="318" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#1F2328" text-anchor="start">2번 자리: a</text>
+<rect x="252" y="328" width="8" height="8" rx="4" fill="#8C959F"/>
+<rect x="360" y="298" width="104" height="48" rx="8" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="372" y="318" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#1F2328" text-anchor="start">3번 자리: b</text>
+<rect x="372" y="328" width="11" height="8" rx="4" fill="#8C959F"/>
+<rect x="480" y="298" width="104" height="48" rx="8" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="492" y="318" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="600" fill="#1F2328" text-anchor="start">4번 자리: c</text>
+<rect x="492" y="328" width="28" height="8" rx="4" fill="#0969DA"/>
+</g>
+<g class="a" style="animation-name:avg1">
+<text x="860" y="120" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="15" font-weight="700" fill="#1F2328" text-anchor="start">원래 선택지로 복원 → 평균</text>
+<text x="860" y="168" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="16" font-weight="700" fill="#1F2328" text-anchor="start">a</text>
+<rect x="890" y="154" width="260" height="18" rx="9" fill="#E6EAEF"/>
+<rect x="890" y="154" width="47" height="18" rx="9" fill="#8C959F"/>
+<text x="860" y="214" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="16" font-weight="700" fill="#1F2328" text-anchor="start">b</text>
+<rect x="890" y="200" width="260" height="18" rx="9" fill="#E6EAEF"/>
+<rect x="890" y="200" width="56" height="18" rx="9" fill="#8C959F"/>
+<text x="860" y="260" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="16" font-weight="700" fill="#1F2328" text-anchor="start">c</text>
+<rect x="890" y="246" width="260" height="18" rx="9" fill="#E6EAEF"/>
+<rect x="890" y="246" width="110" height="18" rx="9" fill="#0969DA"/>
+<text x="860" y="306" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="16" font-weight="700" fill="#1F2328" text-anchor="start">d</text>
+<rect x="890" y="292" width="260" height="18" rx="9" fill="#E6EAEF"/>
+<rect x="890" y="292" width="47" height="18" rx="9" fill="#8C959F"/>
+<text x="860" y="352" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="18" font-weight="700" fill="#0969DA" text-anchor="start">→ 정답 c</text>
+</g>
+<text x="40" y="392" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="13" font-weight="400" fill="#1F2328" text-anchor="start">그 밖에: 모델별 a~d 확률 soft ensemble · SHA-256 이미지 해시 단위 grouped validation으로 누수 차단 · Public 0.92116 → 0.94324</text>
+</g>
+<text x="40" y="464" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="12" font-weight="400" fill="#8C959F" text-anchor="start">개념도 — 점수 · 편향 크기는 원리를 보여 주기 위한 그림용 값입니다. 방법(순환 이동 → 복원 → 평균)은 저장소 README 그대로입니다.</text>
+</svg>
