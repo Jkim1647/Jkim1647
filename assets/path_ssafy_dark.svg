@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="112" viewBox="0 0 400 112" role="img" aria-label="SSAFY 동기라면 — 같이 놀기">
-<style>@keyframes nudge{0%,70%,100%{transform:none}80%{transform:translateX(7px)}90%{transform:none}}.arw{animation:nudge 3s ease-in-out 0.8s infinite}@media (prefers-reduced-motion:reduce){.arw{animation:none}}</style>
-<rect x="1" y="1" width="398" height="110" rx="14" fill="#161B22" stroke="#30363D"/>
-<rect x="1" y="1" width="5" height="110" rx="2" fill="#4493F8"/>
-<text x="26" y="36" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="700" fill="#4493F8" text-anchor="start" letter-spacing="1">FOR SSAFY 16기</text>
-<text x="26" y="70" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="22" font-weight="700" fill="#E6EDF3" text-anchor="start">SSAFY 동기라면</text>
-<text x="26" y="96" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="15" font-weight="500" fill="#9198A1" text-anchor="start">같이 놀기</text>
-<g class="arw"><text x="105.0" y="96" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="16" font-weight="700" fill="#4493F8" text-anchor="start">→</text></g>
-</svg>
