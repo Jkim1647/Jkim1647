@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="270" viewBox="0 0 600 270" role="img" aria-label="수양회 관리 시스템 백엔드">
+<rect x="1" y="1" width="598" height="268" rx="14" fill="#161B22" stroke="#30363D"/>
+<text x="32" y="50" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="13" font-weight="600" fill="#4493F8" text-anchor="start" letter-spacing="1">BACKEND · 2025</text>
+<text x="32" y="86" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="22" font-weight="700" fill="#E6EDF3" text-anchor="start">수양회 관리 시스템 백엔드</text>
+<text x="32" y="114" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#9198A1" text-anchor="start">7인 팀 · Node.js · PostgreSQL · 참가자 약 1,500명 실사용</text>
+<text x="32" y="178" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="22" font-weight="500" fill="#6E7681" text-anchor="start" text-decoration="line-through">3~5분</text>
+<text x="107.6" y="178" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="22" font-weight="400" fill="#6E7681" text-anchor="start">→</text>
+<text x="143.6" y="178" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="40" font-weight="700" fill="#4493F8" text-anchor="start">22.8초</text>
+<rect x="32" y="198" width="536" height="6" rx="3" fill="#21262D"/>
+<rect x="32" y="198" width="67.9" height="6" rx="3" fill="#4493F8"/>
+<text x="32" y="240" font-family="-apple-system, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" font-size="14" font-weight="400" fill="#9198A1" text-anchor="start">라벨 이미지 ZIP 생성 · 브라우저 풀 + 환경별 동시성 제어</text>
+</svg>
