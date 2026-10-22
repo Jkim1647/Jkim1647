@@ -23,7 +23,12 @@
 
 <br/>
 
-<p align="center"><b>어떤 분이신가요?</b> 고르시면 맞는 곳으로 바로 안내할게요.</p>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/chat_dark.svg">
+    <img src="./assets/chat_light.svg" width="100%" alt="안녕하세요, 김진영입니다. 현대자동차그룹 시스템을 3년 운영하다가, 지금은 백엔드 · AI를 만들고 있어요. 어떤 분이신가요? 아래에서 골라 주시면 바로 안내할게요." />
+  </picture>
+</p>
 
 <p align="center">
   <a href="https://github.com/Jkim1647/Jkim1647#for-recruiter">
@@ -105,6 +110,7 @@
 - **학력 · 교육**: 한양대학교 ERICA 스마트ICT융합전공 (GPA 4.0/4.5) · SSAFY 16기 (2026.07 –)
 - **자격**: 정보처리기사 · 전자산업기사
 - **병역**: 공군 병장 만기전역 (2024.03 – 2025.12)
+- **직접 해 보기**: 🚨 [장애 대응 시뮬레이터](https://github.com/Jkim1647/Jkim1647/blob/main/incident.md#start) — 실제로 겪은 장애 3가지를 선택형으로
 - **자료**: 📄 [포트폴리오 PDF (14쪽)](https://github.com/Jkim1647/portfolio/blob/main/kim-jinyoung-portfolio.pdf) · ✉️ kjy164777@gmail.com
 
 <sub><a href="https://github.com/Jkim1647/Jkim1647#top">↑ 처음으로</a></sub>
@@ -120,6 +126,17 @@
     <source media="(prefers-color-scheme: dark)" srcset="./assets/explainer_dark.svg">
     <img src="./assets/explainer_light.svg" width="100%" alt="라벨 ZIP 생성 최적화 개념도 — BEFORE: 이미지마다 Chromium을 띄우는 순차 처리로 3~5분. AFTER: 미리 띄워 둔 브라우저 풀에서 병렬 처리해 22.8초." />
   </picture>
+</p>
+
+장애를 어떻게 좁혀 가는지는 직접 골라 보며 확인할 수 있어요. 제가 실제로 겪은 장애 3가지로 만들었습니다.
+
+<p align="center">
+  <a href="https://github.com/Jkim1647/Jkim1647/blob/main/incident.md#start">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="./assets/path_incident_dark.svg">
+      <img src="./assets/path_incident_light.svg" width="40%" alt="장애 대응 시뮬레이터 — 골라 가며 풀어 보기" />
+    </picture>
+  </a>
 </p>
 
 트러블슈팅과 기술 선택 이유는 아래 **프로젝트 상세**를 펼치거나 [포트폴리오 문서](https://github.com/Jkim1647/portfolio)에서 볼 수 있습니다. <sub><a href="https://github.com/Jkim1647/Jkim1647#top">↑ 처음으로</a></sub>

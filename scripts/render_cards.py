@@ -484,12 +484,77 @@ def card(d, c) -> str:
     return "\n".join(out)
 
 
+# ── 인사말 말풍선: "입력 중…" 점이 지나간 뒤 한 줄씩 도착한다. 한 줄은 오늘 광주 날씨 · 요일 ────────
+
+WEATHER = ROOT / "data" / "weather.json"
+WMO = [((0,), "☀️", "맑음"), ((1, 2), "🌤️", "구름 조금"), ((3,), "☁️", "흐림"), ((45, 48), "🌫️", "안개"),
+       ((51, 53, 55, 56, 57), "🌦️", "이슬비"), ((61, 63, 65, 66, 67), "🌧️", "비"), ((71, 73, 75, 77, 85, 86), "🌨️", "눈"),
+       ((80, 81, 82), "🌦️", "소나기"), ((95, 96, 99), "⛈️", "뇌우")]
+
+
+def greeting_lines() -> list[str]:
+    import json
+    from datetime import datetime, timedelta, timezone
+    today = datetime.now(timezone(timedelta(hours=9)))
+    day = "월화수목금토일"[today.weekday()] + "요일"
+    weather = f"좋은 {day} 보내고 계신가요?"
+    if WEATHER.exists():  # 오늘 날짜의 데이터만 쓴다 — 갱신이 실패한 날엔 날씨 없이 인사
+        w = json.loads(WEATHER.read_text(encoding="utf-8"))
+        hit = next(((e, d) for codes, e, d in WMO if w["code"] in codes), None)
+        if w["date"] == today.strftime("%Y-%m-%d") and hit:
+            weather = f"오늘 광주는 {hit[0]} {hit[1]}, 낮 최고 {w['tmax']}°C예요. 좋은 {day} 보내세요!"
+    return ["안녕하세요, 김진영입니다 👋",
+            weather,
+            "현대자동차그룹 시스템을 3년 운영하다가, 지금은 백엔드 · AI를 만들고 있어요",
+            "어떤 분이신가요? 아래에서 골라 주시면 바로 안내할게요 👇"]
+
+
+def chat(c) -> str:
+    lines = greeting_lines()
+    W, PAD, FS, BH, GAP = 1200, 40, 20, 50, 16
+    H = PAD * 2 + len(lines) * (BH + GAP) - GAP
+    ax, bx = PAD + 24, PAD + 64            # 아바타 중심, 말풍선 시작
+    css = [f".m,.ty{{opacity:0;animation-fill-mode:both;animation-timing-function:cubic-bezier(.2,.9,.3,1.2)}}",
+           "@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}",
+           "@keyframes typing{0%{opacity:0}10%,90%{opacity:1}100%{opacity:0}}",
+           "@keyframes dot{0%,60%,100%{transform:none}30%{transform:translateY(-4px)}}",
+           ".dt{animation:dot .9s ease-in-out infinite}",
+           "@media (prefers-reduced-motion:reduce){.m{animation:none!important;opacity:1}.ty{display:none}}"]
+    out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
+           f'role="img" aria-label="{escape(" / ".join(lines))}">', ""]
+    # 아바타는 처음부터 보인다
+    out.append(f'<circle cx="{ax}" cy="{PAD + BH / 2}" r="22" fill="{c["accent"]}"/>'
+               + t(ax, PAD + BH / 2 + 6, "JY", 15, "#FFFFFF", 40, 700, MONO, anchor="middle"))
+    tick = 0.4
+    for i, line in enumerate(lines):
+        y = PAD + i * (BH + GAP)
+        bw = width(line, FS) * .92 + 44       # 추정 폭은 보수적이라 살짝 줄인다
+        type_s = 0.8 if i else 0.6
+        # 입력 중 점 3개 → 사라지고 말풍선 도착
+        out.append(f'<g class="ty" style="animation:typing {type_s}s {tick}s both">'
+                   f'<rect x="{bx}" y="{y}" width="74" height="{BH}" rx="{BH / 2}" fill="{c["track"]}"/>'
+                   + "".join(f'<circle class="dt" cx="{bx + 22 + k * 15}" cy="{y + BH / 2}" r="4" fill="{c["faint"]}" '
+                             f'style="animation-delay:{k * .15:.2f}s;transform-box:fill-box"/>' for k in range(3))
+                   + "</g>")
+        tick += type_s
+        out.append(f'<g class="m" style="animation:pop .35s {tick}s both;transform-box:fill-box;transform-origin:0 50%">'
+                   f'<rect x="{bx}" y="{y}" width="{bw:.0f}" height="{BH}" rx="{BH / 2}" '
+                   f'fill="{c["panel"]}" stroke="{c["line"]}"/>'
+                   + t(bx + 22, y + BH / 2 + 7, line, FS, c["ink"], W - bx - 60, 500)
+                   + "</g>")
+        tick += 0.45
+    out[1] = f'<style>{"".join(css)}</style>'
+    out.append("</svg>")
+    return "\n".join(out)
+
+
 # ── 경로 선택 버튼: 방문자 유형별로 README 안의 해당 섹션으로 이동 ──────────────────────────────
 
 PATHS = [
     dict(slug="recruiter", tag="FOR RECRUITERS", title="채용담당자라면", sub="30초 요약 보기"),
     dict(slug="developer", tag="FOR DEVELOPERS", title="개발자라면", sub="기술 깊이 보기"),
     dict(slug="ssafy", tag="FOR SSAFY 16기", title="SSAFY 동기라면", sub="같이 놀기"),
+    dict(slug="incident", tag="INTERACTIVE · 3 SCENARIOS", title="장애 대응 시뮬레이터", sub="골라 가며 풀어 보기"),
 ]
 
 
@@ -704,11 +769,12 @@ def main():
         (ASSETS / f"hero_{mode}.svg").write_text(hero(c, mode), encoding="utf-8")
         (ASSETS / f"buildlog_{mode}.svg").write_text(build_log(c, builds), encoding="utf-8")
         (ASSETS / f"explainer_{mode}.svg").write_text(explainer(c), encoding="utf-8")
+        (ASSETS / f"chat_{mode}.svg").write_text(chat(c), encoding="utf-8")
         for i, d in enumerate(PATHS):
             (ASSETS / f"path_{d['slug']}_{mode}.svg").write_text(path_button(d, c, i * .4), encoding="utf-8")
         for d in CARDS:
             (ASSETS / f"card_{d['slug']}_{mode}.svg").write_text(card(d, c), encoding="utf-8")
-    print(f"{len(THEMES) * (len(CARDS) + len(PATHS) + 3)} files → {ASSETS}")
+    print(f"{len(THEMES) * (len(CARDS) + len(PATHS) + 4)} files → {ASSETS}")
 
 
 if __name__ == "__main__":
