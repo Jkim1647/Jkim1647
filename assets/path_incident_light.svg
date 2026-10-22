@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="112" viewBox="0 0 400 112" role="img" aria-label="장애 대응 시뮬레이터 — 골라 가며 풀어 보기">
-<style>@keyframes nudge{0%,70%,100%{transform:none}80%{transform:translateX(7px)}90%{transform:none}}.arw{animation:nudge 3s ease-in-out 1.2000000000000002s infinite}@media (prefers-reduced-motion:reduce){.arw{animation:none}}</style>
+<style>@keyframes nudge{0%,70%,100%{transform:none}80%{transform:translateX(7px)}90%{transform:none}}.arw{animation:nudge 3s ease-in-out 0.8s infinite}@media (prefers-reduced-motion:reduce){.arw{animation:none}}</style>
 <rect x="1" y="1" width="398" height="110" rx="14" fill="#F6F8FA" stroke="#D0D7DE"/>
 <rect x="1" y="1" width="5" height="110" rx="2" fill="#0969DA"/>
 <text x="26" y="36" font-family="ui-monospace, SFMono-Regular, Consolas, 'D2Coding', monospace" font-size="12" font-weight="700" fill="#0969DA" text-anchor="start" letter-spacing="1">INTERACTIVE · 3 SCENARIOS</text>
