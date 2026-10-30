@@ -538,6 +538,53 @@ def hero(c, mode) -> str:
     return "\n".join(out)
 
 
+TRACK_SHORT = ["기능경기", "HDS 운영", "공군", "백엔드", "SSAFY · AI", "?"]  # 휴대폰 폭용 짧은 표기
+
+
+def hero_mobile(c, mode) -> str:
+    """휴대폰 폭용 세로 배너: 글자를 위에 크게, 같은 무대를 폭 가득 키워 아래에, 타임라인은 짧게."""
+    contrib = load_contrib()
+    W, H, PAD = 720, 850, 40
+    stage, captions = calendar_swarm(c, RAMP[mode], contrib)
+    s = (W - 2 * PAD) / STAGE_W                # 데스크톱 무대를 그대로 키운다
+    top = 300
+    out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
+           f'role="img" aria-label="{escape(HERO["name"])} · {escape(HERO["role"])}">', "",
+           f'<rect width="{W}" height="{H}" rx="16" fill="{c["panel"]}" stroke="{c["line"]}"/>',
+           t(PAD, 66, "TARGET  ·  " + HERO["target"], 17, c["accent"], W - 2 * PAD, 600, MONO),
+           t(PAD, 150, HERO["name"], 64, c["ink"], 300, 700),
+           t(PAD + width(HERO["name"], 64) + 20, 150, HERO["name_en"], 26, c["muted"], 300),
+           t(PAD, 206, HERO["role"], 32, c["ink"], W - 2 * PAD, 600)]
+    for k, line in enumerate(HERO["motto"]):
+        out.append(t(PAD, 246 + k * 30, line, 21, c["muted"], W - 2 * PAD))
+    out.append(f'<g transform="translate({PAD - STAGE_X * s:.1f},{top - STAGE_Y * s:.1f}) scale({s:.4f})">{stage}{captions}</g>')
+
+    # 타임라인: 연도와 짧은 표기만
+    y, x0, x1 = 772, 70, W - 70
+    track = HERO["track"]
+    step = (x1 - x0) / (len(track) - 1)
+    css = []
+    out.append(f'<line x1="{x0}" y1="{y}" x2="{x1}" y2="{y}" stroke="{c["line"]}" stroke-width="2"/>')
+    for i, ((year, _), short) in enumerate(zip(track, TRACK_SHORT)):
+        x = x0 + step * i
+        now, nxt = year == "2026", year == "NEXT"
+        dash = ' stroke-dasharray="3 3"' if nxt else ""
+        out.append(f'<circle cx="{x:.0f}" cy="{y}" r="7" fill="{c["accent"] if now else c["bg"]}" '
+                   f'stroke="{c["accent"] if now else c["faint"]}" stroke-width="2"{dash}/>')
+        out.append(t(x, y + 34, year, 18, c["ink"] if now else c["muted"], step - 8, 700 if now else 600, MONO, anchor="middle"))
+        out.append(t(x, y + 58, short, 14, c["ink"] if now else c["muted"], step - 8, 500, anchor="middle"))
+        lit = [k for k, (_, nodes, _) in enumerate(CHAPTERS, start=1) if i in nodes]
+        if lit:
+            st = lit[0] * SPAN
+            css.append(f"@keyframes hl{i}{{{_vis(st + SPAN * ZOOM_OUT_END, st + SPAN * .9)}}}")
+            out.append(f'<g class="hl" style="animation-name:hl{i}">'
+                       f'<circle cx="{x:.0f}" cy="{y}" r="15" fill="{c["accent"]}" opacity=".18"/>'
+                       f'<circle cx="{x:.0f}" cy="{y}" r="7" fill="{c["accent"]}"/></g>')
+    out[1] = f'<style>{"".join(css)}</style>'
+    out.append("</svg>")
+    return "\n".join(out)
+
+
 def card(d, c) -> str:
     W, H, P = 600, 270, 32
     room = W - 2 * P
@@ -852,12 +899,68 @@ def keycaps(c, mode) -> str:
                       *out, "</svg>"])
 
 
+def macropad(c, mode) -> str:
+    """휴대폰 폭용: 기술 키 24개만 4열 매크로패드로. 주력 10개(파란 키)를 먼저, 써 본 기술 14개를 이어서."""
+    import json
+    icons = json.loads(ICONS.read_text(encoding="utf-8"))
+    k = KEYS[mode]
+    W, PAD, COLS, GAP, KH = 720, 40, 4, 12, 96
+    case_pad = 20
+    kw = (W - 2 * PAD - 2 * case_pad - GAP * (COLS - 1)) / COLS
+    keys = [(n, sl, True) for n, sl in MAIN_TECH] + [(n, sl, False) for n, sl in USED_TECH]
+    rows = -(-len(keys) // COLS)
+    top = 92
+    case_h = rows * (KH + GAP) - GAP + 2 * case_pad
+    H = top + case_h + 30
+    defs = "".join(f'<linearGradient id="g{kind}" x1="0" y1="0" x2="0" y2="1">'
+                   f'<stop offset="0" stop-color="{k[kind][0]}"/><stop offset="1" stop-color="{k[kind][1]}"/></linearGradient>'
+                   for kind in ("main", "key"))
+    css = ("@keyframes press{0%,3%,100%{transform:none}1.5%{transform:translateY(3px)}}"
+           ".tap{animation:press 9s ease-in-out infinite}"
+           "@media (prefers-reduced-motion:reduce){.tap{animation:none}}")
+    out = []
+    for i, (name, slug, main) in enumerate(keys):
+        x = PAD + case_pad + (i % COLS) * (kw + GAP)
+        y = top + case_pad + (i // COLS) * (KH + GAP)
+        face = "main" if main else "key"
+        _, _, side, _ = k[face]
+        ink = k["main"][3] if main else c["accent"]
+        cx = x + kw / 2
+        border = f' stroke="{c["line"]}"' if face == "key" and mode == "light" else ""
+        if slug:
+            logo = f'<path transform="translate({cx - 16:.1f},{y + 14}) scale(1.333)" d="{icons[slug]}" fill="{ink}"/>'
+        else:
+            mono = MONOGRAM[name]
+            logo = (f'<rect x="{cx - 17:.1f}" y="{y + 13}" width="34" height="34" rx="7" fill="none" stroke="{ink}" stroke-width="2"/>'
+                    + t(cx, y + 35, mono, 13 if len(mono) > 2 else 15, ink, 34, 700, MONO, anchor="middle"))
+        out.append(f'<rect x="{x:.0f}" y="{y}" width="{kw:.0f}" height="{KH}" rx="12" fill="{side}"{border}/>'
+                   f'<g class="tap" style="animation-delay:{i * .28:.2f}s">'
+                   f'<rect x="{x + 5:.0f}" y="{y + 4}" width="{kw - 10:.0f}" height="{KH - 15}" rx="10" fill="url(#g{face})"/>'
+                   f'<rect x="{x + 10:.0f}" y="{y + 6}" width="{kw - 20:.0f}" height="2" rx="1" fill="#FFFFFF" opacity=".22"/>'
+                   + logo + t(cx, y + 70, name, 16, ink, kw - 12, 700, anchor="middle") + "</g>")
+    legend = (f'<rect x="{PAD}" y="40" width="16" height="16" rx="3" fill="{k["main"][1]}"/>'
+              + t(PAD + 24, 54, "주력 · 수치로 결과를 낸 기술", 16, c["muted"], 300, 600)
+              + f'<rect x="{PAD + 330}" y="40" width="16" height="16" rx="3" fill="{k["key"][0]}" stroke="{c["accent"]}" stroke-width="1.5"/>'
+              + t(PAD + 354, 54, "써 본 기술", 16, c["muted"], 200, 600))
+    names = ("기술 스택. 주력: " + ", ".join(n for n, _ in MAIN_TECH) + ". 써 본 기술: " + ", ".join(n for n, _ in USED_TECH))
+    return "\n".join([f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
+                      f'role="img" aria-label="{escape(names)}">', f"<style>{css}</style>", f"<defs>{defs}</defs>",
+                      f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="16" fill="{c["panel"]}" stroke="{c["line"]}"/>',
+                      legend,
+                      f'<rect x="{PAD}" y="{top}" width="{W - 2 * PAD}" height="{case_h}" rx="18" fill="{k["case"][0]}" '
+                      f'stroke="{k["case"][1]}" stroke-width="2"/>',
+                      *out, "</svg>"])
+
+
 def main():
     import explainers  # 프로젝트별 개념도 — 이 모듈의 t() 등을 쓰므로 여기서 불러온다
     ASSETS.mkdir(exist_ok=True)
     for mode, c in THEMES.items():
         (ASSETS / f"hero_{mode}.svg").write_text(hero(c, mode), encoding="utf-8")
         (ASSETS / f"stack_{mode}.svg").write_text(keycaps(c, mode), encoding="utf-8")
+        # 휴대폰 폭(README의 <picture media="(max-width: 600px)">)용
+        (ASSETS / f"hero_mobile_{mode}.svg").write_text(hero_mobile(c, mode), encoding="utf-8")
+        (ASSETS / f"stack_mobile_{mode}.svg").write_text(macropad(c, mode), encoding="utf-8")
         (ASSETS / f"explainer_{mode}.svg").write_text(explainer(c), encoding="utf-8")
         for name, draw in explainers.ALL.items():
             (ASSETS / f"ex_{name}_{mode}.svg").write_text(draw(c, mode), encoding="utf-8")
@@ -865,7 +968,7 @@ def main():
             (ASSETS / f"path_{d['slug']}_{mode}.svg").write_text(path_button(d, c, i * .4), encoding="utf-8")
         for d in CARDS:
             (ASSETS / f"card_{d['slug']}_{mode}.svg").write_text(card(d, c), encoding="utf-8")
-    print(f"{len(THEMES) * (len(CARDS) + len(PATHS) + 3 + len(explainers.ALL))} files → {ASSETS}")
+    print(f"{len(THEMES) * (len(CARDS) + len(PATHS) + 5 + len(explainers.ALL))} files → {ASSETS}")
 
 
 if __name__ == "__main__":
