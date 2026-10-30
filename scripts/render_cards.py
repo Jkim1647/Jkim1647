@@ -748,26 +748,35 @@ def explainer(c) -> str:
     return "\n".join(out)
 
 
-# ── 기술 스택 키보드: 분야별 줄(맨 앞은 분야 이름 키), 주력은 파란 키 · 써 본 기술은 옅은 키, 키마다 로고 ──
+# ── 기술 스택 키보드: 실제 65% 배치(68키). 글자 키 자리에 기술 로고 키캡을 꽂는다 ─────────────────────
+# 윗줄 Q~P = 주력(파란 키), 가운데 A~L · 아랫줄 Z~B = 써 본 기술(흰 키 + 파란 로고), 나머지는 평범한 키.
 
 ICONS = ROOT / "data" / "simple-icons.json"   # simple-icons(CC0) 경로를 버전 고정해 저장해 둔 것
-# (분야, [(이름, simple-icons 슬러그 또는 None=글자 표시, 주력 여부)])
-STACK = [
-    ("BACKEND", [("Java", "openjdk", True), ("Node.js", "nodedotjs", True), ("Express", "express", True),
-                 ("TypeScript", "typescript", True), ("Spring Boot", "springboot", False), ("FastAPI", "fastapi", False)]),
-    ("DATA", [("PostgreSQL", "postgresql", True), ("MSSQL", None, True), ("Chroma", None, False)]),
-    ("AI", [("Python", "python", True), ("PyTorch", "pytorch", True), ("vLLM", "vllm", True),
-            ("Hugging Face", "huggingface", False), ("LangChain", "langchain", False), ("LangGraph", "langgraph", False)]),
-    ("INFRA · TEST", [("Playwright", None, True), ("AWS", None, False), ("Docker", "docker", False), ("Git", "git", False)]),
-    ("FRONT · HW", [("Next.js", "nextdotjs", False), ("Vue 3", "vuedotjs", False), ("Streamlit", "streamlit", False),
-                    ("C", "c", False), ("ATmega128", None, False)]),
-]
+MAIN_TECH = [("Java", "openjdk"), ("Node.js", "nodedotjs"), ("Express", "express"), ("TypeScript", "typescript"),
+             ("PostgreSQL", "postgresql"), ("MSSQL", None), ("Python", "python"), ("PyTorch", "pytorch"),
+             ("vLLM", "vllm"), ("Playwright", None)]
+USED_TECH = [("Spring Boot", "springboot"), ("FastAPI", "fastapi"), ("Chroma", None), ("Hugging Face", "huggingface"),
+             ("LangChain", "langchain"), ("LangGraph", "langgraph"), ("AWS", None), ("Docker", "docker"), ("Git", "git"),
+             ("Next.js", "nextdotjs"), ("Vue 3", "vuedotjs"), ("Streamlit", "streamlit"), ("C", "c"), ("ATmega128", None)]
 MONOGRAM = {"MSSQL": "SQL", "Chroma": "Ch", "Playwright": "PW", "AWS": "aws", "ATmega128": "AVR"}
+KEY_LABEL = {"Hugging Face": "HuggingFace"}   # 1u 키에 들어가도록 줄인 표기
+SPACEBAR = "김진영 · 운영을 아는 백엔드 개발자"
+# 65% 배치: (글자, 폭(u), 종류) — 종류 mod = 기능 키, key = 글자 키, space = 스페이스바
+LAYOUT = [
+    [("Esc", 1, "mod")] + [(ch, 1, "key") for ch in "1234567890-="] + [("⌫", 2, "mod"), ("Del", 1, "mod")],
+    [("Tab", 1.5, "mod")] + [(ch, 1, "key") for ch in "QWERTYUIOP[]"] + [("\\", 1.5, "key"), ("PgUp", 1, "mod")],
+    [("Caps", 1.75, "mod")] + [(ch, 1, "key") for ch in "ASDFGHJKL;'"] + [("Enter", 2.25, "mod"), ("PgDn", 1, "mod")],
+    [("Shift", 2.25, "mod")] + [(ch, 1, "key") for ch in "ZXCVBNM,./"] + [("Shift", 1.75, "mod"), ("↑", 1, "mod"), ("End", 1, "mod")],
+    [("Ctrl", 1.25, "mod"), ("Win", 1.25, "mod"), ("Alt", 1.25, "mod"), (SPACEBAR, 6.25, "space"), ("Alt", 1, "mod"),
+     ("Fn", 1, "mod"), ("Ctrl", 1, "mod"), ("←", 1, "mod"), ("↓", 1, "mod"), ("→", 1, "mod")],
+]
+TECH_AT = {**dict(zip("QWERTYUIOP", [(n, s, True) for n, s in MAIN_TECH])),
+           **dict(zip("ASDFGHJKLZXCVB", [(n, s, False) for n, s in USED_TECH]))}
 KEYS = {  # 윗면 그라데이션(위 → 아래), 옆면, 글자
-    "light": dict(plate=("#E6EAEF", "#C9D1D9"), main=("#3B8EF7", "#0969DA", "#0550AE", "#FFFFFF"),
-                  sub=("#FFFFFF", "#EEF1F4", "#C4CBD3", "#1F2328"), mod=("#7D8590", "#57606A", "#3D444D", "#FFFFFF")),
-    "dark": dict(plate=("#010409", "#30363D"), main=("#4C9AFF", "#1F6FEB", "#0D419D", "#FFFFFF"),
-                 sub=("#373E47", "#2D333B", "#161B22", "#E6EDF3"), mod=("#545D68", "#3D444D", "#1C2128", "#E6EDF3")),
+    "light": dict(case=("#D8DEE4", "#AFB8C1"), main=("#3B8EF7", "#0969DA", "#0550AE", "#FFFFFF"),
+                  key=("#FFFFFF", "#EEF1F4", "#C4CBD3", "#57606A"), mod=("#C9D1D9", "#B6BFC8", "#8C959F", "#24292F")),
+    "dark": dict(case=("#010409", "#30363D"), main=("#4C9AFF", "#1F6FEB", "#0D419D", "#FFFFFF"),
+                 key=("#373E47", "#2D333B", "#161B22", "#ADBAC7"), mod=("#22272E", "#1C2128", "#0D1117", "#768390")),
 }
 
 
@@ -775,70 +784,71 @@ def keycaps(c, mode) -> str:
     import json
     icons = json.loads(ICONS.read_text(encoding="utf-8"))
     k = KEYS[mode]
-    W, KH, GAP, MOD_W = 1200, 58, 10, 156
-    PX, PY = 44, 82                         # 본체 안쪽 시작점
-    css = ["@keyframes press{0%,4%,100%{transform:none}2%{transform:translateY(3px)}}",
-           ".key{animation:press 10s ease-in-out infinite}",
-           "@media (prefers-reduced-motion:reduce){.key{animation:none}}"]
+    W, U, GAP, KH = 1200, 68, 6, 60
+    kb_w = 16 * U                              # 한 줄이 16u
+    PX, PY = (W - kb_w) // 2, 92               # 첫 키 위치
+    css = ["@keyframes press{0%,3%,100%{transform:none}1.5%{transform:translateY(3px)}}",
+           ".tap{animation:press 9s ease-in-out infinite}",
+           "@keyframes led{0%,100%{opacity:1}50%{opacity:.35}}",
+           "@media (prefers-reduced-motion:reduce){.tap,.led{animation:none}}"]
     defs = "".join(f'<linearGradient id="g{kind}" x1="0" y1="0" x2="0" y2="1">'
                    f'<stop offset="0" stop-color="{k[kind][0]}"/><stop offset="1" stop-color="{k[kind][1]}"/></linearGradient>'
-                   for kind in ("main", "sub", "mod"))
-    out, n = [], 0
+                   for kind in ("main", "key", "mod"))
+    out = []
+    taps = [ch for ch in "QWERTYUIOPASDFGHJKLZXCVB"] + ["space"]  # 타자 치듯 눌리는 순서
 
-    def cap(x, y, w, kind, inner):
-        nonlocal n
-        top, _, side, _ = k[kind]
-        border = f' stroke="{c["line"]}"' if kind == "sub" else ""
-        # 아래 두께(고정) → 윗면 묶음(눌렸다 올라옴)
-        out.append(f'<rect x="{x:.0f}" y="{y}" width="{w:.0f}" height="{KH}" rx="10" fill="{side}"{border}/>')
-        out.append(f'<g class="key" style="animation-delay:{n * .1:.2f}s">'
-                   f'<rect x="{x + 5:.0f}" y="{y + 3}" width="{w - 10:.0f}" height="{KH - 13}" rx="8" fill="url(#g{kind})"/>'
-                   f'<rect x="{x + 9:.0f}" y="{y + 5}" width="{w - 18:.0f}" height="2" rx="1" fill="#FFFFFF" opacity=".25"/>'
+    def cap(x, y, w, kind, inner, tap=None):
+        _, _, side, _ = k[kind]
+        border = f' stroke="{c["line"]}"' if kind == "key" and mode == "light" else ""
+        anim = f' class="tap" style="animation-delay:{taps.index(tap) * .28:.2f}s"' if tap in taps else ""
+        out.append(f'<rect x="{x:.0f}" y="{y}" width="{w:.0f}" height="{KH}" rx="8" fill="{side}"{border}/>'
+                   f'<g{anim}><rect x="{x + 4:.0f}" y="{y + 3}" width="{w - 8:.0f}" height="{KH - 13}" rx="7" fill="url(#g{kind})"/>'
+                   f'<rect x="{x + 8:.0f}" y="{y + 5}" width="{w - 16:.0f}" height="2" rx="1" fill="#FFFFFF" opacity=".22"/>'
                    + inner + "</g>")
-        n += 1
 
-    right = W - PX                          # 줄 끝을 이 선에 맞춘다
-    y = PY
-    for row, items in STACK:
+    for r, row in enumerate(LAYOUT):
+        y = PY + r * (KH + GAP)
         x = PX
-        ink = k["mod"][3]
-        cap(x, y, MOD_W, "mod", t(x + 18, y + 31, row, 13, ink, MOD_W - 30, 700, MONO, extra=' letter-spacing="1"'))
-        x += MOD_W + GAP
-        # 글자 폭에 맞춘 키를 최대 1.3배까지 늘리고, 그래도 남는 자리는 Enter · Shift 같은 넓은 빈 키로 채운다
-        natural = [max(112, width(name, 15) + 60) for name, _, _ in items]  # 글자 폭 검사(fit)와 같은 추정치
-        room = right - x - GAP * (len(items) - 1)
-        stretch = min(1.3, room / sum(natural))
-        for (name, slug, main), base in zip(items, natural):
-            kind = "main" if main else "sub"
-            ink = k[kind][3]
-            kw = base * stretch
-            ix, iy = x + 16, y + 16             # 윗면(높이 45) 세로 가운데
-            if slug:
-                logo = (f'<path transform="translate({ix:.0f},{iy}) scale(.75)" d="{icons[slug]}" fill="{ink}"/>')
-            else:  # 로고가 없는 기술은 짧은 글자 표시
-                logo = (f'<rect x="{ix:.0f}" y="{iy}" width="18" height="18" rx="4" fill="none" stroke="{ink}" stroke-width="1.5"/>'
-                        + t(ix + 9, iy + 12.5, MONOGRAM[name], 7.5 if len(MONOGRAM[name]) > 2 else 8.5, ink, 18, 700, MONO, anchor="middle"))
-            cap(x, y, kw, kind, logo + t(ix + 26, y + 30, name, 15, ink, kw - 50, 700))
-            x += kw + GAP
-        if right - x >= 60:
-            cap(x, y, right - x, "mod", "")
-        y += KH + GAP
-
-    plate_h = y - PY + 26
-    H = PY - 18 + plate_h + 22
-    legend = (f'<rect x="{W - 360}" y="24" width="14" height="14" rx="3" fill="{k["main"][1]}"/>'
-              + t(W - 340, 36, "주력 · 수치로 결과를 낸 기술", 13, c["muted"], 200, 600)
-              + f'<rect x="{W - 140}" y="24" width="14" height="14" rx="3" fill="{k["sub"][0]}" stroke="{c["line"]}"/>'
-              + t(W - 120, 36, "써 본 기술", 13, c["muted"], 90, 600))
-    names = " / ".join(f"{row}: " + ", ".join(f"{nm}{'(주력)' if m else ''}" for nm, _, m in items) for row, items in STACK)
-    return "\n".join([f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H:.0f}" viewBox="0 0 {W} {H:.0f}" '
+        for label, units, kind in row:
+            w = units * U - GAP
+            cx = x + w / 2
+            tech = TECH_AT.get(label) if kind == "key" else None
+            if tech:
+                name, slug, main = tech
+                face = "main" if main else "key"
+                ink = k["main"][3] if main else c["accent"]
+                if slug:
+                    logo = f'<path transform="translate({cx - 10:.1f},{y + 9}) scale(.833)" d="{icons[slug]}" fill="{ink}"/>'
+                else:
+                    mono = MONOGRAM[name]
+                    logo = (f'<rect x="{cx - 11:.1f}" y="{y + 8}" width="22" height="22" rx="5" fill="none" stroke="{ink}" stroke-width="1.6"/>'
+                            + t(cx, y + 23, mono, 8.5 if len(mono) > 2 else 10, ink, 22, 700, MONO, anchor="middle"))
+                cap(x, y, w, face, logo + t(cx, y + 44, KEY_LABEL.get(name, name), 8, ink, w - 6, 700, anchor="middle"), tap=label)
+            elif kind == "space":
+                cap(x, y, w, "key", t(cx, y + 30, label, 14, c["accent"], w - 30, 700, anchor="middle"), tap="space")
+            else:
+                face = "mod" if kind == "mod" else "key"
+                cap(x, y, w, face, t(x + 9, y + 21, label, 11 if kind == "mod" else 12, k[face][3], w - 14, 600, MONO))
+            x += units * U
+    kb_h = 5 * (KH + GAP) - GAP
+    case_x, case_y = PX - 22, PY - 22
+    case_w, case_h = kb_w - GAP + 44, kb_h + 44
+    H = case_y + case_h + 26
+    # 키보드 오른쪽 위 표시등(Caps · Num · Scroll) — 하나만 천천히 깜박
+    leds = "".join(f'<circle cx="{case_x + case_w - 74 + i * 22}" cy="{case_y - 14}" r="4" fill="{c["accent"] if i == 0 else c["line"]}"'
+                   + (' class="led" style="animation:led 2.4s ease-in-out infinite"' if i == 0 else "") + "/>" for i in range(3))
+    legend = (f'<rect x="40" y="{case_y - 22}" width="14" height="14" rx="3" fill="{k["main"][1]}"/>'
+              + t(60, case_y - 10, "주력 · 수치로 결과를 낸 기술 (Q~P)", 13, c["muted"], 300, 600)
+              + f'<rect x="330" y="{case_y - 22}" width="14" height="14" rx="3" fill="{k["key"][0]}" stroke="{c["accent"]}" stroke-width="1.5"/>'
+              + t(350, case_y - 10, "써 본 기술 (A~L · Z~B)", 13, c["muted"], 260, 600))
+    names = ("기술 스택 키보드. 주력(Q~P, 파란 키): " + ", ".join(n for n, _ in MAIN_TECH)
+             + ". 써 본 기술(A~L, Z~B): " + ", ".join(n for n, _ in USED_TECH) + f". 스페이스바: {SPACEBAR}")
+    return "\n".join([f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
                       f'role="img" aria-label="{escape(names)}">', f"<style>{''.join(css)}</style>", f"<defs>{defs}</defs>",
-                      f'<rect x="1" y="1" width="{W - 2}" height="{H - 2:.0f}" rx="16" fill="{c["panel"]}" stroke="{c["line"]}"/>',
-                      t(40, 36, "KEYBOARD · 분야별 기술", 13, c["accent"], 400, 700, MONO, extra=' letter-spacing="1"'),
-                      legend,
-                      # 키보드 본체(판)
-                      f'<rect x="{PX - 18}" y="{PY - 18}" width="{W - 2 * (PX - 18)}" height="{plate_h:.0f}" rx="18" '
-                      f'fill="{k["plate"][0]}" stroke="{k["plate"][1]}" stroke-width="2"/>',
+                      f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="16" fill="{c["panel"]}" stroke="{c["line"]}"/>',
+                      legend, leds,
+                      f'<rect x="{case_x}" y="{case_y}" width="{case_w}" height="{case_h}" rx="18" fill="{k["case"][0]}" '
+                      f'stroke="{k["case"][1]}" stroke-width="2"/>',
                       *out, "</svg>"])
 
 
