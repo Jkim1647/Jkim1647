@@ -296,7 +296,7 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./assets/stack_dark.svg">
-    <img src="./assets/stack_light.svg" width="100%" alt="분야별 기술 키보드(파란 키는 주력 · 수치로 결과를 낸 기술). BACKEND: Java(주력), Node.js(주력), Express(주력), TypeScript(주력), Spring Boot, FastAPI / DATA: PostgreSQL(주력), MSSQL(주력), Chroma / AI: Python(주력), PyTorch(주력), vLLM(주력), Hugging Face, LangChain, LangGraph / INFRA · TEST: Playwright(주력), AWS, Docker, Git / FRONT · HW: Next.js, Vue 3, Streamlit, C, ATmega128" />
+    <img src="./assets/stack_light.svg" width="100%" alt="기술 스택 키보드(65% 배치). 윗줄 Q~P 파란 키 = 주력 · 수치로 결과를 낸 기술: Java, Node.js, Express, TypeScript, PostgreSQL, MSSQL, Python, PyTorch, vLLM, Playwright. A~L · Z~B = 써 본 기술: Spring Boot, FastAPI, Chroma, Hugging Face, LangChain, LangGraph, AWS, Docker, Git, Next.js, Vue 3, Streamlit, C, ATmega128. 분야: 백엔드 Java · Node.js · Express · TypeScript · Spring Boot · FastAPI / 데이터 PostgreSQL · MSSQL · Chroma / AI Python · PyTorch · vLLM · Hugging Face · LangChain · LangGraph / 인프라 · 테스트 Playwright · AWS · Docker · Git / 프론트 · 하드웨어 Next.js · Vue 3 · Streamlit · C · ATmega128" />
   </picture>
 </p>
 
