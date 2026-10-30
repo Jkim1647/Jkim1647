@@ -748,11 +748,55 @@ def explainer(c) -> str:
     return "\n".join(out)
 
 
+# ── 기술 스택 키캡: 주력(결과를 낸 기술)은 진한 키, 써 본 기술은 옅은 키 ─────────────────────────
+
+STACK = [("주력 · 위 프로젝트에서 수치로 결과를 낸 기술", True,
+          ["Java", "Node.js", "Express", "TypeScript", "PostgreSQL", "MSSQL", "Python", "PyTorch", "vLLM", "Playwright"]),
+         ("프로젝트에서 써 본 기술", False,
+          ["Spring Boot", "Next.js", "Vue 3", "FastAPI", "Hugging Face", "LangChain", "LangGraph", "Chroma",
+           "Streamlit", "AWS", "Docker", "Git", "C", "ATmega128"])]
+KEY_THEME = {"light": dict(main=("#0969DA", "#0550AE", "#FFFFFF"), sub=("#FFFFFF", "#D0D7DE", "#1F2328")),
+             "dark": dict(main=("#1F6FEB", "#0D419D", "#FFFFFF"), sub=("#21262D", "#010409", "#E6EDF3"))}
+
+
+def keycaps(c, mode) -> str:
+    W, X0, GAP, KH, SIDE, FS = 1200, 40, 12, 50, 7, 16
+    out, y, n = [], 28, 0
+    for title, main, keys in STACK:
+        face, side, ink = KEY_THEME[mode]["main" if main else "sub"]
+        out.append(t(X0, y + 18, title, 15, c["muted"], 700, 700))
+        y += 34
+        x = X0
+        for key in keys:
+            kw = max(72, width(key, FS) * .8 + 40)
+            if x + kw > W - X0:  # 줄이 넘치면 다음 줄로
+                x, y = X0, y + KH + SIDE + GAP
+            border = "" if main else f' stroke="{c["line"]}"'
+            # 키 옆면(두께)은 고정, 윗면만 눌렸다 올라온다
+            out.append(f'<rect x="{x:.0f}" y="{y + SIDE}" width="{kw:.0f}" height="{KH}" rx="10" fill="{side}"/>')
+            out.append(f'<g class="key" style="animation-delay:{n * .12:.2f}s">'
+                       f'<rect x="{x:.0f}" y="{y}" width="{kw:.0f}" height="{KH}" rx="10" fill="{face}"{border}/>'
+                       + t(x + kw / 2, y + KH / 2 + 6, key, FS, ink, kw - 16, 700, anchor="middle") + "</g>")
+            x += kw + GAP
+            n += 1
+        y += KH + SIDE + 30
+    H = y - 6
+    css = ("@keyframes press{0%,4%,100%{transform:none}2%{transform:translateY(5px)}}"
+           ".key{animation:press 10s ease-in-out infinite}"
+           "@media (prefers-reduced-motion:reduce){.key{animation:none}}")
+    names = " · ".join(f"{title}: {', '.join(keys)}" for title, _, keys in STACK)
+    return "\n".join([f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
+                      f'role="img" aria-label="{escape(names)}">', f"<style>{css}</style>",
+                      f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="16" fill="{c["panel"]}" stroke="{c["line"]}"/>',
+                      *out, "</svg>"])
+
+
 def main():
     import explainers  # 프로젝트별 개념도 — 이 모듈의 t() 등을 쓰므로 여기서 불러온다
     ASSETS.mkdir(exist_ok=True)
     for mode, c in THEMES.items():
         (ASSETS / f"hero_{mode}.svg").write_text(hero(c, mode), encoding="utf-8")
+        (ASSETS / f"stack_{mode}.svg").write_text(keycaps(c, mode), encoding="utf-8")
         (ASSETS / f"explainer_{mode}.svg").write_text(explainer(c), encoding="utf-8")
         for name, draw in explainers.ALL.items():
             (ASSETS / f"ex_{name}_{mode}.svg").write_text(draw(c, mode), encoding="utf-8")
@@ -760,7 +804,7 @@ def main():
             (ASSETS / f"path_{d['slug']}_{mode}.svg").write_text(path_button(d, c, i * .4), encoding="utf-8")
         for d in CARDS:
             (ASSETS / f"card_{d['slug']}_{mode}.svg").write_text(card(d, c), encoding="utf-8")
-    print(f"{len(THEMES) * (len(CARDS) + len(PATHS) + 2 + len(explainers.ALL))} files → {ASSETS}")
+    print(f"{len(THEMES) * (len(CARDS) + len(PATHS) + 3 + len(explainers.ALL))} files → {ASSETS}")
 
 
 if __name__ == "__main__":
