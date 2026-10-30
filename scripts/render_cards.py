@@ -748,46 +748,97 @@ def explainer(c) -> str:
     return "\n".join(out)
 
 
-# ── 기술 스택 키캡: 주력(결과를 낸 기술)은 진한 키, 써 본 기술은 옅은 키 ─────────────────────────
+# ── 기술 스택 키보드: 분야별 줄(맨 앞은 분야 이름 키), 주력은 파란 키 · 써 본 기술은 옅은 키, 키마다 로고 ──
 
-STACK = [("주력 · 위 프로젝트에서 수치로 결과를 낸 기술", True,
-          ["Java", "Node.js", "Express", "TypeScript", "PostgreSQL", "MSSQL", "Python", "PyTorch", "vLLM", "Playwright"]),
-         ("프로젝트에서 써 본 기술", False,
-          ["Spring Boot", "Next.js", "Vue 3", "FastAPI", "Hugging Face", "LangChain", "LangGraph", "Chroma",
-           "Streamlit", "AWS", "Docker", "Git", "C", "ATmega128"])]
-KEY_THEME = {"light": dict(main=("#0969DA", "#0550AE", "#FFFFFF"), sub=("#FFFFFF", "#D0D7DE", "#1F2328")),
-             "dark": dict(main=("#1F6FEB", "#0D419D", "#FFFFFF"), sub=("#21262D", "#010409", "#E6EDF3"))}
+ICONS = ROOT / "data" / "simple-icons.json"   # simple-icons(CC0) 경로를 버전 고정해 저장해 둔 것
+# (분야, [(이름, simple-icons 슬러그 또는 None=글자 표시, 주력 여부)])
+STACK = [
+    ("BACKEND", [("Java", "openjdk", True), ("Node.js", "nodedotjs", True), ("Express", "express", True),
+                 ("TypeScript", "typescript", True), ("Spring Boot", "springboot", False), ("FastAPI", "fastapi", False)]),
+    ("DATA", [("PostgreSQL", "postgresql", True), ("MSSQL", None, True), ("Chroma", None, False)]),
+    ("AI", [("Python", "python", True), ("PyTorch", "pytorch", True), ("vLLM", "vllm", True),
+            ("Hugging Face", "huggingface", False), ("LangChain", "langchain", False), ("LangGraph", "langgraph", False)]),
+    ("INFRA · TEST", [("Playwright", None, True), ("AWS", None, False), ("Docker", "docker", False), ("Git", "git", False)]),
+    ("FRONT · HW", [("Next.js", "nextdotjs", False), ("Vue 3", "vuedotjs", False), ("Streamlit", "streamlit", False),
+                    ("C", "c", False), ("ATmega128", None, False)]),
+]
+MONOGRAM = {"MSSQL": "SQL", "Chroma": "Ch", "Playwright": "PW", "AWS": "aws", "ATmega128": "AVR"}
+KEYS = {  # 윗면 그라데이션(위 → 아래), 옆면, 글자
+    "light": dict(plate=("#E6EAEF", "#C9D1D9"), main=("#3B8EF7", "#0969DA", "#0550AE", "#FFFFFF"),
+                  sub=("#FFFFFF", "#EEF1F4", "#C4CBD3", "#1F2328"), mod=("#7D8590", "#57606A", "#3D444D", "#FFFFFF")),
+    "dark": dict(plate=("#010409", "#30363D"), main=("#4C9AFF", "#1F6FEB", "#0D419D", "#FFFFFF"),
+                 sub=("#373E47", "#2D333B", "#161B22", "#E6EDF3"), mod=("#545D68", "#3D444D", "#1C2128", "#E6EDF3")),
+}
 
 
 def keycaps(c, mode) -> str:
-    W, X0, GAP, KH, SIDE, FS = 1200, 40, 12, 50, 7, 16
-    out, y, n = [], 28, 0
-    for title, main, keys in STACK:
-        face, side, ink = KEY_THEME[mode]["main" if main else "sub"]
-        out.append(t(X0, y + 18, title, 15, c["muted"], 700, 700))
-        y += 34
-        x = X0
-        for key in keys:
-            kw = max(72, width(key, FS) * .8 + 40)
-            if x + kw > W - X0:  # 줄이 넘치면 다음 줄로
-                x, y = X0, y + KH + SIDE + GAP
-            border = "" if main else f' stroke="{c["line"]}"'
-            # 키 옆면(두께)은 고정, 윗면만 눌렸다 올라온다
-            out.append(f'<rect x="{x:.0f}" y="{y + SIDE}" width="{kw:.0f}" height="{KH}" rx="10" fill="{side}"/>')
-            out.append(f'<g class="key" style="animation-delay:{n * .12:.2f}s">'
-                       f'<rect x="{x:.0f}" y="{y}" width="{kw:.0f}" height="{KH}" rx="10" fill="{face}"{border}/>'
-                       + t(x + kw / 2, y + KH / 2 + 6, key, FS, ink, kw - 16, 700, anchor="middle") + "</g>")
+    import json
+    icons = json.loads(ICONS.read_text(encoding="utf-8"))
+    k = KEYS[mode]
+    W, KH, GAP, MOD_W = 1200, 58, 10, 156
+    PX, PY = 44, 82                         # 본체 안쪽 시작점
+    css = ["@keyframes press{0%,4%,100%{transform:none}2%{transform:translateY(3px)}}",
+           ".key{animation:press 10s ease-in-out infinite}",
+           "@media (prefers-reduced-motion:reduce){.key{animation:none}}"]
+    defs = "".join(f'<linearGradient id="g{kind}" x1="0" y1="0" x2="0" y2="1">'
+                   f'<stop offset="0" stop-color="{k[kind][0]}"/><stop offset="1" stop-color="{k[kind][1]}"/></linearGradient>'
+                   for kind in ("main", "sub", "mod"))
+    out, n = [], 0
+
+    def cap(x, y, w, kind, inner):
+        nonlocal n
+        top, _, side, _ = k[kind]
+        border = f' stroke="{c["line"]}"' if kind == "sub" else ""
+        # 아래 두께(고정) → 윗면 묶음(눌렸다 올라옴)
+        out.append(f'<rect x="{x:.0f}" y="{y}" width="{w:.0f}" height="{KH}" rx="10" fill="{side}"{border}/>')
+        out.append(f'<g class="key" style="animation-delay:{n * .1:.2f}s">'
+                   f'<rect x="{x + 5:.0f}" y="{y + 3}" width="{w - 10:.0f}" height="{KH - 13}" rx="8" fill="url(#g{kind})"/>'
+                   f'<rect x="{x + 9:.0f}" y="{y + 5}" width="{w - 18:.0f}" height="2" rx="1" fill="#FFFFFF" opacity=".25"/>'
+                   + inner + "</g>")
+        n += 1
+
+    right = W - PX                          # 줄 끝을 이 선에 맞춘다
+    y = PY
+    for row, items in STACK:
+        x = PX
+        ink = k["mod"][3]
+        cap(x, y, MOD_W, "mod", t(x + 18, y + 31, row, 13, ink, MOD_W - 30, 700, MONO, extra=' letter-spacing="1"'))
+        x += MOD_W + GAP
+        # 글자 폭에 맞춘 키를 최대 1.3배까지 늘리고, 그래도 남는 자리는 Enter · Shift 같은 넓은 빈 키로 채운다
+        natural = [max(112, width(name, 15) + 60) for name, _, _ in items]  # 글자 폭 검사(fit)와 같은 추정치
+        room = right - x - GAP * (len(items) - 1)
+        stretch = min(1.3, room / sum(natural))
+        for (name, slug, main), base in zip(items, natural):
+            kind = "main" if main else "sub"
+            ink = k[kind][3]
+            kw = base * stretch
+            ix, iy = x + 16, y + 16             # 윗면(높이 45) 세로 가운데
+            if slug:
+                logo = (f'<path transform="translate({ix:.0f},{iy}) scale(.75)" d="{icons[slug]}" fill="{ink}"/>')
+            else:  # 로고가 없는 기술은 짧은 글자 표시
+                logo = (f'<rect x="{ix:.0f}" y="{iy}" width="18" height="18" rx="4" fill="none" stroke="{ink}" stroke-width="1.5"/>'
+                        + t(ix + 9, iy + 12.5, MONOGRAM[name], 7.5 if len(MONOGRAM[name]) > 2 else 8.5, ink, 18, 700, MONO, anchor="middle"))
+            cap(x, y, kw, kind, logo + t(ix + 26, y + 30, name, 15, ink, kw - 50, 700))
             x += kw + GAP
-            n += 1
-        y += KH + SIDE + 30
-    H = y - 6
-    css = ("@keyframes press{0%,4%,100%{transform:none}2%{transform:translateY(5px)}}"
-           ".key{animation:press 10s ease-in-out infinite}"
-           "@media (prefers-reduced-motion:reduce){.key{animation:none}}")
-    names = " · ".join(f"{title}: {', '.join(keys)}" for title, _, keys in STACK)
-    return "\n".join([f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
-                      f'role="img" aria-label="{escape(names)}">', f"<style>{css}</style>",
-                      f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="16" fill="{c["panel"]}" stroke="{c["line"]}"/>',
+        if right - x >= 60:
+            cap(x, y, right - x, "mod", "")
+        y += KH + GAP
+
+    plate_h = y - PY + 26
+    H = PY - 18 + plate_h + 22
+    legend = (f'<rect x="{W - 360}" y="24" width="14" height="14" rx="3" fill="{k["main"][1]}"/>'
+              + t(W - 340, 36, "주력 · 수치로 결과를 낸 기술", 13, c["muted"], 200, 600)
+              + f'<rect x="{W - 140}" y="24" width="14" height="14" rx="3" fill="{k["sub"][0]}" stroke="{c["line"]}"/>'
+              + t(W - 120, 36, "써 본 기술", 13, c["muted"], 90, 600))
+    names = " / ".join(f"{row}: " + ", ".join(f"{nm}{'(주력)' if m else ''}" for nm, _, m in items) for row, items in STACK)
+    return "\n".join([f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H:.0f}" viewBox="0 0 {W} {H:.0f}" '
+                      f'role="img" aria-label="{escape(names)}">', f"<style>{''.join(css)}</style>", f"<defs>{defs}</defs>",
+                      f'<rect x="1" y="1" width="{W - 2}" height="{H - 2:.0f}" rx="16" fill="{c["panel"]}" stroke="{c["line"]}"/>',
+                      t(40, 36, "KEYBOARD · 분야별 기술", 13, c["accent"], 400, 700, MONO, extra=' letter-spacing="1"'),
+                      legend,
+                      # 키보드 본체(판)
+                      f'<rect x="{PX - 18}" y="{PY - 18}" width="{W - 2 * (PX - 18)}" height="{plate_h:.0f}" rx="18" '
+                      f'fill="{k["plate"][0]}" stroke="{k["plate"][1]}" stroke-width="2"/>',
                       *out, "</svg>"])
 
 
