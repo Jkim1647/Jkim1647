@@ -2,6 +2,8 @@
 <div align="center">
 
 <picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="./assets/hero_mobile_dark.svg">
+  <source media="(max-width: 600px)" srcset="./assets/hero_mobile_light.svg">
   <source media="(prefers-color-scheme: dark)" srcset="./assets/hero_dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="./assets/hero_light.svg">
   <img src="./assets/hero_light.svg" width="100%" alt="김진영 · Jinyoung Kim — 운영을 아는 백엔드 개발자. 지난 1년 기여 달력의 칸들이 커리어 단계의 모양으로 바뀝니다: 로봇(2017–2019 서울로봇고, 전국기능경기대회 장려상) → 자동차(2021–2024 현대자동차그룹 통합사원증 운영) → 레이더(2024–2025 공군 방공관제) → 로켓(2025 수양회 백엔드 22.8초) → 신경망(2026 SSAFY AI 챌린지 2위 · 18위) → 정의의 저울(2026 SafeLaw: 개인정보 마스킹 · 일상어를 법률 용어로 · 근거 RAG) → 서울에 핀이 꽂힌 대한민국 지도(NEXT: 백엔드 · IT 운영 · AI 서비스)" />
@@ -295,6 +297,8 @@
 
 <p align="center">
   <picture>
+    <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset="./assets/stack_mobile_dark.svg">
+    <source media="(max-width: 600px)" srcset="./assets/stack_mobile_light.svg">
     <source media="(prefers-color-scheme: dark)" srcset="./assets/stack_dark.svg">
     <img src="./assets/stack_light.svg" width="100%" alt="기술 스택 키보드(65% 배치). 윗줄 Q~P 파란 키 = 주력 · 수치로 결과를 낸 기술: Java, Node.js, Express, TypeScript, PostgreSQL, MSSQL, Python, PyTorch, vLLM, Playwright. A~L · Z~B = 써 본 기술: Spring Boot, FastAPI, Chroma, Hugging Face, LangChain, LangGraph, AWS, Docker, Git, Next.js, Vue 3, Streamlit, C, ATmega128. 분야: 백엔드 Java · Node.js · Express · TypeScript · Spring Boot · FastAPI / 데이터 PostgreSQL · MSSQL · Chroma / AI Python · PyTorch · vLLM · Hugging Face · LangChain · LangGraph / 인프라 · 테스트 Playwright · AWS · Docker · Git / 프론트 · 하드웨어 Next.js · Vue 3 · Streamlit · C · ATmega128" />
   </picture>
