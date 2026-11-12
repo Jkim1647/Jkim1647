@@ -11,7 +11,7 @@
 
 <br/>
 
-📄 <a href="https://github.com/Jkim1647/portfolio/blob/main/kim-jinyoung-portfolio.pdf"><b>포트폴리오 PDF</b></a> &nbsp;·&nbsp; 📂 <a href="https://github.com/Jkim1647/portfolio">프로젝트 기록 문서</a> &nbsp;·&nbsp; ✉️ <a href="mailto:kjy164777@gmail.com">kjy164777@gmail.com</a>
+🧾 <a href="https://jkim1647.github.io/career/"><b>이력서 사이트</b></a> &nbsp;·&nbsp; 📄 <a href="https://github.com/Jkim1647/portfolio/blob/main/kim-jinyoung-portfolio.pdf"><b>포트폴리오 PDF</b></a> &nbsp;·&nbsp; 📂 <a href="https://github.com/Jkim1647/portfolio">프로젝트 기록 문서</a> &nbsp;·&nbsp; ✉️ <a href="mailto:kjy164777@gmail.com">kjy164777@gmail.com</a>
 
 </div>
 
